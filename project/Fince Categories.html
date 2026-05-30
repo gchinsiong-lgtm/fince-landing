@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fince — Categories (mid-fi)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  body { margin: 0; background: #ECEAE3; font-family: -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-categories.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "dark",
+  "density": "comfy",
+  "radius": 14
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  const Phone = ({ children, dark }) => (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      height: '100%',
+      background: dark
+        ? 'radial-gradient(120% 80% at 50% 0%, #1a1a1d 0%, #0c0c0e 100%)'
+        : 'radial-gradient(120% 80% at 50% 0%, #efece5 0%, #e2dfd6 100%)',
+    }}>
+      <IOSDevice width={390} height={844} dark={dark}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 30, pointerEvents: 'none' }}>
+          <IOSStatusBar dark={dark} />
+        </div>
+        <div style={{ position: 'absolute', top: 48, left: 0, right: 0, bottom: 0 }}>{children}</div>
+        <div style={{
+          position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+          width: 134, height: 5, borderRadius: 3,
+          background: dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', zIndex: 40,
+        }} />
+      </IOSDevice>
+    </div>
+  );
+
+  const board = (id, label, props, dark) => (
+    <DCArtboard id={id} label={label} width={420} height={900}>
+      <Phone dark={dark}>
+        <MidFi_Categories dark={dark} radius={t.radius} density={t.density} {...props} />
+      </Phone>
+    </DCArtboard>
+  );
+
+  return (
+    <DesignCanvas>
+      <DCSection
+        id="intro"
+        title="Settings ▸ Categories"
+        subtitle="Mid-fi sub-page · segmented ledger switch · per-tag color tile · inline edit / reorder mode">
+        <DCArtboard id="brief" label="brief" width={420} height={600}>
+          <div style={{ padding: 28, height: '100%', boxSizing: 'border-box', background: '#fdfcf9', fontFamily: '-apple-system, system-ui' }}>
+            <div style={{ fontSize: 24, fontWeight: 700, color: '#1c1a17', letterSpacing: -0.4 }}>Customize Categories</div>
+            <div style={{ fontSize: 13, color: '#4a463f', marginTop: 8, lineHeight: 1.55 }}>
+              A sub-page reached from Settings ▸ Categories. Two ledgers (Business, Personal) live side-by-side via a segmented control at the top — switching the segment swaps the lists below without leaving the page.
+            </div>
+
+            <div style={{ marginTop: 16, fontSize: 12, color: '#1c1a17' }}>
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>STRUCTURE</div>
+              <ul style={{ paddingLeft: 16, margin: 0, lineHeight: 1.65 }}>
+                <li>NavBar: ‹ Settings · title · Edit / Done</li>
+                <li>Segmented control: Business · Personal</li>
+                <li>Grouped list: Income (3) then Expenses (6–8)</li>
+                <li>Each row: tinted glyph · name · txn count · ›</li>
+                <li>Footer add-row to create a new category</li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: 16, fontSize: 12, color: '#1c1a17' }}>
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>EDIT MODE</div>
+              <ul style={{ paddingLeft: 16, margin: 0, lineHeight: 1.65 }}>
+                <li>Tap “Edit” to reveal red minus + ≡ drag handle</li>
+                <li>Footnote swaps to delete / reorder hint</li>
+                <li>“Personal / Non-Business” is muted by default — excluded from reports but kept for tagging</li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: 16, fontSize: 12, color: '#888', fontStyle: 'italic' }}>
+              Four artboards: Business + Personal · default + edit, both modes.
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="business" title="01 · Business Ledger" subtitle="Default view · light + dark">
+        {board('biz-light', 'Business · Light',  { initialLedger: 'business' }, false)}
+        {board('biz-dark',  'Business · Dark',   { initialLedger: 'business' }, true)}
+      </DCSection>
+
+      <DCSection id="personal" title="02 · Personal Ledger" subtitle="Default view · light + dark">
+        {board('pers-light', 'Personal · Light', { initialLedger: 'personal' }, false)}
+        {board('pers-dark',  'Personal · Dark',  { initialLedger: 'personal' }, true)}
+      </DCSection>
+
+      <DCSection id="edit" title="03 · Edit mode" subtitle="Delete + reorder affordances revealed">
+        {board('biz-edit-dark',  'Business · Edit · Dark',  { initialLedger: 'business', initialEdit: true }, true)}
+        {board('biz-edit-light', 'Business · Edit · Light', { initialLedger: 'business', initialEdit: true }, false)}
+        {board('pers-edit-dark', 'Personal · Edit · Dark',  { initialLedger: 'personal', initialEdit: true }, true)}
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

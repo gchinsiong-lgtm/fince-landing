@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fince — Automated bookkeeping for Malaysian freelancers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream:    #F4F2EC;
+    --cream-2:  #ECE9E0;
+    --cream-3:  #E4E0D4;
+    --surface:  #FFFFFF;
+    --ink:      #14130F;
+    --ink-2:    rgba(20,19,15,0.60);
+    --ink-3:    rgba(20,19,15,0.36);
+    --line:     rgba(20,19,15,0.10);
+    --hair:     rgba(20,19,15,0.07);
+    --forest:   #16463A;
+    --forest-2: #0F3329;
+    --green:    #0F8A53;
+    --green-bg: rgba(15,138,83,0.10);
+    --red:      #C24628;
+    --blue:     #2A6FF0;
+    --font:     'Inter', -apple-system, system-ui, sans-serif;
+    --maxw:     1160px;
+    --r:        18px;
+    --shadow:   0 1px 2px rgba(20,19,15,0.04), 0 10px 30px rgba(20,19,15,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ───────── tiny atoms ───────── */
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--green);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font); font-size: 16px; font-weight: 600;
+    padding: 13px 22px; border-radius: 999px; cursor: pointer;
+    border: 1px solid transparent; transition: transform .12s ease, background .15s ease, box-shadow .15s ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--forest); color: var(--cream); box-shadow: 0 6px 18px rgba(22,70,58,0.25); }
+  .btn-primary:hover { background: var(--forest-2); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--cream-2); }
+  .btn-cream { background: var(--cream); color: var(--forest); }
+  .btn-cream:hover { background: #fff; }
+
+  /* ───────── nav ───────── */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,242,236,0.82);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-bottom: 1px solid var(--hair);
+  }
+  .nav-inner { display: flex; align-items: center; gap: 28px; height: 70px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.4px; color: var(--forest); }
+  .brand img { width: 26px; height: 26px; }
+  .nav-links { display: flex; gap: 30px; margin-left: 12px; }
+  .nav-links a { font-size: 15px; font-weight: 500; color: var(--ink-2); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+  .nav-cta .login { font-size: 15px; font-weight: 600; color: var(--ink); }
+
+  /* ───────── hero ───────── */
+  .hero { padding: 76px 0 0; text-align: center; }
+  .hero h1 {
+    font-size: clamp(40px, 6.4vw, 70px); font-weight: 800; letter-spacing: -2px;
+    line-height: 1.02; margin: 18px auto 0; max-width: 12ch; text-wrap: balance;
+  }
+  .hero h1 .accent { color: var(--green); }
+  .hero p.sub {
+    font-size: clamp(17px, 2.2vw, 21px); color: var(--ink-2);
+    max-width: 56ch; margin: 22px auto 0; line-height: 1.55; text-wrap: pretty;
+  }
+  .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+  .hero-note { margin-top: 16px; font-size: 14px; color: var(--ink-3); }
+
+  .hero-banner {
+    margin: 54px auto 0; max-width: 1240px; padding: 0 12px;
+  }
+  .hero-banner .frame {
+    border-radius: 26px; overflow: hidden;
+    box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 30px 70px rgba(22,70,58,0.16);
+    border: 1px solid var(--hair);
+  }
+  .hero-banner img { width: 100%; }
+
+  /* ───────── trust strip ───────── */
+  .trust { padding: 56px 0 18px; }
+  .trust .stats { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 36px; font-weight: 700; letter-spacing: -1.4px; color: var(--forest); font-feature-settings: "tnum"; }
+  .stat .lbl { font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+
+  /* ───────── section heading ───────── */
+  .section { padding: 92px 0; }
+  .sec-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+  .sec-head h2 { font-size: clamp(30px, 4.2vw, 44px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.06; margin: 14px 0 0; text-wrap: balance; }
+  .sec-head p { font-size: 18px; color: var(--ink-2); margin: 16px auto 0; max-width: 50ch; text-wrap: pretty; }
+
+  /* ───────── features grid ───────── */
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .feature {
+    background: var(--surface); border-radius: var(--r); padding: 30px;
+    box-shadow: var(--shadow); border: 1px solid var(--hair);
+  }
+  .ficon {
+    width: 46px; height: 46px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+  }
+  .ficon.green { background: var(--green-bg); color: var(--green); }
+  .ficon.forest { background: rgba(22,70,58,0.10); color: var(--forest); }
+  .ficon.blue { background: rgba(42,111,240,0.10); color: var(--blue); }
+  .ficon.red { background: rgba(194,70,40,0.10); color: var(--red); }
+  .feature h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
+  .feature p { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+
+  /* ───────── how it works ───────── */
+  .how { background: var(--cream-2); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step { text-align: left; }
+  .step .n {
+    font-size: 15px; font-weight: 700; color: var(--green);
+    width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--green);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+  }
+  .step h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
+  .step p { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+
+  /* ───────── showcase ───────── */
+  /* ───────── showcase ───────── */
+  .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .showcase + .showcase { margin-top: 96px; }
+  .showcase.flip .copy { order: 2; }
+  .showcase.flip .stage { order: 1; }
+  .showcase .copy h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.08; margin: 14px 0 0; text-wrap: balance; }
+  .showcase .copy p { font-size: 17px; color: var(--ink-2); margin: 18px 0 0; line-height: 1.6; max-width: 42ch; }
+  .checklist { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-direction: column; gap: 14px; }
+  .checklist li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; }
+  .checklist .tick { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+  .stage { position: relative; display: flex; align-items: center; justify-content: center; }
+  .stage::before {
+    content: ""; position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, rgba(15,138,83,0.22) 0%, rgba(15,138,83,0.05) 50%, transparent 72%);
+    filter: blur(8px); z-index: 0;
+  }
+  .stage.dark::before { background: radial-gradient(circle, rgba(22,70,58,0.30) 0%, rgba(22,70,58,0.08) 50%, transparent 72%); }
+  .stage img { position: relative; z-index: 1; width: 100%; max-width: 460px; }
+
+  /* ───────── final CTA ───────── */
+  .cta-band { background: var(--forest); color: var(--cream); border-radius: 30px; padding: 72px 40px; text-align: center; }
+  .cta-band img.mark { width: 48px; margin: 0 auto 22px; }
+  .cta-band h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.05; margin: 0 auto; max-width: 16ch; text-wrap: balance; }
+  .cta-band p { font-size: 18px; color: rgba(244,242,236,0.7); margin: 18px auto 0; max-width: 44ch; }
+  .cta-band .row { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+  /* ───────── waitlist form ───────── */
+  .wl-form { display: flex; gap: 10px; justify-content: center; margin: 32px auto 0; max-width: 480px; flex-wrap: wrap; }
+  .wl-form input {
+    flex: 1; min-width: 220px; font-family: var(--font); font-size: 16px;
+    padding: 14px 18px; border-radius: 999px; border: 1px solid rgba(244,242,236,0.22);
+    background: rgba(244,242,236,0.10); color: var(--cream); outline: none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .wl-form input::placeholder { color: rgba(244,242,236,0.5); }
+  .wl-form input:focus { border-color: rgba(244,242,236,0.55); background: rgba(244,242,236,0.16); }
+  .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; }
+  .wl-success {
+    display: none; align-items: center; gap: 10px; justify-content: center;
+    margin-top: 30px; font-size: 18px; font-weight: 600; color: var(--cream);
+  }
+  .wl-success .tick {
+    width: 30px; height: 30px; border-radius: 50%; background: rgba(244,242,236,0.16);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .wl-fine { margin-top: 16px; font-size: 14px; color: rgba(244,242,236,0.55); }
+
+  /* ───────── footer ───────── */
+  footer.foot { padding: 64px 0 48px; border-top: 1px solid var(--hair); margin-top: 92px; }
+  .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+  .foot-brand { max-width: 280px; }
+  .foot-brand .brand { color: var(--forest); margin-bottom: 14px; }
+  .foot-brand p { font-size: 15px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px; }
+  .foot-col a { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 12px; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; font-size: 14px; color: var(--ink-3); }
+
+  /* ───────── responsive ───────── */
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .features { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; gap: 32px; }
+    .showcase { grid-template-columns: 1fr; gap: 36px; }
+    .showcase + .showcase { margin-top: 56px; }
+    .showcase.flip .copy { order: 0; }
+    .showcase.flip .stage { order: 0; }
+    .stage img { max-width: 320px; }
+    .section { padding: 68px 0; }
+    .trust .stats { gap: 36px; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 20px; }
+    .nav-cta .login { display: none; }
+    .cta-band { padding: 56px 24px; border-radius: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────────────────────── NAV ───────────────────────── -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <img src="landing/logo-mark-green.png" alt="Fince" />
+      Fince
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#waitlist">Waitlist</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+    </div>
+  </div>
+</header>
+
+<!-- ───────────────────────── HERO ───────────────────────── -->
+<main id="top">
+<section class="hero" data-screen-label="Hero">
+  <div class="wrap">
+    <div class="eyebrow">For freelancers &amp; solo founders in Malaysia</div>
+    <h1>Bookkeeping that <span class="accent">does itself.</span></h1>
+    <p class="sub">Fince tracks your income, expenses and projects automatically — so you always know your real numbers.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+    <div class="hero-note">iPhone · Free to start · Launching soon in Malaysia</div>
+  </div>
+  <div class="hero-banner">
+    <div class="frame">
+      <img src="landing/hero-banner.png" alt="Fince app — dashboard and projects on iPhone" />
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── TRUST ───────────────────────── -->
+<section class="trust">
+  <div class="wrap stats">
+    <div class="stat">
+      <div class="num">1,400+</div>
+      <div class="lbl">freelancers on the waitlist</div>
+    </div>
+    <div class="stat">
+      <div class="num">100%</div>
+      <div class="lbl">ringgit-native, built for Malaysia</div>
+    </div>
+    <div class="stat">
+      <div class="num">iOS</div>
+      <div class="lbl">designed for iPhone first</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── FEATURES ───────────────────────── -->
+<section class="section" id="features" data-screen-label="Features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why Fince</div>
+      <h2>Everything your accountant wishes you had.</h2>
+      <p>The tedious parts of running money on your own — handled automatically, in plain ringgit.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="ficon green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8" /><path d="M16 8h5v5" /></svg>
+        </div>
+        <h3>Automated bookkeeping</h3>
+        <p>Every transaction is captured and categorised the moment it happens — no spreadsheets.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon forest">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h3" /></svg>
+        </div>
+        <h3>Snap a receipt</h3>
+        <p>Point your camera. Fince reads the merchant, amount and category, then files it.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon blue">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+        </div>
+        <h3>Profit per project</h3>
+        <p>Group income and costs by client. See which projects actually pay.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></svg>
+        </div>
+        <h3>Built for Malaysia</h3>
+        <p>Ringgit-native, with local categories and tax-ready summaries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── HOW IT WORKS ───────────────────────── -->
+<section class="section how" id="how" data-screen-label="How it works">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Clean books in three taps.</h2>
+      <p>Set it up once. From then on, Fince does the filing in the background.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Capture</h3>
+        <p>Snap a receipt or log a payment — Fince grabs the details instantly.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Fince sorts it</h3>
+        <p>It categorises the entry, matches the project and updates your ledger.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>See your profit</h3>
+        <p>See your real net profit any time — this month, this project, this year.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── SHOWCASE ───────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <div class="showcase">
+      <div class="copy">
+        <div class="eyebrow">Your numbers, in focus</div>
+        <h2>Always know where you stand.</h2>
+        <p>The dashboard leads with the one number that matters — your net profit — backed by a clear in/out breakdown.</p>
+        <ul class="checklist">
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Net profit with month-on-month trend</li>
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Income vs expenses, split clearly</li>
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Recent activity at a glance</li>
+        </ul>
+        <div class="hero-cta" style="justify-content:flex-start;margin-top:30px;">
+          <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+        </div>
+      </div>
+      <div class="stage">
+        <img src="landing/phone-dashboard.png" alt="Fince dashboard on iPhone — net profit, income and expenses" />
+      </div>
+    </div>
+
+    <div class="showcase flip">
+      <div class="copy">
+        <div class="eyebrow">Organised by project</div>
+        <h2>See which work actually pays.</h2>
+        <p>Every client and gig gets its own running net total, so the projects that earn — and the ones that don't — are obvious at a glance.</p>
+        <ul class="checklist">
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Live net total per project</li>
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Income and costs grouped automatically</li>
+          <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Light or dark — your call</li>
+        </ul>
+      </div>
+      <div class="stage dark">
+        <img src="landing/phone-projects.png" alt="Fince projects view on iPhone in dark mode — net total per client" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── WAITLIST ───────────────────────── -->
+<section class="section" id="waitlist" style="padding-top:0;" data-screen-label="Waitlist">
+  <div class="wrap">
+    <div class="cta-band">
+      <img class="mark" src="landing/logo-mark-cream.png" alt="" />
+      <h2>Be first when Fince lands on iPhone.</h2>
+      <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
+
+      <form class="wl-form" id="wlForm" novalidate>
+        <input type="email" id="wlEmail" placeholder="you@email.com" autocomplete="email" required aria-label="Email address" />
+        <button type="submit" class="btn btn-cream">Join the waitlist</button>
+      </form>
+      <div class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</div>
+
+      <div class="wl-success" id="wlSuccess">
+        <span class="tick"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+        <span id="wlSuccessText">You're on the list — we'll be in touch.</span>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ───────────────────────── FOOTER ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <img src="landing/logo-mark-green.png" alt="Fince" style="width:24px;height:24px;" />
+          Fince
+        </a>
+        <p>Automated bookkeeping for freelancers &amp; solo founders in Malaysia.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#waitlist">Waitlist</a>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Fince. Made in Malaysia.</span>
+      <span>RM-native bookkeeping</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('wlForm');
+    var email = document.getElementById('wlEmail');
+    var fine = document.getElementById('wlFine');
+    var success = document.getElementById('wlSuccess');
+    var successText = document.getElementById('wlSuccessText');
+    var KEY = 'fince_waitlist';
+
+    function showJoined(addr) {
+      form.style.display = 'none';
+      fine.style.display = 'none';
+      success.style.display = 'flex';
+      if (addr) successText.textContent = "You're on the list, " + addr.split('@')[0] + " — we'll be in touch.";
+    }
+
+    // Restore if they already joined this browser
+    try {
+      var saved = localStorage.getItem(KEY);
+      if (saved) showJoined(saved);
+    } catch (e) {}
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = (email.value || '').trim();
+      var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      if (!ok) {
+        email.style.borderColor = 'rgba(255,180,160,0.9)';
+        email.focus();
+        return;
+      }
+      try { localStorage.setItem(KEY, val); } catch (e) {}
+      showJoined(val);
+    });
+
+    email.addEventListener('input', function () {
+      email.style.borderColor = '';
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fince — Wireframe Exploration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="wireframes/sketch.css" />
+
+<style>
+  body { margin: 0; background: #f0eee9; font-family: -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="wireframes/atoms.jsx"></script>
+<script type="text/babel" src="wireframes/dashboards.jsx"></script>
+<script type="text/babel" src="wireframes/ledger.jsx"></script>
+<script type="text/babel" src="wireframes/projects.jsx"></script>
+<script type="text/babel" src="wireframes/screens.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-dashboard.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-screens.jsx"></script>
+<script type="text/babel" src="wireframes/extras.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-extras.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-onboarding.jsx"></script>
+<script type="text/babel" src="wireframes/midfi-tabbar.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light",
+  "density": "comfy",
+  "radius": 18,
+  "navStyle": "fab"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const dark = t.theme === 'dark';
+
+  return (
+    <>
+      <DesignCanvas>
+        {/* INTRO */}
+        <DCSection id="intro" title="Fince — iOS-native redesign" subtitle="Wireframe exploration · low-fi for layout, mid-fi for the favorite">
+          <DCArtboard id="brief" label="brief" width={420} height={500}>
+            <div style={{ padding: 28, fontFamily: '-apple-system, system-ui', height: '100%', boxSizing: 'border-box', background: '#fdfcf9' }}>
+              <div style={{ fontFamily: 'Caveat, cursive', fontSize: 40, fontWeight: 700, lineHeight: 1.15, color: '#1c1a17', paddingBottom: 4 }}>Fince, premium-feel.</div>
+              <div style={{ fontFamily: 'Kalam, cursive', fontSize: 14, marginTop: 12, color: '#4a463f', lineHeight: 1.5 }}>
+                Goal: minimal, premium, iPhone-native.<br/>
+                Keep neon green / red signals, 4-tab nav, Net-Profit hero.<br/>
+                <span style={{ color: '#888' }}>(refined micro-interactions · iOS grouped lists · subtle layering · no bottom sheet for Add)</span>
+              </div>
+
+              <div style={{ marginTop: 22, fontFamily: 'Kalam, cursive', fontSize: 12, color: '#1c1a17' }}>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>SYSTEM (committed up front)</div>
+                <ul style={{ paddingLeft: 16, margin: 0, lineHeight: 1.6 }}>
+                  <li>Type: SF Pro Display 34/700 large title · 17/500 body · SF Mono tabular numerals</li>
+                  <li>Surfaces: dark #000 / #1C1C1E · light #F2F2F7 / #FFFFFF · 0.5px hairlines</li>
+                  <li>Accents: signal-green #30D158 · signal-red #FF6B3D · iOS blue tint</li>
+                  <li>Cards: 20px radius · 18px pad · subtle inner highlight on dark</li>
+                  <li>Tab bar: blurred translucent material, 0.5px hairline top</li>
+                </ul>
+              </div>
+
+              <div style={{ marginTop: 18, fontFamily: 'Caveat, cursive', fontSize: 16, color: '#888' }}>
+                3-5 directions per screen ↓ &nbsp; mid-fi favorite at the end →
+              </div>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="lofi-tabbar" title="Tab Bar · lo-fi" subtitle="Notched cream paper · 4 tabs + center + FAB">
+          <DCArtboard id="lf-tb-light" label="light · Ledger active" width={280} height={200}>
+            <div style={{ position: 'relative', height: '100%', background: '#fdfcf9', color: '#1c1a17', fontFamily: 'Kalam, cursive' }}>
+              <TabBar active="ledger" dark={false} style="fab" />
+            </div>
+          </DCArtboard>
+          <DCArtboard id="lf-tb-dark" label="dark · Dashboard active" width={280} height={200}>
+            <div style={{ position: 'relative', height: '100%', background: '#15130f', color: '#f4f1ea', fontFamily: 'Kalam, cursive' }}>
+              <TabBar active="home" dark={true} style="fab" />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="dash" title="Dashboard" subtitle="4 directions · keep Net-Profit hero">
+          <DCArtboard id="d_a" label="A · iOS grouped (light)" width={280} height={580}><D_A dark={false} /></DCArtboard>
+          <DCArtboard id="d_b" label="B · BOLD pulse (dark)" width={280} height={580}><D_B dark={true} /></DCArtboard>
+          <DCArtboard id="d_c" label="C · KPI tile grid (light)" width={280} height={580}><D_C dark={false} /></DCArtboard>
+          <DCArtboard id="d_d" label="D · workspace swipe (dark)" width={280} height={580}><D_D dark={true} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="ledger" title="Ledger" subtitle="Flat list confirmed; explore polish + 1 bold">
+          <DCArtboard id="l_a" label="A · flat + filter pill (light)" width={280} height={580}><L_A dark={false} /></DCArtboard>
+          <DCArtboard id="l_b" label="B · grouped by date (dark)" width={280} height={580}><L_B dark={true} /></DCArtboard>
+          <DCArtboard id="l_c" label="C · BOLD calendar strip (dark)" width={280} height={580}><L_C dark={true} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="proj" title="Projects" subtitle="3 directions">
+          <DCArtboard id="p_a" label="A · list w/ budget burn (light)" width={280} height={580}><P_A dark={false} /></DCArtboard>
+          <DCArtboard id="p_b" label="B · accordion expand (dark)" width={280} height={580}><P_B dark={true} /></DCArtboard>
+          <DCArtboard id="p_c" label="C · BOLD card grid (light)" width={280} height={580}><P_C dark={false} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="add" title="Add / Edit Transaction" subtitle="No bottom sheet — 3 directions">
+          <DCArtboard id="a_a" label="A · amount-hero + keypad (dark)" width={280} height={580}><A_A dark={true} /></DCArtboard>
+          <DCArtboard id="a_b" label="B · stepper wizard (light)" width={280} height={580}><A_B dark={false} /></DCArtboard>
+          <DCArtboard id="a_c" label="C · BOLD scan-first (dark)" width={280} height={580}><A_C dark={true} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="detail" title="Transaction Detail" subtitle="2 directions">
+          <DCArtboard id="t_a" label="A · clean iOS detail (light)" width={280} height={580}><T_A dark={false} /></DCArtboard>
+          <DCArtboard id="t_b" label="B · receipt metaphor (dark)" width={280} height={580}><T_B dark={true} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="settings" title="Settings" subtitle="2 directions">
+          <DCArtboard id="s_a" label="A · grouped inset (dark)" width={280} height={580}><S_A dark={true} /></DCArtboard>
+          <DCArtboard id="s_b" label="B · profile + icon rows (light)" width={280} height={580}><S_B dark={false} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="empty" title="Empty States" subtitle="Picks: B & C">
+          <DCArtboard id="e_b" label="Projects empty (dark)" width={280} height={580}><E_B dark={true} /></DCArtboard>
+          <DCArtboard id="e_c" label="Search no-results (light)" width={280} height={580}><E_C dark={false} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="edit-txn" title="Edit Transaction" subtitle="Compact + clean, inspired by your reference">
+          <DCArtboard id="et_b" label="Compact rows + photo + Save/Continue" width={280} height={580}><ET_B dark={true} /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="recurring" title="Recurring Entries" subtitle="New entry form (B)">
+          <DCArtboard id="r_b" label="New recurring entry (dark)" width={280} height={580}><R_B dark={true} /></DCArtboard>
+        </DCSection>
+
+        {(() => {
+          const Phone = ({ children, themeDark = dark }) => (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#e8e6df' }}>
+              <IOSDevice width={390} height={844} dark={themeDark}>
+                <div style={{ position: 'absolute', inset: 0, zIndex: 30, pointerEvents: 'none' }}>
+                  <IOSStatusBar dark={themeDark} />
+                </div>
+                <div style={{ position: 'absolute', top: 48, left: 0, right: 0, bottom: 0 }}>{children}</div>
+                <div style={{
+                  position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+                  width: 134, height: 5, borderRadius: 3,
+                  background: themeDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', zIndex: 40,
+                }} />
+              </IOSDevice>
+            </div>
+          );
+          return (
+            <>
+              <DCSection id="midfi-flow" title="Mid-fi — your picks" subtitle={`D + I/O · Ledger B · Projects B · Add C · Detail A · Settings B w/ swipe · ${t.theme} · r${t.radius} · ${t.density}`}>
+                <DCArtboard id="mf-dash" label="Dashboard · D + I/O + swipe" width={420} height={900}>
+                  <Phone><MidFi_Dashboard_D dark={dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mf-ledger" label="Ledger · grouped by date" width={420} height={900}>
+                  <Phone><MidFi_Ledger dark={dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mf-projects" label="Projects · accordion" width={420} height={900}>
+                  <Phone><MidFi_Projects dark={dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mf-add" label="Add · scan-first" width={420} height={900}>
+                  <Phone themeDark={true}><MidFi_Add dark={true} radius={t.radius} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mf-detail" label="Transaction Detail · clean iOS" width={420} height={900}>
+                  <Phone><MidFi_Detail dark={dark} radius={t.radius} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mf-settings" label="Settings · profile + swipe accounts" width={420} height={900}>
+                  <Phone><MidFi_Settings dark={dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+              </DCSection>
+
+              <DCSection id="midfi-tabbar" title="Tab Bar · component" subtitle="4-tab + center FAB · all 4 active states + spec">
+                <DCArtboard id="mft-tabbar" label="Tab Bar states + spec" width={420} height={900}>
+                  <Phone><MidFi_TabBar dark={dark} /></Phone>
+                </DCArtboard>
+              </DCSection>
+
+              <DCSection id="midfi-onboard" title="Onboarding" subtitle="2 screens · identity + magic permission · bold editorial type, pure-black CTAs">
+                <DCArtboard id="onb-1" label="01 · Identity (Solo selected)" width={420} height={900}>
+                  <Phone themeDark={false}><MidFi_Onboard_Identity dark={false} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="onb-1-studio" label="01 · Identity (Studio selected · 2nd input revealed)" width={420} height={900}>
+                  <Phone themeDark={false}><MidFi_Onboard_Identity dark={false} _initial="studio" /></Phone>
+                </DCArtboard>
+                <DCArtboard id="onb-2" label="02 · Magic permission" width={420} height={900}>
+                  <Phone themeDark={false}><MidFi_Onboard_Magic dark={false} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="onb-1-dark" label="01 · Identity · dark" width={420} height={900}>
+                  <Phone themeDark={true}><MidFi_Onboard_Identity dark={true} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="onb-2-dark" label="02 · Magic permission · dark" width={420} height={900}>
+                  <Phone themeDark={true}><MidFi_Onboard_Magic dark={true} /></Phone>
+                </DCArtboard>
+              </DCSection>
+
+              <DCSection id="midfi-extras" title="Mid-fi — empty states, edit txn, recurring" subtitle="Promoted from low-fi · matches the mid-fi system">
+                <DCArtboard id="mfx-empty-projects" label="Empty · Projects" width={420} height={900}>
+                  <Phone><MidFi_EmptyProjects dark={dark} radius={t.radius} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mfx-empty-search" label="Empty · Search no-results" width={420} height={900}>
+                  <Phone><MidFi_EmptySearch dark={dark} radius={t.radius} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mfx-edit-txn" label="Edit Transaction · one-screen form" width={420} height={900}>
+                  <Phone><MidFi_EditTransaction dark={dark} radius={t.radius} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mfx-recurring" label="Recurring · list" width={420} height={900}>
+                  <Phone><MidFi_Recurring dark={dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mfx-new-recurring" label="Recurring · new entry" width={420} height={900}>
+                  <Phone><MidFi_NewRecurring dark={dark} radius={t.radius} /></Phone>
+                </DCArtboard>
+              </DCSection>
+
+              <DCSection id="midfi-compare" title={`Compare · ${dark ? 'light' : 'dark'}`}>
+                <DCArtboard id="mfc-dash" label="Dashboard" width={420} height={900}>
+                  <Phone themeDark={!dark}><MidFi_Dashboard_D dark={!dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+                <DCArtboard id="mfc-settings" label="Settings" width={420} height={900}>
+                  <Phone themeDark={!dark}><MidFi_Settings dark={!dark} radius={t.radius} density={t.density} /></Phone>
+                </DCArtboard>
+              </DCSection>
+            </>
+          );
+        })()}
+
+        <DCSection id="next" title="Next steps">
+          <DCArtboard id="next-card" label="" width={420} height={260}>
+            <div style={{ padding: 24, fontFamily: 'Kalam, system-ui', fontSize: 13, lineHeight: 1.6, color: '#1c1a17', background: '#fdfcf9', height: '100%', boxSizing: 'border-box' }}>
+              <div style={{ fontFamily: 'Caveat, cursive', fontWeight: 700, fontSize: 24, marginBottom: 6 }}>Pick favorites →</div>
+              <ol style={{ paddingLeft: 18, margin: 0 }}>
+                <li>Mark winning Dashboard direction (A/B/C/D) — I'll mid-fi the rest in that style.</li>
+                <li>Confirm Add flow: <b>amount-hero keypad</b> (A), <b>stepper</b> (B), or <b>scan-first</b> (C, bold).</li>
+                <li>Bold idea vote: <b>Pulse heartbeat</b> chart, <b>calendar cashflow strip</b>, or <b>scan-first add</b>?</li>
+                <li>Use Tweaks (top-right) to dial radius, density, theme on the mid-fi mock.</li>
+              </ol>
+            </div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection title="Appearance">
+          <TweakRadio label="Theme" value={t.theme} onChange={v => setTweak('theme', v)}
+            options={[{value:'dark',label:'Dark'},{value:'light',label:'Light'}]} />
+          <TweakRadio label="Density" value={t.density} onChange={v => setTweak('density', v)}
+            options={[{value:'compact',label:'Compact'},{value:'comfy',label:'Comfy'}]} />
+        </TweakSection>
+        <TweakSection title="Cards">
+          <TweakSlider label="Card radius" value={t.radius} min={4} max={32} step={1}
+            onChange={v => setTweak('radius', v)} />
+        </TweakSection>
+        <TweakSection title="Navigation (sketches)">
+          <TweakSelect label="Tab bar style" value={t.navStyle}
+            onChange={v => setTweak('navStyle', v)}
+            options={[
+              {value:'classic',label:'Classic 4-tab'},
+              {value:'pill',label:'Floating pill'},
+              {value:'fab',label:'4-tab + center FAB'},
+            ]} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

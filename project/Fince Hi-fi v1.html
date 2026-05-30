@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fince — Hi-fi v1 (richer)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  body { margin: 0; background: #E8E6DF; font-family: 'Inter', -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel" src="hifi-v1/system.jsx"></script>
+<script type="text/babel" src="hifi-v1/icons.jsx"></script>
+<script type="text/babel" src="hifi-v1/shared.jsx"></script>
+<script type="text/babel" src="hifi-v1/dashboard.jsx"></script>
+<script type="text/babel" src="hifi-v1/ledger-projects.jsx"></script>
+<script type="text/babel" src="hifi-v1/add-detail-settings.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+function App() {
+  const Phone = ({ children, dark }) => (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      height: '100%',
+      background: dark
+        ? 'radial-gradient(120% 80% at 50% 0%, #1a1a1d 0%, #0c0c0e 100%)'
+        : 'radial-gradient(120% 80% at 50% 0%, #efece5 0%, #e2dfd6 100%)',
+    }}>
+      <IOSDevice width={390} height={844} dark={dark}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 30, pointerEvents: 'none' }}>
+          <IOSStatusBar dark={dark} />
+        </div>
+        <div style={{ position: 'absolute', top: 48, left: 0, right: 0, bottom: 0 }}>{children}</div>
+        <div style={{
+          position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+          width: 134, height: 5, borderRadius: 3,
+          background: dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', zIndex: 40,
+        }} />
+      </IOSDevice>
+    </div>
+  );
+
+  const pair = (id, label, Comp) => [
+    <DCArtboard key={`${id}-l`} id={`${id}-light`} label={`${label} · Light`} width={420} height={900}>
+      <Phone dark={false}><Comp dark={false} /></Phone>
+    </DCArtboard>,
+    <DCArtboard key={`${id}-d`} id={`${id}-dark`} label={`${label} · Dark`} width={420} height={900}>
+      <Phone dark={true}><Comp dark={true} /></Phone>
+    </DCArtboard>,
+  ];
+  const single = (id, label, Comp) => (
+    <DCArtboard key={id} id={id} label={label} width={420} height={900}>
+      <Phone dark={true}><Comp /></Phone>
+    </DCArtboard>
+  );
+
+  return (
+    <DesignCanvas>
+
+      <DCSection id="intro" title="Fince — hi-fi v1 (richer)" subtitle="Inter / Instrument Serif / JetBrains Mono · with branded chrome, tooltips, extra detail">
+        <DCArtboard id="system" label="hi-fi system" width={460} height={620}>
+          <div style={{
+            padding: 32, height: '100%', boxSizing: 'border-box',
+            background: 'linear-gradient(180deg, #FAF8F2 0%, #F0EDE4 100%)',
+            fontFamily: '"Inter", system-ui',
+          }}>
+            <div style={{
+              fontFamily: '"Instrument Serif", serif', fontSize: 56, fontWeight: 400,
+              letterSpacing: -1.6, lineHeight: 0.95, color: '#14130F',
+            }}>F<span style={{ fontStyle: 'italic' }}>i</span>nce<span style={{ color: '#F26A3F' }}>.</span></div>
+            <div style={{ fontSize: 13, color: 'rgba(20,19,15,0.55)', marginTop: 6, fontWeight: 500, letterSpacing: 0.4, textTransform: 'uppercase' }}>
+              Hi-fi system · v1
+            </div>
+
+            <div style={{ marginTop: 28, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+              <div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(20,19,15,0.5)', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>Typeface</div>
+                <div style={{ fontFamily: '"Instrument Serif", serif', fontSize: 28, color: '#14130F', lineHeight: 1 }}>Display · Serif</div>
+                <div style={{ fontSize: 11, color: 'rgba(20,19,15,0.45)', marginTop: 2 }}>Instrument Serif · wordmark, hero</div>
+                <div style={{ fontFamily: '"Inter"', fontSize: 16, fontWeight: 600, color: '#14130F', marginTop: 10 }}>UI · Inter</div>
+                <div style={{ fontSize: 11, color: 'rgba(20,19,15,0.45)', marginTop: 2 }}>400 / 500 / 600 / 700</div>
+                <div style={{ fontFamily: '"JetBrains Mono"', fontSize: 13, marginTop: 10, color: '#14130F', fontFeatureSettings: '"tnum"' }}>RM 7,130.62</div>
+                <div style={{ fontSize: 11, color: 'rgba(20,19,15,0.45)', marginTop: 2 }}>JetBrains Mono · numerals</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(20,19,15,0.5)', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>Palette</div>
+                {[
+                  { name: 'cream',  hex: '#F4F2EC' },
+                  { name: 'ink',    hex: '#14130F' },
+                  { name: 'ember',  hex: '#F26A3F' },
+                  { name: 'forest', hex: '#0F8A53' },
+                  { name: 'rust',   hex: '#C24628' },
+                ].map(c => (
+                  <div key={c.name} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                    <div style={{
+                      width: 22, height: 22, borderRadius: 6, background: c.hex,
+                      border: '0.5px solid rgba(20,19,15,0.1)',
+                    }} />
+                    <div style={{ fontSize: 13, color: '#14130F', fontWeight: 500 }}>{c.name}</div>
+                    <div style={{ flex: 1 }} />
+                    <div style={{ fontFamily: '"JetBrains Mono"', fontSize: 11, color: 'rgba(20,19,15,0.5)' }}>{c.hex}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 24, fontSize: 13, lineHeight: 1.6, color: 'rgba(20,19,15,0.7)' }}>
+              v1 of the hi-fi — adds a wordmark, greeting, chart tooltip + axis,
+              filter chips with counts, project budget burn, parsed-receipt
+              confidence %, and Automation + Data & privacy settings sections.
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="dash" title="01 · Dashboard" subtitle="Wordmark + greeting + chart tooltip">
+        {pair('dash', 'Dashboard', HiFi_Dashboard)}
+      </DCSection>
+
+      <DCSection id="ledger" title="02 · Ledger" subtitle="Search w/ ⌘K, filter chips with counts, group totals">
+        {pair('ledger', 'Ledger', HiFi_Ledger)}
+      </DCSection>
+
+      <DCSection id="projects" title="03 · Projects" subtitle="Summary strip + budget burn + project stats">
+        {pair('projects', 'Projects', HiFi_Projects)}
+      </DCSection>
+
+      <DCSection id="add" title="04 · Add transaction" subtitle="Scan mode segmented · confidence % · gradient CTA">
+        {single('add', 'Add · dark camera', HiFi_Add)}
+      </DCSection>
+
+      <DCSection id="detail" title="05 · Transaction detail" subtitle="Hero halo + 7 detail rows + tags row">
+        {pair('detail', 'Detail', HiFi_Detail)}
+      </DCSection>
+
+      <DCSection id="settings" title="06 · Settings" subtitle="Preferences + Automation + Data & privacy + version footer">
+        {pair('settings', 'Settings', HiFi_Settings)}
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

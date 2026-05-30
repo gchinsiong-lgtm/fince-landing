@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fince — Hi-fi · Light + Dark</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  body { margin: 0; background: #E8E6DF; font-family: 'Inter', -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel" src="hifi/system.jsx"></script>
+<script type="text/babel" src="hifi/icons.jsx"></script>
+<script type="text/babel" src="hifi/shared.jsx"></script>
+<script type="text/babel" src="hifi/dashboard.jsx"></script>
+<script type="text/babel" src="hifi/ledger-projects.jsx"></script>
+<script type="text/babel" src="hifi/add-detail-settings.jsx"></script>
+<script type="text/babel" src="hifi-v1/detail-only.jsx"></script>
+<script type="text/babel" src="hifi-v1/settings-only.jsx"></script>
+<script type="text/babel" src="hifi/recurring.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "compare": "side-by-side",
+  "starting": "dark"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const sideBySide = t.compare === 'side-by-side';
+  const primaryDark = t.starting === 'dark';
+
+  const Phone = ({ children, dark }) => (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      height: '100%',
+      background: dark
+        ? 'radial-gradient(120% 80% at 50% 0%, #1a1a1d 0%, #0c0c0e 100%)'
+        : 'radial-gradient(120% 80% at 50% 0%, #efece5 0%, #e2dfd6 100%)',
+    }}>
+      <IOSDevice width={390} height={844} dark={dark}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 30, pointerEvents: 'none' }}>
+          <IOSStatusBar dark={dark} />
+        </div>
+        <div style={{ position: 'absolute', top: 48, left: 0, right: 0, bottom: 0 }}>{children}</div>
+        <div style={{
+          position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+          width: 134, height: 5, borderRadius: 3,
+          background: dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', zIndex: 40,
+        }} />
+      </IOSDevice>
+    </div>
+  );
+
+  // Helpers return ARRAYS of DCArtboards (not a component wrapping them),
+  // so DCSection sees them as direct children.
+  const pair = (id, label, Comp) => [
+    <DCArtboard key={`${id}-l`} id={`${id}-light`} label={`${label} · Light`} width={420} height={900}>
+      <Phone dark={false}><Comp dark={false} /></Phone>
+    </DCArtboard>,
+    <DCArtboard key={`${id}-d`} id={`${id}-dark`} label={`${label} · Dark`} width={420} height={900}>
+      <Phone dark={true}><Comp dark={true} /></Phone>
+    </DCArtboard>,
+  ];
+  const single = (id, label, Comp) => (
+    <DCArtboard key={id} id={id} label={label} width={420} height={900}>
+      <Phone dark={true}><Comp /></Phone>
+    </DCArtboard>
+  );
+
+  return (
+    <>
+      <DesignCanvas>
+
+        <DCSection id="dash" title="01 · Dashboard" subtitle="Workspace hero · In/Out · Recent">
+          {pair('dash', 'Dashboard', HiFi_Dashboard)}
+        </DCSection>
+
+        <DCSection id="ledger" title="02 · Ledger" subtitle="Grouped by date · pending filter active">
+          {pair('ledger', 'Ledger', HiFi_Ledger)}
+        </DCSection>
+
+        <DCSection id="projects" title="03 · Projects" subtitle="Accordion with project stats">
+          {pair('projects', 'Projects', HiFi_Projects)}
+        </DCSection>
+
+        <DCSection id="add" title="04 · Add transaction" subtitle="Scan-first · receipt parsed">
+          {single('add', 'Add · dark camera', HiFi_Add)}
+        </DCSection>
+
+        <DCSection id="detail" title="05 · Transaction detail" subtitle="Hero · structured row list · actions">
+          {pair('detail', 'Detail', HiFi_Detail)}
+        </DCSection>
+
+        <DCSection id="settings" title="06 · Settings" subtitle="Swipeable account · preferences · recurring">
+          {pair('settings', 'Settings', HiFi_Settings)}
+        </DCSection>
+
+        <DCSection id="recurring" title="07 · Recurring · list" subtitle="Filled state · net impact hero + active entries">
+          {pair('recurring', 'Recurring', HiFi_Recurring)}
+        </DCSection>
+
+        <DCSection id="new-recurring" title="08 · New recurring · entry form" subtitle="Sheet · amount-hero · repeat segmented">
+          {pair('new-recurring', 'New recurring', HiFi_NewRecurring)}
+        </DCSection>
+
+        {/* ─────────────────────────────────────── */}
+        <DCSection id="full-set-dark" title="Set · Dark" subtitle="All 6 picks, dark mode">
+          <DCArtboard id="set-d-dash"     label="Dashboard"   width={420} height={900}><Phone dark={true}><HiFi_Dashboard dark={true} /></Phone></DCArtboard>
+          <DCArtboard id="set-d-ledger"   label="Ledger"      width={420} height={900}><Phone dark={true}><HiFi_Ledger dark={true} /></Phone></DCArtboard>
+          <DCArtboard id="set-d-projects" label="Projects"    width={420} height={900}><Phone dark={true}><HiFi_Projects dark={true} /></Phone></DCArtboard>
+          <DCArtboard id="set-d-add"      label="Add · scan"  width={420} height={900}><Phone dark={true}><HiFi_Add /></Phone></DCArtboard>
+          <DCArtboard id="set-d-detail"   label="Detail"      width={420} height={900}><Phone dark={true}><HiFi_Detail dark={true} /></Phone></DCArtboard>
+          <DCArtboard id="set-d-settings" label="Settings"    width={420} height={900}><Phone dark={true}><HiFi_Settings dark={true} /></Phone></DCArtboard>
+        </DCSection>
+
+        <DCSection id="full-set-light" title="Set · Light" subtitle="All 6 picks, light mode">
+          <DCArtboard id="set-l-dash"     label="Dashboard"   width={420} height={900}><Phone dark={false}><HiFi_Dashboard dark={false} /></Phone></DCArtboard>
+          <DCArtboard id="set-l-ledger"   label="Ledger"      width={420} height={900}><Phone dark={false}><HiFi_Ledger dark={false} /></Phone></DCArtboard>
+          <DCArtboard id="set-l-projects" label="Projects"    width={420} height={900}><Phone dark={false}><HiFi_Projects dark={false} /></Phone></DCArtboard>
+          <DCArtboard id="set-l-add"      label="Add · scan"  width={420} height={900}><Phone dark={true}><HiFi_Add /></Phone></DCArtboard>
+          <DCArtboard id="set-l-detail"   label="Detail"      width={420} height={900}><Phone dark={false}><HiFi_Detail dark={false} /></Phone></DCArtboard>
+          <DCArtboard id="set-l-settings" label="Settings"    width={420} height={900}><Phone dark={false}><HiFi_Settings dark={false} /></Phone></DCArtboard>
+        </DCSection>
+
+      </DesignCanvas>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
