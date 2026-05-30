@@ -4,9 +4,21 @@
 <meta charset="UTF-8" />
 <title>Fince — Automated bookkeeping for Malaysian freelancers</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Fince automatically tracks your income, expenses and projects so you always know your real numbers. Ringgit-native bookkeeping for Malaysian freelancers and solo founders." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Fince — Bookkeeping that does itself." />
+<meta property="og:description" content="Automated bookkeeping for Malaysian freelancers and solo founders. Ringgit-native, LHDN-ready, iPhone-first." />
+<meta property="og:image" content="landing/hero-banner.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fince — Bookkeeping that does itself." />
+<meta name="twitter:description" content="Automated bookkeeping for Malaysian freelancers and solo founders." />
+<meta name="twitter:image" content="landing/hero-banner.png" />
+<link rel="icon" type="image/png" href="landing/logo-mark-green.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="landing/phone-dashboard.png" />
+<link rel="preload" as="image" href="landing/phone-projects.png" />
 <style>
   :root {
     --cream:    #F4F2EC;
@@ -45,7 +57,23 @@
   img { display: block; max-width: 100%; }
   .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 
-  /* ───────── atoms ───────── */
+  /* ── skip link (accessibility) ── */
+  .skip-link {
+    position: absolute; top: -100%; left: 16px; padding: 8px 16px;
+    background: var(--forest); color: var(--cream); border-radius: 0 0 8px 8px;
+    font-size: 14px; font-weight: 600; z-index: 200;
+    transition: top .15s ease;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* ── focus visible ── */
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ── atoms ── */
   .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); }
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -54,7 +82,7 @@
     border: 1px solid transparent; white-space: nowrap;
     transition: transform .14s ease, background .18s ease, box-shadow .18s ease, color .18s ease;
   }
-  .btn svg { transition: transform .18s ease; }
+  .btn svg { flex-shrink: 0; transition: transform .18s ease; }
   .btn:active { transform: translateY(1px); }
   .btn-primary { background: var(--forest); color: var(--cream); box-shadow: 0 8px 22px rgba(22,70,58,0.28); }
   .btn-primary:hover { background: var(--forest-2); box-shadow: 0 12px 28px rgba(22,70,58,0.34); }
@@ -64,15 +92,13 @@
   .btn-cream { background: var(--cream); color: var(--forest); }
   .btn-cream:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.18); }
 
-  /* ───────── reveal (content always visible — no entrance dependency) ───────── */
-  .reveal { opacity: 1; transform: none; }
-
-  /* ───────── nav ───────── */
+  /* ── nav ── */
   header.nav {
     position: sticky; top: 0; z-index: 50;
     background: rgba(244,242,236,0.72);
     backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border-bottom: 1px solid transparent; transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
   }
   header.nav.scrolled { border-bottom-color: var(--hair); box-shadow: 0 6px 24px rgba(20,19,15,0.05); }
   .nav-inner { display: flex; align-items: center; gap: 28px; height: 72px; }
@@ -83,24 +109,25 @@
   .nav-links a:hover { color: var(--ink); }
   .nav-cta { margin-left: auto; }
 
-  /* ───────── hero ───────── */
+  /* ── hero ── */
   .hero { padding: 64px 0 0; }
   .hero-stage {
     position: relative; overflow: hidden; border-radius: 36px;
     padding: 64px 32px 0; text-align: center;
-    background:
-      radial-gradient(140% 120% at 50% -10%, #EAF0E0 0%, #C9DAB7 38%, #9FBF8E 70%, #7FA873 100%);
+    background: radial-gradient(140% 120% at 50% -10%, #EAF0E0 0%, #C9DAB7 38%, #9FBF8E 70%, #7FA873 100%);
     box-shadow: 0 2px 6px rgba(22,70,58,0.06), 0 40px 90px rgba(22,70,58,0.18);
     isolation: isolate;
   }
-  .bubble { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
+  .bubble {
+    position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
     background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.06) 60%, transparent 72%);
-    filter: blur(0.5px); }
+    filter: blur(0.5px);
+  }
   .bubble.b1 { width: 320px; height: 320px; top: -80px; left: -90px; opacity: 0.55; }
-  .bubble.b2 { width: 180px; height: 180px; top: 40px; right: -40px; opacity: 0.5; }
+  .bubble.b2 { width: 180px; height: 180px; top: 40px; right: -40px; opacity: 0.50; }
   .bubble.b3 { width: 90px;  height: 90px;  top: 220px; left: 8%; opacity: 0.45; }
-  .bubble.b4 { width: 130px; height: 130px; bottom: 120px; right: 12%; opacity: 0.4; }
-  .bubble.b5 { width: 60px;  height: 60px;  top: 120px; right: 30%; opacity: 0.5; }
+  .bubble.b4 { width: 130px; height: 130px; bottom: 120px; right: 12%; opacity: 0.40; }
+  .bubble.b5 { width: 60px;  height: 60px;  top: 120px; right: 30%; opacity: 0.50; }
 
   .hero-stage .inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
   .hero-stage .eyebrow { color: var(--forest); opacity: 0.78; }
@@ -118,34 +145,37 @@
 
   /* phones in stage */
   .phone-stage { position: relative; z-index: 2; margin-top: 36px; height: 440px; }
-  .phone-stage img { position: absolute; bottom: -40px; filter: drop-shadow(0 40px 60px rgba(22,70,58,0.30)); }
+  .phone-stage img {
+    position: absolute; bottom: -40px;
+    filter: drop-shadow(0 40px 60px rgba(22,70,58,0.30));
+  }
   .phone-stage .p-light { width: 380px; left: 50%; transform: translateX(-90%); z-index: 3; }
   .phone-stage .p-dark  { width: 360px; left: 50%; transform: translateX(-10%) translateY(26px); z-index: 2; }
   .chip {
     position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
     background: rgba(255,255,255,0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.9); border-radius: 999px; padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,0.90); border-radius: 999px; padding: 8px 14px;
     font-size: 14px; font-weight: 700; color: var(--forest-2); box-shadow: 0 10px 26px rgba(22,70,58,0.18);
   }
-  .chip .dot { width: 9px; height: 9px; border-radius: 50%; }
-  .chip.c1 { top: 96px; left: 15%; }
-  .chip.c2 { top: 150px; right: 13%; }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .chip.c1 { top: 96px;   left: 15%; }
+  .chip.c2 { top: 150px;  right: 13%; }
   .chip.c3 { bottom: 130px; left: 13%; }
 
-  /* ───────── trust ───────── */
+  /* ── trust ── */
   .trust { padding: 64px 0 8px; }
   .trust .stats { display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; }
   .stat { text-align: center; }
   .stat .num { font-size: 40px; font-weight: 800; letter-spacing: -1.6px; color: var(--forest); font-feature-settings: "tnum"; line-height: 1; }
   .stat .lbl { font-size: 14px; color: var(--ink-2); margin-top: 8px; }
 
-  /* ───────── section heads ───────── */
+  /* ── section heads ── */
   .section { padding: 100px 0; }
   .sec-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
   .sec-head h2 { font-size: clamp(32px, 4.4vw, 46px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.05; margin: 14px 0 0; text-wrap: balance; }
   .sec-head p { font-size: 18px; color: var(--ink-2); margin: 16px auto 0; max-width: 48ch; text-wrap: pretty; }
 
-  /* ───────── features ───────── */
+  /* ── features ── */
   .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
   .feature {
     background: var(--surface); border-radius: var(--r); padding: 32px;
@@ -153,47 +183,58 @@
     transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease;
   }
   .feature:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-  .ficon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
-  .ficon.green { background: var(--green-bg); color: var(--green); }
+  .ficon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+    flex-shrink: 0;
+  }
+  .ficon.green  { background: var(--green-bg); color: var(--green); }
   .ficon.forest { background: rgba(22,70,58,0.10); color: var(--forest); }
-  .ficon.blue { background: var(--blue-bg); color: var(--blue); }
-  .ficon.red { background: var(--red-bg); color: var(--red); }
+  .ficon.blue   { background: var(--blue-bg); color: var(--blue); }
+  .ficon.red    { background: var(--red-bg); color: var(--red); }
   .feature h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
-  .feature p { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .feature p  { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
 
-  /* ───────── how it works ───────── */
+  /* ── how it works ── */
   .how { background: var(--cream-2); }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; }
   .steps::before {
     content: ""; position: absolute; top: 20px; left: 16%; right: 16%; height: 1.5px;
-    background: repeating-linear-gradient(90deg, var(--green) 0 7px, transparent 7px 15px); opacity: 0.4;
+    background: repeating-linear-gradient(90deg, var(--green) 0 7px, transparent 7px 15px);
+    opacity: 0.4;
   }
   .step { text-align: left; position: relative; }
   .step .n {
     font-size: 15px; font-weight: 700; color: var(--green); background: var(--cream-2);
     width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--green);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; position: relative; z-index: 1;
   }
   .step h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
-  .step p { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .step p  { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
 
-  /* ───────── deep dive (native card) ───────── */
+  /* ── deep dive (native card) ── */
   .deep { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .deep .copy h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.06; margin: 14px 0 0; text-wrap: balance; }
   .deep .copy p { font-size: 17px; color: var(--ink-2); margin: 18px 0 0; line-height: 1.6; max-width: 42ch; }
   .checklist { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-direction: column; gap: 14px; }
   .checklist li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; }
-  .checklist .tick { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .checklist .tick {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--green-bg); color: var(--green);
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
 
   .ui-stage {
     position: relative; padding: 44px; border-radius: 30px;
     background: radial-gradient(120% 100% at 70% 0%, #EAF0E0 0%, #CDDCBC 60%, #AEC79D 100%);
     display: flex; align-items: center; justify-content: center;
   }
+
   /* native Net Profit card */
   .np-card { width: 340px; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 30px 60px rgba(22,70,58,0.22); }
   .np-row { display: flex; align-items: center; gap: 10px; }
-  .np-ws { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #4FD899, #0A6B40); box-shadow: inset 0 .5px 0 rgba(255,255,255,0.4); }
+  .np-ws { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #4FD899, #0A6B40); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.40); }
   .np-ws-name { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
   .np-dots { margin-left: auto; display: flex; gap: 5px; }
   .np-dots span { width: 6px; height: 6px; border-radius: 3px; background: var(--line); }
@@ -203,30 +244,47 @@
   .np-amt .cur { font-size: 21px; color: var(--ink-2); font-weight: 600; margin-right: 5px; }
   .np-amt .int { font-size: 40px; }
   .np-amt .dec { font-size: 22px; color: var(--ink-2); font-weight: 600; }
-  .np-delta { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; background: var(--green-bg); color: var(--green); padding: 3px 10px 3px 7px; border-radius: 999px; font-size: 12px; font-weight: 800; font-feature-settings: "tnum"; }
+  .np-delta {
+    display: inline-flex; align-items: center; gap: 4px; margin-top: 10px;
+    background: var(--green-bg); color: var(--green);
+    padding: 3px 10px 3px 7px; border-radius: 999px;
+    font-size: 12px; font-weight: 800; font-feature-settings: "tnum";
+  }
   .np-delta + span { color: var(--ink-2); font-size: 12px; margin-left: 6px; }
   .np-spark { display: block; width: 100%; height: 64px; margin-top: 14px; }
-  .np-seg { margin-top: 14px; display: flex; background: rgba(20,19,15,0.05); border-radius: 9px; padding: 2px; font-size: 13px; font-weight: 600; }
+  .np-seg {
+    margin-top: 14px; display: flex; background: rgba(20,19,15,0.05);
+    border-radius: 9px; padding: 2px; font-size: 13px; font-weight: 600;
+  }
   .np-seg div { flex: 1; text-align: center; padding: 6px 0; border-radius: 7px; color: var(--ink-2); }
   .np-seg div.on { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
   .np-io { display: flex; gap: 10px; margin-top: 12px; }
   .np-io .cell { flex: 1; background: var(--cream); border-radius: 14px; padding: 12px 14px; }
   .np-io .cell .h { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); font-weight: 500; }
-  .np-io .badge { width: 18px; height: 18px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
+  .np-io .badge { width: 18px; height: 18px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .np-io .cell .v { font-size: 18px; font-weight: 800; letter-spacing: -0.6px; margin-top: 6px; font-feature-settings: "tnum"; }
   .np-io .cell .v .c { font-size: 12px; color: var(--ink-2); font-weight: 600; }
   .ui-float {
-    position: absolute; bottom: 30px; right: 22px; background: #fff; border-radius: 14px;
-    padding: 11px 14px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; z-index: 3;
+    position: absolute; bottom: 30px; right: 22px;
+    background: #fff; border-radius: 14px; padding: 11px 14px;
+    box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; z-index: 3;
   }
   .ui-float .ic { width: 32px; height: 32px; border-radius: 9px; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .ui-float .t1 { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; }
   .ui-float .t2 { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
   .ui-float .amt { margin-left: 8px; font-size: 14px; font-weight: 800; color: var(--green); font-feature-settings: "tnum"; }
 
-  /* ───────── waitlist ───────── */
-  .cta-band { position: relative; overflow: hidden; background: var(--forest); color: var(--cream); border-radius: 34px; padding: 76px 40px; text-align: center; }
-  .cta-band::after { content: ""; position: absolute; inset: 0; background: radial-gradient(80% 120% at 50% -20%, rgba(48,210,122,0.22), transparent 60%); pointer-events: none; }
+  /* ── waitlist ── */
+  .cta-band {
+    position: relative; overflow: hidden;
+    background: var(--forest); color: var(--cream);
+    border-radius: 34px; padding: 76px 40px; text-align: center;
+  }
+  .cta-band::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(80% 120% at 50% -20%, rgba(48,210,122,0.22), transparent 60%);
+    pointer-events: none;
+  }
   .cta-band > * { position: relative; z-index: 1; }
   .cta-band img.mark { width: 52px; margin: 0 auto 24px; }
   .cta-band h2 { font-size: clamp(32px, 4.6vw, 50px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.03; margin: 0 auto; max-width: 15ch; text-wrap: balance; }
@@ -238,14 +296,15 @@
     background: rgba(244,242,236,0.10); color: var(--cream); outline: none;
     transition: border-color .15s ease, background .15s ease;
   }
-  .wl-form input::placeholder { color: rgba(244,242,236,0.5); }
-  .wl-form input:focus { border-color: rgba(244,242,236,0.6); background: rgba(244,242,236,0.16); }
-  .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; }
+  .wl-form input::placeholder { color: rgba(244,242,236,0.50); }
+  .wl-form input:focus { border-color: rgba(244,242,236,0.60); background: rgba(244,242,236,0.16); }
+  .wl-form input.error { border-color: rgba(255,180,160,0.90); }
+  .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; flex-shrink: 0; }
   .wl-success { display: none; align-items: center; gap: 10px; justify-content: center; margin-top: 32px; font-size: 18px; font-weight: 600; }
   .wl-success .tick { width: 30px; height: 30px; border-radius: 50%; background: rgba(48,210,122,0.22); color: #6BE6A4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .wl-fine { margin-top: 16px; font-size: 14px; color: rgba(244,242,236,0.55); }
 
-  /* ───────── footer ───────── */
+  /* ── footer ── */
   footer.foot { padding: 64px 0 48px; border-top: 1px solid var(--hair); margin-top: 100px; }
   .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
   .foot-brand { max-width: 280px; }
@@ -257,7 +316,7 @@
   .foot-col a:hover { color: var(--ink); }
   .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; font-size: 14px; color: var(--ink-3); }
 
-  /* ───────── responsive ───────── */
+  /* ── responsive ── */
   @media (max-width: 900px) {
     .features { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; gap: 32px; }
@@ -270,9 +329,11 @@
     .hero-stage { padding: 48px 20px 0; border-radius: 28px; }
     .phone-stage { height: 360px; }
     .phone-stage .p-light { width: 268px; transform: translateX(-90%); }
-    .phone-stage .p-dark { width: 250px; transform: translateX(-10%) translateY(20px); }
+    .phone-stage .p-dark  { width: 250px; transform: translateX(-10%) translateY(20px); }
     .chip { font-size: 12px; padding: 6px 11px; }
-    .chip.c1 { left: 2%; } .chip.c2 { right: 2%; } .chip.c3 { left: 4%; }
+    .chip.c1 { left: 2%; }
+    .chip.c2 { right: 2%; }
+    .chip.c3 { left: 4%; }
     .trust .stats { gap: 40px; }
   }
   @media (max-width: 520px) {
@@ -285,14 +346,16 @@
 </head>
 <body>
 
-<!-- ───────────────────────── NAV ───────────────────────── -->
-<header class="nav" id="nav">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ─────────────────────── NAV ─────────────────────── -->
+<header class="nav" id="nav" role="banner">
   <div class="wrap nav-inner">
-    <a class="brand" href="#top">
-      <img src="landing/logo-mark-green.png" alt="Fince" />
+    <a class="brand" href="#top" aria-label="Fince home">
+      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" width="26" height="26" />
       Fince
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
       <a href="#waitlist">Waitlist</a>
@@ -303,71 +366,97 @@
   </div>
 </header>
 
-<main id="top">
-<!-- ───────────────────────── HERO ───────────────────────── -->
-<section class="hero" data-screen-label="Hero">
+<main id="main" id="top">
+
+<!-- ─────────────────────── HERO ─────────────────────── -->
+<section class="hero" aria-label="Hero">
   <div class="wrap">
     <div class="hero-stage">
-      <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
-      <span class="bubble b4"></span><span class="bubble b5"></span>
+      <span class="bubble b1" aria-hidden="true"></span>
+      <span class="bubble b2" aria-hidden="true"></span>
+      <span class="bubble b3" aria-hidden="true"></span>
+      <span class="bubble b4" aria-hidden="true"></span>
+      <span class="bubble b5" aria-hidden="true"></span>
 
-      <div class="inner reveal">
-        <div class="eyebrow">For freelancers &amp; solo founders in Malaysia</div>
+      <div class="inner">
+        <p class="eyebrow">For freelancers &amp; solo founders in Malaysia</p>
         <h1>Bookkeeping that <span class="accent">does itself.</span></h1>
         <p class="sub">Fince tracks your income, expenses and projects automatically — so you always know your real numbers.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#waitlist">Join the waitlist <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <a class="btn btn-primary" href="#waitlist">
+            Join the waitlist
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
           <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
-        <div class="hero-note">iPhone · Free to start · Launching soon in Malaysia</div>
+        <p class="hero-note">iPhone · Free to start · Launching soon in Malaysia</p>
       </div>
 
-      <div class="phone-stage reveal">
+      <div class="phone-stage" aria-hidden="true">
         <span class="chip c1"><span class="dot" style="background:var(--green);"></span>AI Scan</span>
         <span class="chip c2"><span class="dot" style="background:var(--blue);"></span>Auto-categorised</span>
         <span class="chip c3"><span class="dot" style="background:var(--green);"></span>LHDN-based</span>
-        <img class="p-light" src="landing/phone-dashboard.png" alt="Fince dashboard on iPhone" />
-        <img class="p-dark" src="landing/phone-projects.png" alt="Fince projects view on iPhone, dark mode" />
+        <img class="p-light" src="landing/phone-dashboard.png" alt="Fince dashboard on iPhone showing net profit and recent transactions" width="380" />
+        <img class="p-dark"  src="landing/phone-projects.png"  alt="Fince projects view on iPhone in dark mode" width="360" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- ───────────────────────── TRUST ───────────────────────── -->
-<section class="trust">
-  <div class="wrap stats reveal">
-    <div class="stat"><div class="num">1,400+</div><div class="lbl">freelancers on the waitlist</div></div>
-    <div class="stat"><div class="num">100%</div><div class="lbl">ringgit-native, built for Malaysia</div></div>
-    <div class="stat"><div class="num">iOS</div><div class="lbl">designed for iPhone first</div></div>
+<!-- ─────────────────────── TRUST ─────────────────────── -->
+<section class="trust" aria-label="At a glance">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat">
+        <div class="num" aria-label="1400 plus">1,400+</div>
+        <div class="lbl">freelancers on the waitlist</div>
+      </div>
+      <div class="stat">
+        <div class="num">100%</div>
+        <div class="lbl">ringgit-native, built for Malaysia</div>
+      </div>
+      <div class="stat">
+        <div class="num">iOS</div>
+        <div class="lbl">designed for iPhone first</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ───────────────────────── FEATURES ───────────────────────── -->
-<section class="section" id="features" data-screen-label="Features">
+<!-- ─────────────────────── FEATURES ─────────────────────── -->
+<section class="section" id="features" aria-labelledby="features-heading">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Why Fince</div>
-      <h2>Everything your accountant wishes you had.</h2>
+    <div class="sec-head">
+      <p class="eyebrow">Why Fince</p>
+      <h2 id="features-heading">Everything your accountant wishes you had.</h2>
       <p>The tedious parts of running money on your own — handled automatically, in plain ringgit.</p>
     </div>
     <div class="features">
-      <div class="feature reveal">
-        <div class="ficon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8" /><path d="M16 8h5v5" /></svg></div>
+      <div class="feature">
+        <div class="ficon green" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8" /><path d="M16 8h5v5" /></svg>
+        </div>
         <h3>Automated bookkeeping</h3>
         <p>Every transaction is captured and categorised the moment it happens — no spreadsheets.</p>
       </div>
-      <div class="feature reveal">
-        <div class="ficon forest"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h3" /></svg></div>
+      <div class="feature">
+        <div class="ficon forest" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h3" /></svg>
+        </div>
         <h3>Snap a receipt</h3>
         <p>Point your camera. Fince reads the merchant, amount and category, then files it.</p>
       </div>
-      <div class="feature reveal">
-        <div class="ficon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg></div>
+      <div class="feature">
+        <div class="ficon blue" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+        </div>
         <h3>Profit per project</h3>
         <p>Group income and costs by client. See which projects actually pay.</p>
       </div>
-      <div class="feature reveal">
-        <div class="ficon red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></svg></div>
+      <div class="feature">
+        <div class="ficon red" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></svg>
+        </div>
         <h3>Built for Malaysia</h3>
         <p>Ringgit-native, with local categories and tax-ready summaries.</p>
       </div>
@@ -375,40 +464,65 @@
   </div>
 </section>
 
-<!-- ───────────────────────── HOW IT WORKS ───────────────────────── -->
-<section class="section how" id="how" data-screen-label="How it works">
+<!-- ─────────────────────── HOW IT WORKS ─────────────────────── -->
+<section class="section how" id="how" aria-labelledby="how-heading">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">How it works</div>
-      <h2>Clean books in three taps.</h2>
+    <div class="sec-head">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-heading">Clean books in three taps.</h2>
       <p>Set it up once. From then on, Fince does the filing in the background.</p>
     </div>
-    <div class="steps">
-      <div class="step reveal"><div class="n">1</div><h3>Capture</h3><p>Snap a receipt or log a payment — Fince grabs the details instantly.</p></div>
-      <div class="step reveal"><div class="n">2</div><h3>Fince sorts it</h3><p>It categorises the entry, matches the project and updates your ledger.</p></div>
-      <div class="step reveal"><div class="n">3</div><h3>See your profit</h3><p>See your real net profit any time — this month, this project, this year.</p></div>
-    </div>
+    <ol class="steps" aria-label="Steps">
+      <li class="step">
+        <div class="n" aria-hidden="true">1</div>
+        <h3>Capture</h3>
+        <p>Snap a receipt or log a payment — Fince grabs the details instantly.</p>
+      </li>
+      <li class="step">
+        <div class="n" aria-hidden="true">2</div>
+        <h3>Fince sorts it</h3>
+        <p>It categorises the entry, matches the project and updates your ledger.</p>
+      </li>
+      <li class="step">
+        <div class="n" aria-hidden="true">3</div>
+        <h3>See your profit</h3>
+        <p>See your real net profit any time — this month, this project, this year.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
-<!-- ───────────────────────── DEEP DIVE ───────────────────────── -->
-<section class="section" data-screen-label="Deep dive">
+<!-- ─────────────────────── DEEP DIVE ─────────────────────── -->
+<section class="section" aria-labelledby="deepdive-heading">
   <div class="wrap deep">
-    <div class="copy reveal">
-      <div class="eyebrow">Your numbers, in focus</div>
-      <h2>Always know where you stand.</h2>
+    <div class="copy">
+      <p class="eyebrow">Your numbers, in focus</p>
+      <h2 id="deepdive-heading">Always know where you stand.</h2>
       <p>The dashboard leads with the one number that matters — your net profit — backed by a clear in/out breakdown.</p>
-      <ul class="checklist">
-        <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Net profit with month-on-month trend</li>
-        <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Income vs expenses, split clearly</li>
-        <li><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>Recent activity at a glance</li>
+      <ul class="checklist" aria-label="Dashboard highlights">
+        <li>
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+          Net profit with month-on-month trend
+        </li>
+        <li>
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+          Income vs expenses, split clearly
+        </li>
+        <li>
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+          Recent activity at a glance
+        </li>
       </ul>
       <div class="hero-cta" style="justify-content:flex-start;margin-top:30px;">
-        <a class="btn btn-primary" href="#waitlist">Join the waitlist <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+        <a class="btn btn-primary" href="#waitlist">
+          Join the waitlist
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
       </div>
     </div>
 
-    <div class="ui-stage reveal">
+    <div class="ui-stage" aria-hidden="true">
+      <!-- Net Profit card — mirrors the app's dashboard widget -->
       <div class="np-card">
         <div class="np-row">
           <span class="np-ws"></span>
@@ -416,103 +530,181 @@
           <span class="np-dots"><span></span><span></span><span></span></span>
         </div>
         <div class="np-label">Net Profit · this month</div>
-        <div class="np-amt"><span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span></div>
-        <div><span class="np-delta">↑ 233.71%</span><span>vs last period</span></div>
+        <div class="np-amt">
+          <span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span>
+        </div>
+        <div>
+          <span class="np-delta">↑ 233.71%</span>
+          <span>vs last period</span>
+        </div>
         <svg class="np-spark" viewBox="0 0 320 64" preserveAspectRatio="none">
-          <defs><linearGradient id="spk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0F8A53" stop-opacity="0.20" /><stop offset="100%" stop-color="#0F8A53" stop-opacity="0" /></linearGradient></defs>
+          <defs>
+            <linearGradient id="spk" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#0F8A53" stop-opacity="0.20" />
+              <stop offset="100%" stop-color="#0F8A53" stop-opacity="0" />
+            </linearGradient>
+          </defs>
           <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5 L320 64 L0 64 Z" fill="url(#spk)" />
           <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5" fill="none" stroke="#0F8A53" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
           <circle cx="320" cy="5" r="3.5" fill="#0F8A53" />
         </svg>
-        <div class="np-seg"><div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div></div>
+        <div class="np-seg">
+          <div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div>
+        </div>
         <div class="np-io">
           <div class="cell">
-            <div class="h"><span class="badge" style="background:var(--green-bg);color:var(--green);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg></span>Income</div>
+            <div class="h">
+              <span class="badge" style="background:var(--green-bg);color:var(--green);">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
+              </span>
+              Income
+            </div>
             <div class="v">RM 15,260<span class="c">.00</span></div>
           </div>
           <div class="cell">
-            <div class="h"><span class="badge" style="background:var(--red-bg);color:var(--red);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg></span>Expenses</div>
+            <div class="h">
+              <span class="badge" style="background:var(--red-bg);color:var(--red);">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg>
+              </span>
+              Expenses
+            </div>
             <div class="v">RM 3,857<span class="c">.08</span></div>
           </div>
         </div>
       </div>
       <div class="ui-float">
-        <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg></span>
-        <div><div class="t1">XinYi · PAID</div><div class="t2">Client payment</div></div>
+        <span class="ic">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
+        </span>
+        <div>
+          <div class="t1">XinYi · PAID</div>
+          <div class="t2">Client payment</div>
+        </div>
         <span class="amt">+2,560</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ───────────────────────── WAITLIST ───────────────────────── -->
-<section class="section" id="waitlist" style="padding-top:0;" data-screen-label="Waitlist">
+<!-- ─────────────────────── WAITLIST ─────────────────────── -->
+<section class="section" id="waitlist" style="padding-top:0;" aria-labelledby="waitlist-heading">
   <div class="wrap">
-    <div class="cta-band reveal">
-      <img class="mark" src="landing/logo-mark-cream.png" alt="" />
-      <h2>Be first when Fince lands on iPhone.</h2>
+    <div class="cta-band">
+      <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
+      <h2 id="waitlist-heading">Be first when Fince lands on iPhone.</h2>
       <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
-      <form class="wl-form" id="wlForm" novalidate>
-        <input type="email" id="wlEmail" placeholder="you@email.com" autocomplete="email" required aria-label="Email address" />
+      <form class="wl-form" id="wlForm" novalidate aria-label="Waitlist signup">
+        <input
+          type="email"
+          id="wlEmail"
+          placeholder="you@email.com"
+          autocomplete="email"
+          required
+          aria-label="Email address"
+          aria-describedby="wlFine"
+        />
         <button type="submit" class="btn btn-cream">Join the waitlist</button>
       </form>
-      <div class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</div>
-      <div class="wl-success" id="wlSuccess">
-        <span class="tick"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+      <p class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</p>
+      <div class="wl-success" id="wlSuccess" role="status" aria-live="polite">
+        <span class="tick" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+        </span>
         <span id="wlSuccessText">You're on the list — we'll be in touch.</span>
       </div>
     </div>
   </div>
 </section>
+
 </main>
 
-<!-- ───────────────────────── FOOTER ───────────────────────── -->
-<footer class="foot">
+<!-- ─────────────────────── FOOTER ─────────────────────── -->
+<footer class="foot" role="contentinfo">
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a class="brand" href="#top"><img src="landing/logo-mark-green.png" alt="Fince" style="width:24px;height:24px;" /> Fince</a>
+        <a class="brand" href="#top" aria-label="Fince home">
+          <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" style="width:24px;height:24px;" />
+          Fince
+        </a>
         <p>Automated bookkeeping for freelancers &amp; solo founders in Malaysia.</p>
       </div>
       <div class="foot-cols">
-        <div class="foot-col"><h4>Product</h4><a href="#features">Features</a><a href="#how">How it works</a><a href="#waitlist">Waitlist</a></div>
-        <div class="foot-col"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Contact</a></div>
-        <div class="foot-col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+        <nav class="foot-col" aria-label="Product links">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#waitlist">Waitlist</a>
+        </nav>
+        <nav class="foot-col" aria-label="Company links">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+        </nav>
+        <nav class="foot-col" aria-label="Legal links">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </nav>
       </div>
     </div>
-    <div class="foot-bottom"><span>© 2026 Fince. Made in Malaysia.</span><span>RM-native bookkeeping</span></div>
+    <div class="foot-bottom">
+      <span>© 2026 Fince. Made in Malaysia.</span>
+      <span>RM-native bookkeeping</span>
+    </div>
   </div>
 </footer>
 
 <script>
-  // Sticky nav shadow
+  // Sticky nav shadow on scroll
   (function () {
     var nav = document.getElementById('nav');
-    var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 8); };
-    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   })();
 
-  // Scroll reveal removed for reliability — content is visible by default;
-  // the hero uses a self-contained CSS load animation that can never stick hidden.
-
-  // Waitlist
+  // Waitlist form — validates, persists to localStorage, shows success state
   (function () {
-    var form = document.getElementById('wlForm'), email = document.getElementById('wlEmail');
-    var fine = document.getElementById('wlFine'), success = document.getElementById('wlSuccess');
-    var successText = document.getElementById('wlSuccessText'), KEY = 'fince_waitlist';
+    var form        = document.getElementById('wlForm');
+    var emailInput  = document.getElementById('wlEmail');
+    var fine        = document.getElementById('wlFine');
+    var success     = document.getElementById('wlSuccess');
+    var successText = document.getElementById('wlSuccessText');
+    var KEY = 'fince_waitlist';
+
     function showJoined(addr) {
-      form.style.display = 'none'; fine.style.display = 'none'; success.style.display = 'flex';
-      if (addr) successText.textContent = "You're on the list, " + addr.split('@')[0] + " — we'll be in touch.";
+      form.style.display    = 'none';
+      fine.style.display    = 'none';
+      success.style.display = 'flex';
+      if (addr) {
+        var name = addr.split('@')[0];
+        successText.textContent = "You’re on the list, " + name + " — we’ll be in touch.";
+      }
     }
-    try { var saved = localStorage.getItem(KEY); if (saved) showJoined(saved); } catch (e) {}
+
+    // Restore persisted state on load
+    try {
+      var saved = localStorage.getItem(KEY);
+      if (saved) showJoined(saved);
+    } catch (e) {}
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var val = (email.value || '').trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { email.style.borderColor = 'rgba(255,180,160,0.9)'; email.focus(); return; }
+      var val = (emailInput.value || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        emailInput.classList.add('error');
+        emailInput.focus();
+        return;
+      }
       try { localStorage.setItem(KEY, val); } catch (e) {}
       showJoined(val);
     });
-    email.addEventListener('input', function () { email.style.borderColor = ''; });
+
+    emailInput.addEventListener('input', function () {
+      emailInput.classList.remove('error');
+    });
   })();
 </script>
 
