@@ -53,7 +53,11 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
   body {
     margin: 0; background: var(--cream); color: var(--ink);
     font-family: var(--font); font-size: 17px; line-height: 1.5;
