@@ -6,13 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="Fince automatically tracks your income, expenses and projects so you always know your real numbers. Ringgit-native bookkeeping for Malaysian freelancers and solo founders." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://fince.my/" />
+<meta property="og:site_name" content="Fince" />
 <meta property="og:title" content="Fince — Bookkeeping that does itself." />
 <meta property="og:description" content="Automated bookkeeping for Malaysian freelancers and solo founders. Ringgit-native, LHDN-ready, iPhone-first." />
-<meta property="og:image" content="landing/hero-banner.png" />
+<meta property="og:image" content="https://fince.my/landing/hero-banner.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://fince.my/" />
 <meta name="twitter:title" content="Fince — Bookkeeping that does itself." />
 <meta name="twitter:description" content="Automated bookkeeping for Malaysian freelancers and solo founders." />
-<meta name="twitter:image" content="landing/hero-banner.png" />
+<meta name="twitter:image" content="https://fince.my/landing/hero-banner.png" />
+<link rel="canonical" href="https://fince.my/" />
 <link rel="icon" type="image/png" href="landing/logo-mark-green.png" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/png" href="landing/logo-mark-cream.png" media="(prefers-color-scheme: dark)" />
 <link rel="preload" as="image" href="landing/phone-dashboard.png" />
@@ -741,12 +747,28 @@
           _captcha: 'false'
         })
       })
-        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
-        .then(function () {
-          try { localStorage.setItem(KEY, val); } catch (e) {}
-          showJoined(val);
+        .then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (data) {
+            return { ok: r.ok, status: r.status, data: data };
+          });
         })
-        .catch(function () {
+        .then(function (result) {
+          console.log('[waitlist] Formsubmit response:', result);
+          var success = result.data && (result.data.success === 'true' || result.data.success === true);
+          if (result.ok && success) {
+            try { localStorage.setItem(KEY, val); } catch (e) {}
+            showJoined(val);
+            return;
+          }
+          // Friendlier hint when the destination email needs one-time activation
+          var msg = (result.data && result.data.message) || '';
+          if (/activat/i.test(msg)) {
+            throw new Error('Form not activated yet. Check waitlist@fince.my for the activation email.');
+          }
+          throw new Error(msg || ('HTTP ' + result.status));
+        })
+        .catch(function (err) {
+          console.error('[waitlist] submit error:', err);
           submitBtn.disabled = false;
           submitBtn.textContent = origLabel;
           showError("Couldn't submit — please try again, or email gchinsiong@fince.my.");
