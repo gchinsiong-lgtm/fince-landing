@@ -608,12 +608,14 @@
         <input
           type="email"
           id="wlEmail"
+          name="email"
           placeholder="you@email.com"
           autocomplete="email"
           required
           aria-label="Email address"
           aria-describedby="wlFine"
         />
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
         <button type="submit" class="btn btn-cream">Join the waitlist</button>
       </form>
       <p class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</p>
@@ -676,14 +678,17 @@
     onScroll();
   })();
 
-  // Waitlist form — validates, persists to localStorage, shows success state
+  // Waitlist form — POSTs to Formsubmit AJAX (waitlist@fince.my), persists success
   (function () {
     var form        = document.getElementById('wlForm');
     var emailInput  = document.getElementById('wlEmail');
     var fine        = document.getElementById('wlFine');
     var success     = document.getElementById('wlSuccess');
     var successText = document.getElementById('wlSuccessText');
-    var KEY = 'fince_waitlist';
+    var submitBtn   = form.querySelector('button[type="submit"]');
+    var origFine    = fine.textContent;
+    var KEY         = 'fince_waitlist';
+    var ENDPOINT    = 'https://formsubmit.co/ajax/waitlist@fince.my';
 
     function showJoined(addr) {
       form.style.display    = 'none';
@@ -693,6 +698,18 @@
         var name = addr.split('@')[0];
         successText.textContent = "You’re on the list, " + name + " — we’ll be in touch.";
       }
+    }
+
+    function showError(msg) {
+      emailInput.classList.add('error');
+      fine.textContent = msg;
+      fine.style.color = 'rgba(255,180,160,0.95)';
+    }
+
+    function resetError() {
+      emailInput.classList.remove('error');
+      fine.style.color = '';
+      if (fine.textContent !== origFine) fine.textContent = origFine;
     }
 
     // Restore persisted state on load
@@ -705,17 +722,38 @@
       e.preventDefault();
       var val = (emailInput.value || '').trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-        emailInput.classList.add('error');
+        showError('Please enter a valid email address.');
         emailInput.focus();
         return;
       }
-      try { localStorage.setItem(KEY, val); } catch (e) {}
-      showJoined(val);
+
+      var origLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining…';
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          email: val,
+          _subject: 'New Fince waitlist signup',
+          _template: 'box',
+          _captcha: 'false'
+        })
+      })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+        .then(function () {
+          try { localStorage.setItem(KEY, val); } catch (e) {}
+          showJoined(val);
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = origLabel;
+          showError("Couldn't submit — please try again, or email gchinsiong@fince.my.");
+        });
     });
 
-    emailInput.addEventListener('input', function () {
-      emailInput.classList.remove('error');
-    });
+    emailInput.addEventListener('input', resetError);
   })();
 </script>
 
