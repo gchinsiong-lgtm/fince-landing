@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Terms of Service — Fince</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Fince Terms of Service. Filmpeak Studio, registered in Malaysia (SSM 202503331274 / TR0333439-W)." />
+<meta name="robots" content="index, follow" />
+<link rel="icon" type="image/png" href="landing/logo-mark-green.png" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/png" href="landing/logo-mark-cream.png" media="(prefers-color-scheme: dark)" />
+<style>
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('landing/fonts/inter-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  :root {
+    --cream: #F4F2EC;
+    --cream-2: #ECE9E0;
+    --surface: #FFFFFF;
+    --ink: #14130F;
+    --ink-2: rgba(20,19,15,0.68);
+    --ink-3: rgba(20,19,15,0.45);
+    --line: rgba(20,19,15,0.10);
+    --hair: rgba(20,19,15,0.07);
+    --forest: #16463A;
+    --forest-2: #0F3329;
+    --green: #0F8A53;
+    --font: 'Inter', -apple-system, system-ui, sans-serif;
+    --maxw: 1160px;
+    --legalw: 720px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font-family: var(--font); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--forest); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--forest-2); }
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+
+  /* nav */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,242,236,0.82);
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-bottom: 1px solid var(--hair);
+  }
+  .nav-inner { display: flex; align-items: center; gap: 28px; height: 72px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--forest); text-decoration: none; }
+  .brand img { width: 26px; height: 26px; }
+  .nav-links { display: flex; gap: 30px; margin-left: 14px; }
+  .nav-links a { font-size: 15px; font-weight: 500; color: var(--ink-2); text-decoration: none; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { margin-left: auto; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font); font-size: 16px; font-weight: 600;
+    padding: 11px 22px; border-radius: 999px; cursor: pointer;
+    text-decoration: none; border: 1px solid transparent; white-space: nowrap;
+    background: var(--forest); color: var(--cream);
+    box-shadow: 0 8px 22px rgba(22,70,58,0.28);
+    transition: background .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover { background: var(--forest-2); color: var(--cream); box-shadow: 0 12px 28px rgba(22,70,58,0.34); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+
+  /* legal page */
+  .legal-head { padding: 64px 0 24px; }
+  .legal-head .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); margin: 0 0 14px; }
+  .legal-head h1 { font-size: clamp(36px, 5vw, 54px); font-weight: 900; letter-spacing: -1.8px; line-height: 1.05; margin: 0; color: var(--forest-2); }
+  .legal-head .meta { color: var(--ink-3); font-size: 14px; margin: 14px 0 0; }
+
+  .legal-body {
+    max-width: var(--legalw);
+    margin: 0 auto;
+    padding: 24px 0 80px;
+  }
+  .legal-body h2 {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.6px;
+    margin: 56px 0 14px; color: var(--forest-2);
+    scroll-margin-top: 88px;
+  }
+  .legal-body h2:first-of-type { margin-top: 32px; }
+  .legal-body h3 {
+    font-size: 17px; font-weight: 700; letter-spacing: -0.3px;
+    margin: 28px 0 8px; color: var(--ink);
+  }
+  .legal-body p { margin: 0 0 16px; color: var(--ink); }
+  .legal-body p.lead { font-size: 19px; color: var(--ink-2); line-height: 1.55; margin-bottom: 28px; }
+  .legal-body ul, .legal-body ol { margin: 0 0 16px; padding-left: 24px; }
+  .legal-body li { margin-bottom: 6px; }
+  .legal-body strong { color: var(--ink); font-weight: 700; }
+
+  .legal-body table {
+    width: 100%; border-collapse: collapse; margin: 18px 0 24px;
+    background: var(--surface); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--hair); font-size: 15px;
+  }
+  .legal-body th, .legal-body td {
+    text-align: left; padding: 12px 16px; vertical-align: top;
+    border-bottom: 1px solid var(--hair);
+  }
+  .legal-body th { background: var(--cream-2); font-weight: 700; color: var(--forest-2); font-size: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .legal-body tr:last-child td { border-bottom: none; }
+
+  .legal-body blockquote {
+    margin: 24px 0; padding: 16px 20px;
+    background: var(--cream-2); border-left: 3px solid var(--forest);
+    border-radius: 0 12px 12px 0; color: var(--ink-2); font-size: 15px;
+  }
+
+  .doc-toc {
+    background: var(--surface); border-radius: 16px; padding: 22px 26px;
+    border: 1px solid var(--hair); margin: 0 0 12px;
+  }
+  .doc-toc h4 { font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3); margin: 0 0 14px; }
+  .doc-toc ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 28px; font-size: 14px; }
+  .doc-toc li { margin-bottom: 6px; break-inside: avoid; }
+  .doc-toc a { color: var(--ink-2); text-decoration: none; }
+  .doc-toc a:hover { color: var(--forest); text-decoration: underline; }
+  @media (max-width: 640px) { .doc-toc ol { columns: 1; } }
+
+  /* footer */
+  footer.foot { padding: 64px 0 48px; border-top: 1px solid var(--hair); }
+  .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+  .foot-brand { max-width: 280px; }
+  .foot-brand .brand { color: var(--forest); margin-bottom: 14px; }
+  .foot-brand p { font-size: 15px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px; }
+  .foot-col a { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 12px; text-decoration: none; transition: color .15s ease; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; font-size: 14px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" />
+      Fince
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#waitlist">Waitlist</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn" href="index.html#waitlist">Join the waitlist</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="legal-head" style="max-width:var(--legalw);margin:0 auto;">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="meta">Effective Date: 1 June 2026 · Last Updated: 1 June 2026</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="legal-body">
+
+      <p class="lead">These Terms of Service (the "Terms") form a binding agreement between you and Filmpeak Studio, the operator of Fince. Please read them carefully — using Fince means you accept them.</p>
+
+      <div class="doc-toc" aria-label="Table of contents">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#s1">About these Terms</a></li>
+          <li><a href="#s2">Eligibility</a></li>
+          <li><a href="#s3">Accounts</a></li>
+          <li><a href="#s4">Subscriptions &amp; In-App Purchases</a></li>
+          <li><a href="#s5">Acceptable Use</a></li>
+          <li><a href="#s6">Your Data &amp; Content</a></li>
+          <li><a href="#s7">Intellectual Property</a></li>
+          <li><a href="#s8">Third-Party Services</a></li>
+          <li><a href="#s9">Financial, Tax &amp; Legal Disclaimer</a></li>
+          <li><a href="#s10">Service Availability</a></li>
+          <li><a href="#s11">Limitation of Liability</a></li>
+          <li><a href="#s12">Indemnification</a></li>
+          <li><a href="#s13">Termination</a></li>
+          <li><a href="#s14">Changes to These Terms</a></li>
+          <li><a href="#s15">Governing Law &amp; Jurisdiction</a></li>
+          <li><a href="#s16">Apple App Store Additional Terms</a></li>
+          <li><a href="#s17">Miscellaneous</a></li>
+          <li><a href="#s18">Contact</a></li>
+        </ol>
+      </div>
+
+      <h2 id="s1">1. About these Terms</h2>
+      <p>These Terms form a binding agreement between you ("you", "User") and <strong>Filmpeak Studio</strong>, a sole proprietorship registered in Malaysia (SSM Business Registration No. 202503331274 / TR0333439-W) ("Fince", "we", "us", or "Provider"), with registered address at [Registered Address — Malaysia].</p>
+      <p>By creating a Fince account, downloading the Fince app, or using any Fince services (collectively, the "Service"), you agree to these Terms and our <a href="privacy.html">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
+      <p>The Service is provided as a digital ledger and bookkeeping tool for freelancers and solo founders in Malaysia. It is distributed via the Apple App Store and does not constitute financial, accounting, tax, legal, or audit advice.</p>
+
+      <h2 id="s2">2. Eligibility</h2>
+      <p>You must be at least 18 years old and legally capable of entering into a binding contract in Malaysia to use the Service. By creating an account, you represent that you meet these requirements and that the information you provide is accurate and complete.</p>
+
+      <h2 id="s3">3. Accounts</h2>
+      <p>3.1 You are responsible for safeguarding your account credentials and for any activity that occurs through your account.</p>
+      <p>3.2 You agree to notify us immediately of any unauthorised use of your account.</p>
+      <p>3.3 You may delete your account at any time directly inside the app via <strong>Settings &gt; Account &gt; Delete Account</strong>. Deletion is irreversible — see our <a href="privacy.html">Privacy Policy</a> for details on data retention and backups after deletion.</p>
+
+      <h2 id="s4">4. Subscriptions, Pricing &amp; In-App Purchases</h2>
+      <p>4.1 Fince offers a free tier and one or more paid subscription tiers ("Paid Plans"). Paid Plans are purchased through Apple's In-App Purchase system inside the iOS app.</p>
+      <p>4.2 Pricing, billing period, and the features included in each Paid Plan are disclosed inside the app before purchase.</p>
+      <p>4.3 <strong>Auto-renewal.</strong> Subscriptions automatically renew at the end of each billing period at the then-current price unless cancelled. Payment is charged to your Apple ID account at confirmation of purchase and at the start of each renewal period. You will be charged for renewal within 24 hours prior to the end of the current period.</p>
+      <p>4.4 <strong>Cancellation.</strong> You may cancel any subscription at any time via <strong>Settings &gt; [Your Name] &gt; Subscriptions</strong> on your iOS device. Cancellation takes effect at the end of the current paid period. No refund is issued for the unused portion of any paid period.</p>
+      <p>4.5 <strong>Restore Purchases.</strong> A "Restore Purchases" feature is provided inside the app to re-activate previously purchased entitlements after reinstalling.</p>
+      <p>4.6 <strong>Refunds.</strong> Refunds for in-app purchases are handled exclusively by Apple in accordance with Apple's <a href="https://www.apple.com/legal/internet-services/itunes/" target="_blank" rel="noopener">Media Services Terms</a>. We are unable to process refunds directly.</p>
+      <p>4.7 <strong>Price changes.</strong> We may adjust the price of any Paid Plan from time to time. Where price changes apply to existing subscribers, you will be notified in advance and given the option to cancel before the new price takes effect.</p>
+
+      <h2 id="s5">5. Acceptable Use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>use the Service for any unlawful purpose;</li>
+        <li>use the Service to record fictitious transactions, evade tax obligations, or commit fraud;</li>
+        <li>reverse engineer, decompile, or attempt to extract the source code of the Service;</li>
+        <li>access the Service via automated means without our written permission;</li>
+        <li>interfere with or disrupt the integrity or performance of the Service;</li>
+        <li>use the Service to transmit malware, harmful code, or unsolicited communications;</li>
+        <li>share, resell, or sublicense the Service to third parties without authorisation.</li>
+      </ul>
+
+      <h2 id="s6">6. Your Data &amp; Content</h2>
+      <p>6.1 You retain ownership of all financial records, transactions, receipts, project data, and other content you enter into the Service ("User Content").</p>
+      <p>6.2 You grant Fince a limited, worldwide, non-exclusive, royalty-free licence to host, store, process, transmit, display, and back up your User Content <strong>solely</strong> to operate and improve the Service for you, and to comply with legal obligations.</p>
+      <p>6.3 We may use anonymised, aggregated data derived from User Content (data that cannot identify you or your business) to improve the Service, train classification models, and produce industry insights. We will not sell your raw User Content.</p>
+      <p>6.4 You are solely responsible for the accuracy, completeness, and legality of your User Content. Fince is not a substitute for a licensed accountant, tax agent, or auditor.</p>
+
+      <h2 id="s7">7. Intellectual Property</h2>
+      <p>7.1 The Service, including all software, design, branding, code, AI models, classification logic, and documentation, is owned by Filmpeak Studio and protected by Malaysian and international copyright, trademark, and other intellectual property laws.</p>
+      <p>7.2 Subject to your compliance with these Terms, we grant you a limited, non-transferable, non-exclusive, revocable licence to use the Service for your personal or business purposes.</p>
+      <p>7.3 The "Fince" name, logo, and visual identity are our trademarks. No licence to use them is granted by these Terms.</p>
+
+      <h2 id="s8">8. Third-Party Services</h2>
+      <p>The Service operates using the following third-party providers ("Sub-Processors"). Your use of the Service is also subject to the terms and policies of these providers where applicable:</p>
+      <ul>
+        <li><strong>Apple Inc.</strong> — App distribution and In-App Purchase processing.</li>
+        <li><strong>Supabase, Inc.</strong> — Database, authentication, and serverless function hosting (data residency: currently Tokyo Region, Japan; migrating to Singapore Region).</li>
+        <li><strong>Google LLC (Google Cloud)</strong> — Receipt OCR via Google Cloud Vision / Document AI (data residency: asia-southeast1, Singapore).</li>
+        <li><strong>Google LLC (Google Workspace)</strong> — Email infrastructure for service communications.</li>
+      </ul>
+      <p>Full details on data flows are set out in our <a href="privacy.html">Privacy Policy</a>.</p>
+
+      <h2 id="s9">9. Financial, Tax, Accounting &amp; Legal Disclaimer</h2>
+      <p>9.1 Fince is a <strong>record-keeping tool only</strong>. It does <strong>not</strong> provide accounting, tax, legal, audit, or financial advice.</p>
+      <p>9.2 Reports, summaries, dashboards, AI-assisted receipt categorisations, profit/loss calculations, and tax-category mappings generated by the Service may contain errors and are provided for your reference only.</p>
+      <p>9.3 You are solely responsible for the accuracy of your financial records and for your tax filings with the Inland Revenue Board of Malaysia (LHDN) or any other authority. Fince is not a substitute for a licensed accountant or tax agent.</p>
+
+      <h2 id="s10">10. Service Availability</h2>
+      <p>10.1 We aim to keep the Service available 24/7 but do not guarantee uninterrupted availability. The Service is provided on an "as is" and "as available" basis.</p>
+      <p>10.2 We may suspend, withdraw, or restrict the availability of all or any part of the Service for business or operational reasons. We will give reasonable notice of any planned interruption where possible.</p>
+      <p>10.3 Beta or experimental features may be made available from time to time. These are provided "as is" without warranty and may be modified or removed at any time.</p>
+
+      <h2 id="s11">11. Limitation of Liability</h2>
+      <p>11.1 To the maximum extent permitted by Malaysian law, the total aggregate liability of Filmpeak Studio to you for all claims arising out of or in connection with these Terms or the Service is limited to the <strong>greater of (a) the subscription fees paid by you to Fince in the twelve (12) months preceding the event giving rise to the claim, or (b) Malaysian Ringgit Five Hundred (RM 500.00)</strong>.</p>
+      <p>11.2 In no event shall Filmpeak Studio be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, including loss of profits, loss of business, loss of goodwill, loss of data, or loss of opportunity, even if advised of the possibility of such damages.</p>
+      <p>11.3 Nothing in these Terms excludes or limits liability that cannot lawfully be excluded or limited under Malaysian law.</p>
+
+      <h2 id="s12">12. Indemnification</h2>
+      <p>You agree to indemnify and hold harmless Filmpeak Studio, its proprietor, employees, contractors, and partners from any claims, damages, losses, liabilities, and expenses (including reasonable legal fees) arising out of:</p>
+      <ul>
+        <li>your User Content;</li>
+        <li>your misuse of the Service;</li>
+        <li>your violation of these Terms or any applicable law (including tax law);</li>
+        <li>your infringement of any third-party right.</li>
+      </ul>
+
+      <h2 id="s13">13. Termination</h2>
+      <p>13.1 You may terminate your account at any time via the in-app deletion flow (<strong>Settings &gt; Account &gt; Delete Account</strong>).</p>
+      <p>13.2 We may suspend or terminate your access to the Service immediately if you breach these Terms, use the Service unlawfully, or fail to pay subscription fees.</p>
+      <p>13.3 On termination by either party, your right to use the Service ceases immediately. You may export your data via the in-app export tool for thirty (30) days following termination, after which your User Content will be permanently deleted in accordance with our Privacy Policy.</p>
+
+      <h2 id="s14">14. Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. The "Last Updated" date at the top of these Terms reflects the most recent revision. Material changes will be notified to you via an in-app notice or by email at least seven (7) days before they take effect. Continued use of the Service after the effective date constitutes acceptance of the updated Terms.</p>
+
+      <h2 id="s15">15. Governing Law &amp; Jurisdiction</h2>
+      <p>15.1 These Terms are governed by and construed in accordance with the laws of Malaysia.</p>
+      <p>15.2 Any dispute, controversy, or claim arising out of or in connection with these Terms or the Service shall be subject to the exclusive jurisdiction of the courts of Kuala Lumpur, Malaysia.</p>
+
+      <h2 id="s16">16. Apple App Store — Additional Terms</h2>
+      <p>This section applies in addition to all other Terms because the Service is distributed through the Apple App Store:</p>
+      <p>16.1 This Agreement is concluded between you and Filmpeak Studio only, and not with Apple Inc. ("Apple"). Filmpeak Studio is solely responsible for the Service and its content.</p>
+      <p>16.2 Apple has no obligation to provide any maintenance or support services with respect to the Service.</p>
+      <p>16.3 In the event of any failure of the Service to conform to any applicable warranty, you may notify Apple, and Apple will refund the purchase price for the Service; to the maximum extent permitted by law, Apple will have no other warranty obligation with respect to the Service.</p>
+      <p>16.4 Apple is not responsible for addressing any claims by you or any third party relating to the Service, including product liability claims, consumer protection claims, or intellectual property infringement claims.</p>
+      <p>16.5 In the event of any claim by a third party that the Service or your possession and use of the Service infringes that third party's intellectual property rights, Filmpeak Studio (and not Apple) will be solely responsible for the investigation, defence, settlement, and discharge of any such claim.</p>
+      <p>16.6 You represent and warrant that (i) you are not located in a country that is subject to a U.S. Government embargo or that has been designated by the U.S. Government as a "terrorist supporting" country, and (ii) you are not listed on any U.S. Government list of prohibited or restricted parties.</p>
+      <p>16.7 You and Filmpeak Studio acknowledge and agree that Apple and Apple's subsidiaries are <strong>third-party beneficiaries</strong> of these Terms, and Apple shall have the right (and will be deemed to have accepted the right) to enforce these Terms against you as a third-party beneficiary.</p>
+
+      <h2 id="s17">17. Miscellaneous</h2>
+      <p>17.1 <strong>Entire Agreement.</strong> These Terms, together with our <a href="privacy.html">Privacy Policy</a>, constitute the entire agreement between you and Filmpeak Studio regarding the Service.</p>
+      <p>17.2 <strong>Severability.</strong> If any provision is held to be invalid or unenforceable, the remaining provisions remain in full force and effect.</p>
+      <p>17.3 <strong>No Waiver.</strong> Failure to enforce any provision does not constitute a waiver of that provision.</p>
+      <p>17.4 <strong>Assignment.</strong> You may not assign or transfer these Terms without our prior written consent. We may assign these Terms in connection with a sale, merger, or reorganisation of our business.</p>
+      <p>17.5 <strong>Force Majeure.</strong> Neither party is liable for any failure or delay caused by events beyond reasonable control (including natural disaster, war, civil unrest, government action, network outages, or third-party service failures).</p>
+
+      <h2 id="s18">18. Contact</h2>
+      <p>For questions about these Terms:</p>
+      <blockquote>
+        <strong>Filmpeak Studio (Fince)</strong><br />
+        SSM Reg. No. 202503331274 / TR0333439-W<br />
+        Email: <a href="mailto:admin@fince.my">admin@fince.my</a>
+      </blockquote>
+
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" style="width:24px;height:24px;" />
+          Fince
+        </a>
+        <p>Automated bookkeeping for freelancers &amp; solo founders in Malaysia.</p>
+      </div>
+      <div class="foot-cols">
+        <nav class="foot-col" aria-label="Product">
+          <h4>Product</h4>
+          <a href="index.html#features">Features</a>
+          <a href="index.html#how">How it works</a>
+          <a href="index.html#waitlist">Waitlist</a>
+        </nav>
+        <nav class="foot-col" aria-label="Company">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="mailto:admin@fince.my">Contact</a>
+        </nav>
+        <nav class="foot-col" aria-label="Legal">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+        </nav>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Fince. Made in Malaysia.</span>
+      <span>RM-native bookkeeping</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
