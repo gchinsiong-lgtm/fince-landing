@@ -694,7 +694,7 @@
     var submitBtn   = form.querySelector('button[type="submit"]');
     var origFine    = fine.textContent;
     var KEY         = 'fince_waitlist';
-    var ENDPOINT    = 'https://formsubmit.co/ajax/waitlist@fince.my';
+    var ENDPOINT    = '/api/waitlist';
 
     function showJoined(addr) {
       form.style.display    = 'none';
@@ -737,14 +737,13 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Joining…';
 
+      var honeyField = form.querySelector('[name="_honey"]');
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
           email: val,
-          _subject: 'New Fince waitlist signup',
-          _template: 'box',
-          _captcha: 'false'
+          _honey: (honeyField && honeyField.value) || ''
         })
       })
         .then(function (r) {
@@ -753,19 +752,14 @@
           });
         })
         .then(function (result) {
-          console.log('[waitlist] Formsubmit response:', result);
-          var success = result.data && (result.data.success === 'true' || result.data.success === true);
-          if (result.ok && success) {
+          console.log('[waitlist] response:', result);
+          if (result.ok) {
             try { localStorage.setItem(KEY, val); } catch (e) {}
             showJoined(val);
             return;
           }
-          // Friendlier hint when the destination email needs one-time activation
-          var msg = (result.data && result.data.message) || '';
-          if (/activat/i.test(msg)) {
-            throw new Error('Form not activated yet. Check waitlist@fince.my for the activation email.');
-          }
-          throw new Error(msg || ('HTTP ' + result.status));
+          var msg = (result.data && result.data.error) || ('HTTP ' + result.status);
+          throw new Error(msg);
         })
         .catch(function (err) {
           console.error('[waitlist] submit error:', err);
