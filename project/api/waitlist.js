@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'Fince Waitlist <onboarding@resend.dev>',
-        to: ['gchinsiong@fince.my'],
+        to: ['waitlist@fince.my'],
         reply_to: email,
         subject: 'New Fince waitlist signup: ' + email,
         html: html
