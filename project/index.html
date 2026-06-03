@@ -317,8 +317,11 @@
   .wl-form input:focus { border-color: rgba(244,242,236,0.60); background: rgba(244,242,236,0.16); }
   .wl-form input.error { border-color: rgba(255,180,160,0.90); }
   .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; flex-shrink: 0; }
-  .wl-success { display: none; align-items: center; gap: 10px; justify-content: center; margin-top: 32px; font-size: 18px; font-weight: 600; }
+  .wl-success { display: none; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: center; margin-top: 32px; font-size: 18px; font-weight: 600; }
   .wl-success .tick { width: 30px; height: 30px; border-radius: 50%; background: rgba(48,210,122,0.22); color: #6BE6A4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .wl-add-another { background: none; border: none; padding: 0; margin-left: 6px; color: rgba(244,242,236,0.65); font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-family: inherit; transition: color .15s ease; }
+  .wl-add-another:hover { color: rgba(244,242,236,0.95); }
+  .wl-add-another:focus-visible { outline: 2px solid rgba(244,242,236,0.6); outline-offset: 3px; border-radius: 2px; }
   .wl-fine { margin-top: 16px; font-size: 14px; color: rgba(244,242,236,0.55); }
 
   /* ── footer ── */
@@ -610,7 +613,7 @@
       <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
       <h2 id="waitlist-heading">Be first when Fince lands on iPhone.</h2>
       <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
-      <form class="wl-form" id="wlForm" novalidate aria-label="Waitlist signup">
+      <form class="wl-form" id="wlForm" aria-label="Waitlist signup">
         <input
           type="email"
           id="wlEmail"
@@ -630,6 +633,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg>
         </span>
         <span id="wlSuccessText">You're on the list — we'll be in touch.</span>
+        <button type="button" id="wlAddAnother" class="wl-add-another">Add another email</button>
       </div>
     </div>
   </div>
@@ -706,6 +710,18 @@
       }
     }
 
+    function showForm() {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      success.style.display = 'none';
+      form.style.display    = '';
+      fine.style.display    = '';
+      emailInput.value      = '';
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Join the waitlist';
+      resetError();
+      emailInput.focus();
+    }
+
     function showError(msg) {
       emailInput.classList.add('error');
       fine.textContent = msg;
@@ -770,6 +786,9 @@
     });
 
     emailInput.addEventListener('input', resetError);
+
+    var addAnotherBtn = document.getElementById('wlAddAnother');
+    if (addAnotherBtn) addAnotherBtn.addEventListener('click', showForm);
   })();
 </script>
 
