@@ -161,13 +161,13 @@
   .hero-note { margin-top: 14px; font-size: 14px; color: rgba(15,51,41,0.55); font-weight: 500; }
 
   /* phones in stage */
-  .phone-stage { position: relative; z-index: 2; margin-top: 36px; height: 440px; }
+  .phone-stage { position: relative; z-index: 2; margin-top: 36px; height: 440px; overflow: visible; }
   .phone-stage img {
     position: absolute; bottom: -40px;
     filter: drop-shadow(0 40px 60px rgba(22,70,58,0.30));
   }
-  .phone-stage .p-light { width: 380px; left: 50%; transform: translateX(-90%); z-index: 3; }
-  .phone-stage .p-dark  { width: 360px; left: 50%; transform: translateX(-10%) translateY(26px); z-index: 2; }
+  .phone-stage .p-light { width: 360px; left: 50%; transform: translateX(-86%); z-index: 3; }
+  .phone-stage .p-dark  { width: 340px; left: 50%; transform: translateX(-14%) translateY(26px); z-index: 2; }
   .chip {
     position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
     background: rgba(255,255,255,0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -175,9 +175,9 @@
     font-size: 14px; font-weight: 700; color: var(--forest-2); box-shadow: 0 10px 26px rgba(22,70,58,0.18);
   }
   .chip .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .chip.c1 { top: 96px;   left: 15%; }
-  .chip.c2 { top: 150px;  right: 13%; }
-  .chip.c3 { bottom: 130px; left: 13%; }
+  .chip.c1 { top: 72px;   left: 12%; }
+  .chip.c2 { top: 132px;  right: 10%; }
+  .chip.c3 { bottom: 120px; left: 10%; }
 
   /* ── trust ── */
   .trust { padding: 64px 0 8px; }
@@ -214,7 +214,7 @@
 
   /* ── how it works ── */
   .how { background: var(--cream-2); }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; }
   .steps::before {
     content: ""; position: absolute; top: 20px; left: 16%; right: 16%; height: 1.5px;
     background: repeating-linear-gradient(90deg, var(--green) 0 7px, transparent 7px 15px);
@@ -348,12 +348,12 @@
   @media (max-width: 760px) {
     .hero-stage { padding: 48px 20px 0; border-radius: 28px; }
     .phone-stage { height: 360px; }
-    .phone-stage .p-light { width: 268px; transform: translateX(-90%); }
-    .phone-stage .p-dark  { width: 250px; transform: translateX(-10%) translateY(20px); }
+    .phone-stage .p-light { width: 252px; transform: translateX(-84%); }
+    .phone-stage .p-dark  { width: 232px; transform: translateX(-16%) translateY(20px); }
     .chip { font-size: 12px; padding: 6px 11px; }
-    .chip.c1 { left: 2%; }
-    .chip.c2 { right: 2%; }
-    .chip.c3 { left: 4%; }
+    .chip.c1 { top: 56px;  left: 2%; }
+    .chip.c2 { top: 110px; right: 2%; }
+    .chip.c3 { bottom: 110px; left: 3%; }
     .trust .stats { gap: 40px; }
   }
   @media (max-width: 520px) {
@@ -361,6 +361,17 @@
     .cta-band { padding: 56px 22px; border-radius: 24px; }
     .ui-stage { padding: 24px; }
     .np-card { width: 100%; max-width: 320px; }
+  }
+  @media (max-width: 440px) {
+    .hero-stage { padding: 40px 16px 0; }
+    .phone-stage { height: 320px; margin-top: 24px; }
+    .phone-stage .p-light { width: 208px; transform: translateX(-82%); }
+    .phone-stage .p-dark  { width: 192px; transform: translateX(-18%) translateY(18px); }
+    .chip { font-size: 11px; padding: 5px 9px; gap: 6px; }
+    .chip .dot { width: 7px; height: 7px; }
+    .chip.c1 { top: 40px;  left: 0; }
+    .chip.c2 { top: 92px;  right: 0; }
+    .chip.c3 { bottom: 88px; left: 0; }
   }
 </style>
 </head>
@@ -661,14 +672,14 @@
         </nav>
         <nav class="foot-col" aria-label="Company links">
           <h4>Company</h4>
-          <a href="#">About</a>
-          <a href="#">Blog</a>
-          <a href="#">Contact</a>
+          <a href="about.html">About</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
         </nav>
         <nav class="foot-col" aria-label="Legal links">
           <h4>Legal</h4>
-          <a href="privacy.html">Privacy</a>
-          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
         </nav>
       </div>
     </div>
