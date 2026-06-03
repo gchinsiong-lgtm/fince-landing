@@ -159,7 +159,7 @@
     <div class="legal-head" style="max-width:var(--legalw);margin:0 auto;">
       <p class="eyebrow">Legal</p>
       <h1>Privacy Policy</h1>
-      <p class="meta">Effective Date: 1 June 2026 · Last Updated: 1 June 2026</p>
+      <p class="meta">Effective Date: 1 June 2026 · Last Updated: 3 June 2026</p>
     </div>
   </div>
 
@@ -231,7 +231,11 @@
       <h3>2.6 Identifiers</h3>
       <p>We assign a unique internal account ID to your account. We do not collect IDFA (Identifier for Advertisers) and do not perform cross-app tracking.</p>
 
-      <p>We do <strong>not</strong> collect: precise location data, contacts, calendar, health data, browsing history, or biometric data.</p>
+      <h3>2.7 Biometric Authentication (Face ID / Touch ID)</h3>
+      <p>If you enable <strong>App Lock</strong>, the Fince app uses your iOS device's biometric authentication (Face ID or Touch ID) or your device passcode to unlock the app. This check is performed entirely on your device by iOS — <strong>your biometric data (facial scan, fingerprint) is never sent to us, never leaves your device, and is never stored on our servers</strong>. We only receive a "success" or "failure" signal from iOS.</p>
+      <p>App Lock is optional and can be enabled or disabled at any time via <strong>Settings &gt; Security &gt; App Lock</strong> inside the app.</p>
+
+      <p>We do <strong>not</strong> collect: precise location data, contacts, calendar, health data, browsing history, or biometric data (Face ID / Touch ID is handled entirely on your device — see Section 2.7).</p>
 
       <h2 id="s3">3. How We Use Your Data</h2>
       <table>
@@ -341,6 +345,7 @@
         <li>Encryption in transit (TLS 1.3) for all client–server communications;</li>
         <li>Encryption at rest for database storage (provided by Supabase);</li>
         <li>Salted password hashing (provided by Supabase Auth);</li>
+        <li>Optional in-app biometric lock (Face ID / Touch ID) and device passcode authentication, performed entirely on your device, as an additional security layer (see Section 2.7);</li>
         <li>Role-based access controls inside our infrastructure;</li>
         <li>Principle of least privilege for staff and contractors;</li>
         <li>Regular review of Sub-Processor security postures.</li>
