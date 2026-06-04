@@ -192,25 +192,129 @@
   .sec-head h2 { font-size: clamp(32px, 4.4vw, 46px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.05; margin: 14px 0 0; text-wrap: balance; }
   .sec-head p { font-size: 18px; color: var(--ink-2); margin: 16px auto 0; max-width: 48ch; text-wrap: pretty; }
 
-  /* ── features ── */
-  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  .feature {
-    background: var(--surface); border-radius: var(--r); padding: 32px;
-    box-shadow: var(--shadow); border: 1px solid var(--hair);
-    transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease;
+  /* ── statement band (phones flank the quote) ── */
+  .statement { padding: 80px 0 100px; }
+  .statement-row {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: clamp(20px, 2.5vw, 48px);
+    max-width: 1520px; margin: 0 auto; padding: 0 16px;
   }
-  .feature:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-  .ficon {
-    width: 48px; height: 48px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
-    flex-shrink: 0;
+  .statement-text {
+    grid-column: 2;
+    font-size: clamp(28px, 3.4vw, 44px); font-weight: 800;
+    letter-spacing: -1.2px; line-height: 1.12;
+    text-align: center; color: var(--ink);
+    text-wrap: balance; max-width: 22ch; margin: 0;
   }
-  .ficon.green  { background: var(--green-bg); color: var(--green); }
-  .ficon.forest { background: rgba(22,70,58,0.10); color: var(--forest); }
-  .ficon.blue   { background: var(--blue-bg); color: var(--blue); }
-  .ficon.red    { background: var(--red-bg); color: var(--red); }
-  .feature h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
-  .feature p  { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .statement-text .accent { color: var(--green); }
+  .statement-text .mut    { color: var(--ink-3); }
+  .statement-phone {
+    width: clamp(320px, 38vw, 560px); max-width: 100%; height: auto;
+    filter: drop-shadow(0 36px 60px rgba(22,70,58,0.22));
+  }
+  .statement-phone.left  { justify-self: end; }
+  .statement-phone.right { justify-self: start; }
+
+  /* ── spotlight sections (text + visual side-by-side) ── */
+  .spot { position: relative; padding: 96px 0; overflow: hidden; }
+  .spot-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+  }
+  .spot-row.flip .copy   { order: 2; }
+  .spot-row.flip .visual { order: 1; }
+  .spot .copy h2 {
+    font-size: clamp(30px, 4vw, 46px); font-weight: 800;
+    letter-spacing: -1.4px; line-height: 1.05; margin: 14px 0 0;
+    text-wrap: balance;
+  }
+  .spot .copy > p {
+    font-size: 18px; color: var(--ink-2); margin: 18px 0 0;
+    max-width: 42ch; line-height: 1.6; text-wrap: pretty;
+  }
+  .spot .visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-height: 480px;
+  }
+  .spot .visual .np-card,
+  .spot .visual .rc-card { position: relative; z-index: 2; }
+
+  /* glow blob behind each spotlight card */
+  .glow {
+    position: absolute; border-radius: 50%;
+    filter: blur(46px); z-index: 0; pointer-events: none;
+  }
+  .spot .visual .glow-s {
+    width: 500px; height: 500px;
+    left: 50%; top: 50%; transform: translate(-50%,-50%);
+  }
+  .glow-green  { background: radial-gradient(circle, rgba(15,138,83,0.20) 0%, transparent 68%); }
+  .glow-forest { background: radial-gradient(circle, rgba(22,70,58,0.22) 0%, transparent 68%); }
+
+  /* ── receipt-scan card (AI Scan visual) ── */
+  .rc-card {
+    width: 340px; background: #fff; border-radius: 24px; padding: 22px;
+    box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 34px 70px rgba(22,70,58,0.22);
+  }
+  .rc-photo {
+    height: 150px; border-radius: 16px;
+    background: linear-gradient(135deg, #2A6052, #16463A);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rc-photo .scanline {
+    position: absolute; left: 0; right: 0; height: 3px;
+    background: rgba(111,230,164,0.9);
+    box-shadow: 0 0 16px 3px rgba(48,210,122,0.7);
+    animation: scan 2.6s ease-in-out infinite;
+  }
+  @keyframes scan {
+    0%, 100% { top: 12%; }
+    50%      { top: 86%; }
+  }
+  .rc-photo .recv {
+    width: 92px; background: #fff; border-radius: 5px; padding: 10px 9px;
+    transform: rotate(-4deg);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+  }
+  .rc-photo .recv .ln { height: 4px; border-radius: 2px; background: var(--cream-3); margin-bottom: 5px; }
+  .rc-photo .recv .ln:last-child { margin-bottom: 0; }
+  .rc-photo .recv .ln.s { width: 60%; }
+  .rc-photo .recv .ln.m { width: 85%; }
+  .rc-tag {
+    position: absolute; top: 12px; right: 12px; z-index: 3;
+    background: rgba(255,255,255,0.92); color: var(--green);
+    font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
+    padding: 4px 9px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .rc-tag .pulse {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+    animation: rc-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes rc-pulse {
+    0%, 100% { opacity: 1;   transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(1.4); }
+  }
+  .rc-rows { margin-top: 16px; }
+  .rc-field {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--hair);
+  }
+  .rc-field:last-child { border-bottom: 0; }
+  .rc-field .k { font-size: 13px; color: var(--ink-2); }
+  .rc-field .v { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; font-feature-settings: "tnum"; }
+  .rc-field .pill {
+    font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+    background: var(--blue-bg); color: var(--blue);
+  }
+  .rc-confirm {
+    margin-top: 16px; width: 100%;
+    background: var(--forest); color: var(--cream);
+    border: 0; border-radius: 12px; padding: 13px;
+    font: inherit; font-weight: 700; font-size: 15px;
+    cursor: default;
+  }
 
   /* ── how it works ── */
   .how { background: var(--cream-2); }
@@ -230,25 +334,7 @@
   .step h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
   .step p  { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
 
-  /* ── deep dive (native card) ── */
-  .deep { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-  .deep .copy h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.06; margin: 14px 0 0; text-wrap: balance; }
-  .deep .copy p { font-size: 17px; color: var(--ink-2); margin: 18px 0 0; line-height: 1.6; max-width: 42ch; }
-  .checklist { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-direction: column; gap: 14px; }
-  .checklist li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; }
-  .checklist .tick {
-    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--green-bg); color: var(--green);
-    display: flex; align-items: center; justify-content: center; margin-top: 1px;
-  }
-
-  .ui-stage {
-    position: relative; padding: 44px; border-radius: 30px;
-    background: radial-gradient(120% 100% at 70% 0%, #EAF0E0 0%, #CDDCBC 60%, #AEC79D 100%);
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  /* native Net Profit card */
+  /* native Net Profit card (used by the Net Profit spotlight) */
   .np-card { width: 340px; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 30px 60px rgba(22,70,58,0.22); }
   .np-row { display: flex; align-items: center; gap: 10px; }
   .np-ws { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #4FD899, #0A6B40); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.40); }
@@ -281,16 +367,6 @@
   .np-io .badge { width: 18px; height: 18px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .np-io .cell .v { font-size: 18px; font-weight: 800; letter-spacing: -0.6px; margin-top: 6px; font-feature-settings: "tnum"; }
   .np-io .cell .v .c { font-size: 12px; color: var(--ink-2); font-weight: 600; }
-  .ui-float {
-    position: absolute; bottom: 30px; right: 22px;
-    background: #fff; border-radius: 14px; padding: 11px 14px;
-    box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; z-index: 3;
-  }
-  .ui-float .ic { width: 32px; height: 32px; border-radius: 9px; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ui-float .t1 { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; }
-  .ui-float .t2 { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
-  .ui-float .amt { margin-left: 8px; font-size: 14px; font-weight: 800; color: var(--green); font-feature-settings: "tnum"; }
-
   /* ── waitlist ── */
   .cta-band {
     position: relative; overflow: hidden;
@@ -338,11 +414,21 @@
 
   /* ── responsive ── */
   @media (max-width: 900px) {
-    .features { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; gap: 32px; }
     .steps::before { display: none; }
-    .deep { grid-template-columns: 1fr; gap: 40px; }
     .section { padding: 72px 0; }
+    .statement { padding: 72px 0; }
+    .statement-row { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .statement-text { grid-column: 1; max-width: 26ch; margin: 0 auto; }
+    .statement-phone { display: none; }
+    .spot { padding: 64px 0; }
+    .spot-row { grid-template-columns: 1fr; gap: 40px; }
+    .spot-row.flip .copy   { order: 0; }
+    .spot-row.flip .visual { order: 0; }
+    .spot .copy { text-align: center; }
+    .spot .copy > p { margin-left: auto; margin-right: auto; }
+    .spot .copy .hero-cta { justify-content: center !important; }
+    .spot .visual { min-height: 420px; }
   }
   @media (max-width: 860px) { .nav-links { display: none; } }
   @media (max-width: 760px) {
@@ -359,8 +445,7 @@
   @media (max-width: 520px) {
     .wrap { padding: 0 20px; }
     .cta-band { padding: 56px 22px; border-radius: 24px; }
-    .ui-stage { padding: 24px; }
-    .np-card { width: 100%; max-width: 320px; }
+    .np-card, .rc-card { width: 100%; max-width: 320px; }
   }
   @media (max-width: 440px) {
     .hero-stage { padding: 40px 16px 0; }
@@ -454,42 +539,122 @@
   </div>
 </section>
 
-<!-- ─────────────────────── FEATURES ─────────────────────── -->
-<section class="section" id="features" aria-labelledby="features-heading">
+<!-- ─────────────────────── STATEMENT ─────────────────────── -->
+<section class="statement" aria-label="Why freelancers need Fince">
+  <div class="statement-row">
+    <img class="statement-phone left" src="landing/phone-dashboard.png" alt="" aria-hidden="true" width="400" />
+    <p class="statement-text">
+      Most freelancers lose <span class="accent">6 hours a month</span> to spreadsheets
+      <span class="mut">— and still don't know their real profit.</span>
+    </p>
+    <img class="statement-phone right" src="landing/phone-projects.png" alt="" aria-hidden="true" width="400" />
+  </div>
+</section>
+
+<!-- ─────────────────────── AI SCAN ─────────────────────── -->
+<section class="spot" id="features" aria-labelledby="scan-heading">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow">Why Fince</p>
-      <h2 id="features-heading">Everything your accountant wishes you had.</h2>
-      <p>The tedious parts of running money on your own — handled automatically, in plain ringgit.</p>
+    <div class="spot-row">
+      <div class="copy">
+        <p class="eyebrow">AI Scan</p>
+        <h2 id="scan-heading">Snap it. Filed.</h2>
+        <p>Point your camera at any receipt. Fince reads the merchant, amount and category in seconds — then files it where it belongs.</p>
+        <div class="hero-cta" style="justify-content:flex-start;margin-top:28px;">
+          <a class="btn btn-primary" href="#waitlist">
+            Join the waitlist
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        </div>
+      </div>
+      <div class="visual" aria-hidden="true">
+        <span class="glow glow-s glow-green"></span>
+        <div class="rc-card">
+          <div class="rc-photo">
+            <span class="rc-tag"><span class="pulse"></span>SCANNING</span>
+            <span class="scanline"></span>
+            <div class="recv">
+              <div class="ln m"></div><div class="ln s"></div><div class="ln m"></div><div class="ln s"></div><div class="ln m"></div>
+            </div>
+          </div>
+          <div class="rc-rows">
+            <div class="rc-field"><span class="k">Merchant</span><span class="v">Kedai Kopi Lai</span></div>
+            <div class="rc-field"><span class="k">Amount</span><span class="v">RM 48.60</span></div>
+            <div class="rc-field"><span class="k">Category</span><span class="pill">Meals &amp; Coffee</span></div>
+            <div class="rc-field"><span class="k">Project</span><span class="v">Filmpeak Studio</span></div>
+          </div>
+          <div class="rc-confirm">Confirm &amp; file</div>
+        </div>
+      </div>
     </div>
-    <div class="features">
-      <div class="feature">
-        <div class="ficon green" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8" /><path d="M16 8h5v5" /></svg>
+  </div>
+</section>
+
+<!-- ─────────────────────── NET PROFIT ─────────────────────── -->
+<section class="spot" id="profit" aria-labelledby="profit-heading">
+  <div class="wrap">
+    <div class="spot-row flip">
+      <div class="copy">
+        <p class="eyebrow">Net Profit</p>
+        <h2 id="profit-heading">Your month in one number.</h2>
+        <p>The dashboard leads with the one figure that matters — your real net profit — backed by a clear income vs. expenses split.</p>
+        <div class="hero-cta" style="justify-content:flex-start;margin-top:28px;">
+          <a class="btn btn-primary" href="#waitlist">
+            Join the waitlist
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
         </div>
-        <h3>Automated bookkeeping</h3>
-        <p>Every transaction is captured and categorised the moment it happens — no spreadsheets.</p>
       </div>
-      <div class="feature">
-        <div class="ficon forest" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h3" /></svg>
+      <div class="visual" aria-hidden="true">
+        <span class="glow glow-s glow-forest"></span>
+        <div class="np-card">
+          <div class="np-row">
+            <span class="np-ws"></span>
+            <span class="np-ws-name">Filmpeak Studio</span>
+            <span class="np-dots"><span></span><span></span><span></span></span>
+          </div>
+          <div class="np-label">Net Profit · this month</div>
+          <div class="np-amt">
+            <span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span>
+          </div>
+          <div>
+            <span class="np-delta">↑ 233.71%</span>
+            <span>vs last period</span>
+          </div>
+          <svg class="np-spark" viewBox="0 0 320 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="spk" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#0F8A53" stop-opacity="0.20" />
+                <stop offset="100%" stop-color="#0F8A53" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5 L320 64 L0 64 Z" fill="url(#spk)" />
+            <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5" fill="none" stroke="#0F8A53" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="320" cy="5" r="3.5" fill="#0F8A53" />
+          </svg>
+          <div class="np-seg">
+            <div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div>
+          </div>
+          <div class="np-io">
+            <div class="cell">
+              <div class="h">
+                <span class="badge" style="background:var(--green-bg);color:var(--green);">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
+                </span>
+                Income
+              </div>
+              <div class="v">RM 15,260<span class="c">.00</span></div>
+            </div>
+            <div class="cell">
+              <div class="h">
+                <span class="badge" style="background:var(--red-bg);color:var(--red);">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg>
+                </span>
+                Expenses
+              </div>
+              <div class="v">RM 3,857<span class="c">.08</span></div>
+            </div>
+          </div>
         </div>
-        <h3>Snap a receipt</h3>
-        <p>Point your camera. Fince reads the merchant, amount and category, then files it.</p>
-      </div>
-      <div class="feature">
-        <div class="ficon blue" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
-        </div>
-        <h3>Profit per project</h3>
-        <p>Group income and costs by client. See which projects actually pay.</p>
-      </div>
-      <div class="feature">
-        <div class="ficon red" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></svg>
-        </div>
-        <h3>Built for Malaysia</h3>
-        <p>Ringgit-native, with local categories and tax-ready summaries.</p>
       </div>
     </div>
   </div>
@@ -520,100 +685,6 @@
         <p>See your real net profit any time — this month, this project, this year.</p>
       </li>
     </ol>
-  </div>
-</section>
-
-<!-- ─────────────────────── DEEP DIVE ─────────────────────── -->
-<section class="section" aria-labelledby="deepdive-heading">
-  <div class="wrap deep">
-    <div class="copy">
-      <p class="eyebrow">Your numbers, in focus</p>
-      <h2 id="deepdive-heading">Always know where you stand.</h2>
-      <p>The dashboard leads with the one number that matters — your net profit — backed by a clear in/out breakdown.</p>
-      <ul class="checklist" aria-label="Dashboard highlights">
-        <li>
-          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
-          Net profit with month-on-month trend
-        </li>
-        <li>
-          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
-          Income vs expenses, split clearly
-        </li>
-        <li>
-          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
-          Recent activity at a glance
-        </li>
-      </ul>
-      <div class="hero-cta" style="justify-content:flex-start;margin-top:30px;">
-        <a class="btn btn-primary" href="#waitlist">
-          Join the waitlist
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="ui-stage" aria-hidden="true">
-      <!-- Net Profit card — mirrors the app's dashboard widget -->
-      <div class="np-card">
-        <div class="np-row">
-          <span class="np-ws"></span>
-          <span class="np-ws-name">Filmpeak Studio</span>
-          <span class="np-dots"><span></span><span></span><span></span></span>
-        </div>
-        <div class="np-label">Net Profit · this month</div>
-        <div class="np-amt">
-          <span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span>
-        </div>
-        <div>
-          <span class="np-delta">↑ 233.71%</span>
-          <span>vs last period</span>
-        </div>
-        <svg class="np-spark" viewBox="0 0 320 64" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="spk" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#0F8A53" stop-opacity="0.20" />
-              <stop offset="100%" stop-color="#0F8A53" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-          <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5 L320 64 L0 64 Z" fill="url(#spk)" />
-          <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5" fill="none" stroke="#0F8A53" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-          <circle cx="320" cy="5" r="3.5" fill="#0F8A53" />
-        </svg>
-        <div class="np-seg">
-          <div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div>
-        </div>
-        <div class="np-io">
-          <div class="cell">
-            <div class="h">
-              <span class="badge" style="background:var(--green-bg);color:var(--green);">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-              </span>
-              Income
-            </div>
-            <div class="v">RM 15,260<span class="c">.00</span></div>
-          </div>
-          <div class="cell">
-            <div class="h">
-              <span class="badge" style="background:var(--red-bg);color:var(--red);">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg>
-              </span>
-              Expenses
-            </div>
-            <div class="v">RM 3,857<span class="c">.08</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="ui-float">
-        <span class="ic">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-        </span>
-        <div>
-          <div class="t1">XinYi · PAID</div>
-          <div class="t2">Client payment</div>
-        </div>
-        <span class="amt">+2,560</span>
-      </div>
-    </div>
   </div>
 </section>
 
