@@ -223,6 +223,24 @@
   .spot .visual .np-card,
   .spot .visual .rc-card { position: relative; z-index: 2; }
 
+  /* np-card wrapper to anchor the floating "XinYi PAID" notif */
+  .np-stack { position: relative; width: 340px; max-width: 100%; z-index: 2; }
+  .ui-float {
+    position: absolute; bottom: -22px; right: -28px; z-index: 3;
+    background: #fff; border-radius: 14px; padding: 11px 14px;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 10px;
+    white-space: nowrap;
+  }
+  .ui-float .ic {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: var(--green-bg); color: var(--green);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .ui-float .t1 { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; }
+  .ui-float .t2 { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
+  .ui-float .amt { margin-left: 8px; font-size: 14px; font-weight: 800; color: var(--green); font-feature-settings: "tnum"; }
+
   /* glow blob behind each spotlight card */
   .glow {
     position: absolute; border-radius: 50%;
@@ -424,6 +442,10 @@
     .wrap { padding: 0 20px; }
     .cta-band { padding: 56px 22px; border-radius: 24px; }
     .np-card, .rc-card { width: 100%; max-width: 320px; }
+    .np-stack { width: 100%; max-width: 320px; }
+    .ui-float { right: -8px; bottom: -14px; padding: 9px 12px; }
+    .ui-float .t1 { font-size: 12px; }
+    .ui-float .amt { font-size: 13px; }
   }
 </style>
 </head>
@@ -566,6 +588,7 @@
       </div>
       <div class="visual" aria-hidden="true">
         <span class="glow glow-s glow-forest"></span>
+        <div class="np-stack">
         <div class="np-card">
           <div class="np-row">
             <span class="np-ws"></span>
@@ -614,6 +637,17 @@
               <div class="v">RM 3,857<span class="c">.08</span></div>
             </div>
           </div>
+        </div>
+        <div class="ui-float">
+          <span class="ic">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
+          </span>
+          <div>
+            <div class="t1">XinYi · PAID</div>
+            <div class="t2">Client payment</div>
+          </div>
+          <span class="amt">+2,560</span>
+        </div>
         </div>
       </div>
     </div>
