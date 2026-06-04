@@ -146,38 +146,39 @@
   .bubble.b4 { width: 130px; height: 130px; bottom: 120px; right: 12%; opacity: 0.40; }
   .bubble.b5 { width: 60px;  height: 60px;  top: 120px; right: 30%; opacity: 0.50; }
 
-  .hero-stage .inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
   .hero-stage .eyebrow { color: var(--forest); opacity: 0.78; }
   .hero h1 {
     font-size: clamp(42px, 6.6vw, 76px); font-weight: 900; letter-spacing: -2.4px;
-    line-height: 0.98; margin: 16px auto 0; color: var(--forest-2); text-wrap: balance;
+    line-height: 0.98; margin: 16px 0 0; color: var(--forest-2); text-wrap: balance;
   }
   .hero h1 .accent { color: var(--green); }
   .hero p.sub {
     font-size: clamp(17px, 2.2vw, 21px); color: rgba(15,51,41,0.72);
-    max-width: 48ch; margin: 20px auto 0; line-height: 1.5; text-wrap: pretty;
+    max-width: 44ch; margin: 20px 0 0; line-height: 1.5; text-wrap: pretty;
   }
-  .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+  .hero-cta { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
   .hero-note { margin-top: 14px; font-size: 14px; color: rgba(15,51,41,0.55); font-weight: 500; }
 
-  /* phones in stage */
-  .phone-stage { position: relative; z-index: 2; margin-top: 36px; height: 440px; overflow: visible; }
-  .phone-stage img {
-    position: absolute; bottom: -40px;
-    filter: drop-shadow(0 40px 60px rgba(22,70,58,0.30));
+  /* side-by-side hero grid */
+  .hero-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 32px;
+    align-items: center; margin-top: 8px;
   }
-  .phone-stage .p-light { width: 360px; left: 50%; transform: translateX(-86%); z-index: 3; }
-  .phone-stage .p-dark  { width: 340px; left: 50%; transform: translateX(-14%) translateY(26px); z-index: 2; }
-  .chip {
-    position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
-    background: rgba(255,255,255,0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.90); border-radius: 999px; padding: 8px 14px;
-    font-size: 14px; font-weight: 700; color: var(--forest-2); box-shadow: 0 10px 26px rgba(22,70,58,0.18);
+  .hero-grid .copy { text-align: left; }
+
+  /* angled phone in hero (Opal-style 3D pose) */
+  .hero-visual {
+    position: relative; perspective: 1400px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 560px;
   }
-  .chip .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .chip.c1 { top: 72px;   left: 12%; }
-  .chip.c2 { top: 132px;  right: 10%; }
-  .chip.c3 { bottom: 120px; left: 10%; }
+  .hero-phone {
+    width: 100%; max-width: 360px; height: auto;
+    filter: drop-shadow(0 50px 60px rgba(22,70,58,0.32));
+    transform: rotateY(-22deg) rotateX(8deg) rotateZ(-3deg);
+    transform-origin: center center;
+  }
 
   /* ── trust ── */
   .trust { padding: 64px 0 8px; }
@@ -243,53 +244,18 @@
   }
 
   .ui-stage {
-    position: relative; padding: 44px; border-radius: 30px;
+    position: relative; padding: 32px; border-radius: 30px;
     background: radial-gradient(120% 100% at 70% 0%, #EAF0E0 0%, #CDDCBC 60%, #AEC79D 100%);
+    perspective: 1400px;
     display: flex; align-items: center; justify-content: center;
+    min-height: 520px;
   }
-
-  /* native Net Profit card */
-  .np-card { width: 340px; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 30px 60px rgba(22,70,58,0.22); }
-  .np-row { display: flex; align-items: center; gap: 10px; }
-  .np-ws { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #4FD899, #0A6B40); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.40); }
-  .np-ws-name { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
-  .np-dots { margin-left: auto; display: flex; gap: 5px; }
-  .np-dots span { width: 6px; height: 6px; border-radius: 3px; background: var(--line); }
-  .np-dots span:first-child { width: 14px; background: var(--ink); }
-  .np-label { color: var(--ink-2); font-size: 13px; margin-top: 18px; font-weight: 500; }
-  .np-amt { display: flex; align-items: baseline; margin-top: 4px; font-weight: 800; letter-spacing: -1.4px; font-feature-settings: "tnum"; }
-  .np-amt .cur { font-size: 21px; color: var(--ink-2); font-weight: 600; margin-right: 5px; }
-  .np-amt .int { font-size: 40px; }
-  .np-amt .dec { font-size: 22px; color: var(--ink-2); font-weight: 600; }
-  .np-delta {
-    display: inline-flex; align-items: center; gap: 4px; margin-top: 10px;
-    background: var(--green-bg); color: var(--green);
-    padding: 3px 10px 3px 7px; border-radius: 999px;
-    font-size: 12px; font-weight: 800; font-feature-settings: "tnum";
+  .deep-phone {
+    width: 100%; max-width: 320px; height: auto;
+    filter: drop-shadow(0 40px 50px rgba(22,70,58,0.32));
+    transform: rotateY(20deg) rotateX(8deg) rotateZ(3deg);
+    transform-origin: center center;
   }
-  .np-delta + span { color: var(--ink-2); font-size: 12px; margin-left: 6px; }
-  .np-spark { display: block; width: 100%; height: 64px; margin-top: 14px; }
-  .np-seg {
-    margin-top: 14px; display: flex; background: rgba(20,19,15,0.05);
-    border-radius: 9px; padding: 2px; font-size: 13px; font-weight: 600;
-  }
-  .np-seg div { flex: 1; text-align: center; padding: 6px 0; border-radius: 7px; color: var(--ink-2); }
-  .np-seg div.on { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
-  .np-io { display: flex; gap: 10px; margin-top: 12px; }
-  .np-io .cell { flex: 1; background: var(--cream); border-radius: 14px; padding: 12px 14px; }
-  .np-io .cell .h { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); font-weight: 500; }
-  .np-io .badge { width: 18px; height: 18px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .np-io .cell .v { font-size: 18px; font-weight: 800; letter-spacing: -0.6px; margin-top: 6px; font-feature-settings: "tnum"; }
-  .np-io .cell .v .c { font-size: 12px; color: var(--ink-2); font-weight: 600; }
-  .ui-float {
-    position: absolute; bottom: 30px; right: 22px;
-    background: #fff; border-radius: 14px; padding: 11px 14px;
-    box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; z-index: 3;
-  }
-  .ui-float .ic { width: 32px; height: 32px; border-radius: 9px; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ui-float .t1 { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; }
-  .ui-float .t2 { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
-  .ui-float .amt { margin-left: 8px; font-size: 14px; font-weight: 800; color: var(--green); font-feature-settings: "tnum"; }
 
   /* ── waitlist ── */
   .cta-band {
@@ -343,35 +309,34 @@
     .steps::before { display: none; }
     .deep { grid-template-columns: 1fr; gap: 40px; }
     .section { padding: 72px 0; }
+    .hero-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+    .hero-grid .copy { text-align: center; }
+    .hero h1 { margin: 16px auto 0; }
+    .hero p.sub { margin: 20px auto 0; }
+    .hero-cta { justify-content: center; }
+    .hero-visual { min-height: 380px; padding-bottom: 8px; }
+    .hero-phone { max-width: 280px; transform: rotateY(-18deg) rotateX(6deg) rotateZ(-2deg); }
+    .ui-stage { padding: 24px; min-height: 380px; }
+    .deep-phone { max-width: 260px; transform: rotateY(16deg) rotateX(6deg) rotateZ(2deg); }
   }
   @media (max-width: 860px) { .nav-links { display: none; } }
   @media (max-width: 760px) {
     .hero-stage { padding: 48px 20px 0; border-radius: 28px; }
-    .phone-stage { height: 360px; }
-    .phone-stage .p-light { width: 252px; transform: translateX(-84%); }
-    .phone-stage .p-dark  { width: 232px; transform: translateX(-16%) translateY(20px); }
-    .chip { font-size: 12px; padding: 6px 11px; }
-    .chip.c1 { top: 56px;  left: 2%; }
-    .chip.c2 { top: 110px; right: 2%; }
-    .chip.c3 { bottom: 110px; left: 3%; }
     .trust .stats { gap: 40px; }
   }
   @media (max-width: 520px) {
     .wrap { padding: 0 20px; }
     .cta-band { padding: 56px 22px; border-radius: 24px; }
-    .ui-stage { padding: 24px; }
-    .np-card { width: 100%; max-width: 320px; }
+    .ui-stage { padding: 20px; min-height: 320px; }
+    .hero-visual { min-height: 320px; }
+    .hero-phone { max-width: 220px; transform: rotateY(-15deg) rotateX(5deg) rotateZ(-2deg); }
+    .deep-phone { max-width: 220px; transform: rotateY(14deg) rotateX(5deg) rotateZ(2deg); }
   }
   @media (max-width: 440px) {
     .hero-stage { padding: 40px 16px 0; }
-    .phone-stage { height: 320px; margin-top: 24px; }
-    .phone-stage .p-light { width: 208px; transform: translateX(-82%); }
-    .phone-stage .p-dark  { width: 192px; transform: translateX(-18%) translateY(18px); }
-    .chip { font-size: 11px; padding: 5px 9px; gap: 6px; }
-    .chip .dot { width: 7px; height: 7px; }
-    .chip.c1 { top: 40px;  left: 0; }
-    .chip.c2 { top: 92px;  right: 0; }
-    .chip.c3 { bottom: 88px; left: 0; }
+    .hero-visual { min-height: 280px; }
+    .hero-phone { max-width: 200px; }
+    .deep-phone { max-width: 200px; }
   }
 </style>
 </head>
@@ -409,26 +374,23 @@
       <span class="bubble b4" aria-hidden="true"></span>
       <span class="bubble b5" aria-hidden="true"></span>
 
-      <div class="inner">
-        <p class="eyebrow">For freelancers &amp; solo founders in Malaysia</p>
-        <h1>Bookkeeping that <span class="accent">does itself.</span></h1>
-        <p class="sub">Fince tracks your income, expenses and projects automatically — so you always know your real numbers.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#waitlist">
-            Join the waitlist
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </a>
-          <a class="btn btn-ghost" href="#how">See how it works</a>
+      <div class="hero-grid">
+        <div class="copy">
+          <p class="eyebrow">For freelancers &amp; solo founders in Malaysia</p>
+          <h1>Bookkeeping that <span class="accent">does itself.</span></h1>
+          <p class="sub">Fince tracks your income, expenses and projects automatically — so you always know your real numbers.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#waitlist">
+              Join the waitlist
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <p class="hero-note">iPhone · Free to start · Launching soon in Malaysia</p>
         </div>
-        <p class="hero-note">iPhone · Free to start · Launching soon in Malaysia</p>
-      </div>
-
-      <div class="phone-stage" aria-hidden="true">
-        <span class="chip c1"><span class="dot" style="background:var(--green);"></span>AI Scan</span>
-        <span class="chip c2"><span class="dot" style="background:var(--blue);"></span>Auto-categorised</span>
-        <span class="chip c3"><span class="dot" style="background:var(--green);"></span>LHDN-based</span>
-        <img class="p-light" src="landing/phone-dashboard.png" alt="Fince dashboard on iPhone showing net profit and recent transactions" width="380" />
-        <img class="p-dark"  src="landing/phone-projects.png"  alt="Fince projects view on iPhone in dark mode" width="360" />
+        <div class="hero-visual" aria-hidden="true">
+          <img class="hero-phone" src="landing/phone-dashboard.png" alt="Fince dashboard on iPhone showing net profit and recent transactions" width="380" />
+        </div>
       </div>
     </div>
   </div>
@@ -553,66 +515,7 @@
     </div>
 
     <div class="ui-stage" aria-hidden="true">
-      <!-- Net Profit card — mirrors the app's dashboard widget -->
-      <div class="np-card">
-        <div class="np-row">
-          <span class="np-ws"></span>
-          <span class="np-ws-name">Filmpeak Studio</span>
-          <span class="np-dots"><span></span><span></span><span></span></span>
-        </div>
-        <div class="np-label">Net Profit · this month</div>
-        <div class="np-amt">
-          <span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span>
-        </div>
-        <div>
-          <span class="np-delta">↑ 233.71%</span>
-          <span>vs last period</span>
-        </div>
-        <svg class="np-spark" viewBox="0 0 320 64" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="spk" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#0F8A53" stop-opacity="0.20" />
-              <stop offset="100%" stop-color="#0F8A53" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-          <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5 L320 64 L0 64 Z" fill="url(#spk)" />
-          <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5" fill="none" stroke="#0F8A53" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-          <circle cx="320" cy="5" r="3.5" fill="#0F8A53" />
-        </svg>
-        <div class="np-seg">
-          <div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div>
-        </div>
-        <div class="np-io">
-          <div class="cell">
-            <div class="h">
-              <span class="badge" style="background:var(--green-bg);color:var(--green);">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-              </span>
-              Income
-            </div>
-            <div class="v">RM 15,260<span class="c">.00</span></div>
-          </div>
-          <div class="cell">
-            <div class="h">
-              <span class="badge" style="background:var(--red-bg);color:var(--red);">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg>
-              </span>
-              Expenses
-            </div>
-            <div class="v">RM 3,857<span class="c">.08</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="ui-float">
-        <span class="ic">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-        </span>
-        <div>
-          <div class="t1">XinYi · PAID</div>
-          <div class="t2">Client payment</div>
-        </div>
-        <span class="amt">+2,560</span>
-      </div>
+      <img class="deep-phone" src="landing/phone-projects.png" alt="Fince projects view on iPhone" width="360" />
     </div>
   </div>
 </section>
