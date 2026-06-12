@@ -22,7 +22,6 @@
 <link rel="icon" type="image/png" href="landing/logo-mark-green.png" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/png" href="landing/logo-mark-cream.png" media="(prefers-color-scheme: dark)" />
 <link rel="preload" as="image" href="landing/phone-dashboard.png" />
-<link rel="preload" as="image" href="landing/phone-projects.png" />
 <style>
   @font-face {
     font-family: 'Inter';
@@ -48,404 +47,535 @@
     --green:    #0F8A53;
     --green-2:  #12A463;
     --green-bg: rgba(15,138,83,0.10);
+    --mint:     #4FD899;
+    --check:    #2BC57E;
     --red:      #C24628;
     --red-bg:   rgba(194,70,40,0.10);
-    --blue:     #2A6FF0;
-    --blue-bg:  rgba(42,111,240,0.10);
     --font:     'Inter', -apple-system, system-ui, sans-serif;
-    --maxw:     1160px;
-    --r:        20px;
+    --mono:     ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --maxw:     1200px;
     --shadow:   0 1px 2px rgba(20,19,15,0.04), 0 10px 30px rgba(20,19,15,0.05);
     --shadow-lg:0 2px 6px rgba(20,19,15,0.05), 0 24px 60px rgba(20,19,15,0.10);
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
   body {
     margin: 0; background: var(--cream); color: var(--ink);
-    font-family: var(--font); font-size: 17px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    font-family: var(--font); font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
-  a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, p { margin: 0; }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 100;
+    padding: 10px 18px; font-weight: 600; font-size: 14px;
+    background: var(--forest); color: var(--cream); border-radius: 0 0 8px 8px;
+  }
+  .skip-link:focus { left: 0; }
+  :focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+
   .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 
-  /* ── skip link (accessibility) ── */
-  .skip-link {
-    position: absolute; top: -100%; left: 16px; padding: 8px 16px;
-    background: var(--forest); color: var(--cream); border-radius: 0 0 8px 8px;
-    font-size: 14px; font-weight: 600; z-index: 200;
-    transition: top .15s ease;
-  }
-  .skip-link:focus { top: 0; }
-
-  /* ── focus visible ── */
-  :focus-visible {
-    outline: 2px solid var(--green);
-    outline-offset: 3px;
-    border-radius: 4px;
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.8px;
+    text-transform: uppercase; color: var(--green);
   }
 
-  /* ── atoms ── */
-  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); }
+  /* ── buttons & inputs ── */
   .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font); font-size: 16px; font-weight: 600;
-    padding: 13px 24px; border-radius: 999px; cursor: pointer;
-    border: 1px solid transparent; white-space: nowrap;
-    transition: transform .14s ease, background .18s ease, box-shadow .18s ease, color .18s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    padding: 0 26px; height: 54px; border-radius: 999px;
+    cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+    transition: transform .14s ease, background .18s ease, box-shadow .18s ease;
   }
-  .btn svg { flex-shrink: 0; transition: transform .18s ease; }
   .btn:active { transform: translateY(1px); }
-  .btn-primary { background: var(--forest); color: var(--cream); box-shadow: 0 8px 22px rgba(22,70,58,0.28); }
-  .btn-primary:hover { background: var(--forest-2); box-shadow: 0 12px 28px rgba(22,70,58,0.34); }
-  .btn-primary:hover svg { transform: translateX(3px); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-  .btn-ghost:hover { background: rgba(20,19,15,0.04); border-color: var(--ink-3); }
-  .btn-cream { background: var(--cream); color: var(--forest); }
-  .btn-cream:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.18); }
+  .btn svg { transition: transform .18s ease; }
+  .btn:hover svg { transform: translateX(3px); }
+  .btn-sm { height: 42px; padding: 0 19px; font-size: 14px; }
+  .btn-cream { background: var(--cream); color: var(--forest-2); }
+  .btn-cream:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.16); }
 
-  /* ── nav ── */
-  header.nav {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(244,242,236,0.72);
-    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border-bottom: 1px solid transparent;
-    transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
+  .input {
+    height: 54px; border-radius: 999px; border: 1px solid transparent;
+    background: rgba(255,255,255,0.96); padding: 0 22px;
+    font-family: inherit; font-size: 15px; color: var(--ink); outline: none;
+    transition: border-color .15s, box-shadow .15s;
   }
-  header.nav.scrolled { border-bottom-color: var(--hair); box-shadow: 0 6px 24px rgba(20,19,15,0.05); }
-  .nav-inner { display: flex; align-items: center; gap: 28px; height: 72px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--forest); }
+  .input::placeholder { color: rgba(20,19,15,0.35); }
+  .input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(15,138,83,0.14); }
+  .input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(194,70,40,0.16); }
+
+  /* waitlist form (hero, dark variant) */
+  .wl-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .wl-pill {
+    display: none; align-items: center; gap: 10px;
+    height: 54px; padding: 0 24px; border-radius: 999px;
+    background: rgba(255,255,255,0.14); color: var(--cream);
+    font-weight: 600; font-size: 15px;
+  }
+  .wl-fine { font-size: 13.5px; font-weight: 500; color: rgba(244,242,236,0.55); margin-top: 20px; }
+
+  /* ── nav (dark, in-flow on hero) ── */
+  .nav {
+    height: 76px; border-bottom: 1px solid rgba(244,242,236,0.12);
+    display: flex; align-items: center; position: relative; z-index: 5;
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 30px; }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 21px; letter-spacing: -0.5px; color: var(--cream);
+  }
   .brand img { width: 26px; height: 26px; }
-  .nav-links { display: flex; gap: 30px; margin-left: 14px; }
-  .nav-links a { font-size: 15px; font-weight: 500; color: var(--ink-2); transition: color .15s ease; }
-  .nav-links a:hover { color: var(--ink); }
+  .nav-links { display: flex; gap: 30px; margin-left: 12px; }
+  .nav-links a { font-size: 15px; font-weight: 500; color: rgba(244,242,236,0.7); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--cream); }
   .nav-cta { margin-left: auto; }
 
-  /* ── hero ── */
-  .hero { padding: 28px 0 0; }
-  .hero-stage {
-    position: relative; overflow: hidden; border-radius: 36px;
-    padding: clamp(72px, 9vw, 140px) 32px clamp(80px, 10vw, 150px); text-align: center;
-    background: radial-gradient(140% 120% at 50% -10%, #EAF0E0 0%, #C9DAB7 38%, #9FBF8E 70%, #7FA873 100%);
-    box-shadow: 0 2px 6px rgba(22,70,58,0.06), 0 40px 90px rgba(22,70,58,0.18);
-    isolation: isolate;
+  /* ── hero (dark forest band) ── */
+  .hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.045) 1px, transparent 1px);
+    background-size: 110px 110px;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(760px 520px at 78% 92%, rgba(18,164,99,0.22), transparent 70%);
   }
   .bubble {
-    position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
-    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.06) 60%, transparent 72%);
-    filter: blur(0.5px);
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0.04) 60%, transparent 72%);
   }
-  .bubble.b1 { width: 320px; height: 320px; top: -80px; left: -90px; opacity: 0.55; }
-  .bubble.b2 { width: 180px; height: 180px; top: 40px; right: -40px; opacity: 0.50; }
-  .bubble.b3 { width: 90px;  height: 90px;  top: 220px; left: 8%; opacity: 0.45; }
-  .bubble.b4 { width: 130px; height: 130px; bottom: 120px; right: 12%; opacity: 0.40; }
-  .bubble.b5 { width: 60px;  height: 60px;  top: 120px; right: 30%; opacity: 0.50; }
+  .hero .b1 { width: 340px; height: 340px; top: -110px; left: -90px; opacity: 0.22; }
+  .hero .b2 { width: 150px; height: 150px; top: 30%; left: 38%; opacity: 0.14; }
 
-  .hero-stage .inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
-  .hero-stage .eyebrow { color: var(--forest); opacity: 0.78; }
+  .hero-body { position: relative; z-index: 2; padding: clamp(48px, 6.5vw, 92px) 0 clamp(56px, 7vw, 100px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 580px 1fr;
+    gap: 48px; align-items: center;
+  }
+  .hero .eyebrow { color: var(--mint); margin-bottom: 18px; }
   .hero h1 {
-    font-size: clamp(42px, 6.6vw, 76px); font-weight: 900; letter-spacing: -2.4px;
-    line-height: 0.98; margin: 16px auto 0; color: var(--forest-2); text-wrap: balance;
+    font-size: clamp(44px, 5.4vw, 76px); font-weight: 900;
+    letter-spacing: -2.8px; line-height: 0.98;
+    color: var(--cream); text-wrap: balance;
   }
-  .hero h1 .accent { color: var(--green); }
-  .hero p.sub {
-    font-size: clamp(17px, 2.2vw, 21px); color: rgba(15,51,41,0.72);
-    max-width: 48ch; margin: 20px auto 0; line-height: 1.5; text-wrap: pretty;
+  .hero h1 .accent { color: var(--mint); }
+  .hero .sub {
+    font-size: 19.5px; line-height: 1.55; color: rgba(244,242,236,0.72);
+    max-width: 44ch; margin-top: 24px; text-wrap: pretty;
   }
-  .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
-  .hero-note { margin-top: 14px; font-size: 14px; color: rgba(15,51,41,0.55); font-weight: 500; }
+  .hero .wl-row { margin-top: 32px; }
+  .hero .input { width: 320px; max-width: 100%; }
 
-  /* ── trust ── */
-  .trust { padding: 96px 0 24px; }
-  .trust .stats { display: flex; justify-content: center; gap: clamp(40px, 7vw, 120px); flex-wrap: wrap; }
-  .stat { text-align: center; }
-  .stat .num {
-    font-size: clamp(48px, 6vw, 84px); font-weight: 800; letter-spacing: -2.4px;
-    color: var(--forest); font-feature-settings: "tnum"; line-height: 1;
+  .hero-visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-height: 540px;
   }
-  .stat .lbl { font-size: clamp(15px, 1.3vw, 18px); color: var(--ink-2); margin-top: 14px; max-width: 22ch; margin-left: auto; margin-right: auto; }
+  .hero-visual img {
+    width: 700px; height: 700px; max-width: none; object-fit: contain;
+    filter: drop-shadow(0 46px 80px rgba(0,0,0,0.45));
+  }
+  .glass {
+    position: absolute; z-index: 3;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 11px 17px; border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(20,19,15,0.07);
+    box-shadow: 0 10px 28px rgba(20,19,15,0.13);
+    font-size: 13.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    animation: lpFloat 6s ease-in-out infinite;
+  }
+  .glass .dot { width: 8px; height: 8px; border-radius: 4px; flex: 0 0 auto; }
+  .glass.g1 { top: 110px; right: 6px; }
+  .glass.g2 { top: 318px; left: -36px; animation-delay: 1.2s; }
+  .glass.g3 { bottom: 96px; right: 30px; animation-delay: 2.2s; }
+  @keyframes lpFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 
   /* ── section heads ── */
-  .section { padding: 100px 0; }
-  .sec-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
-  .sec-head h2 { font-size: clamp(32px, 4.4vw, 46px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.05; margin: 14px 0 0; text-wrap: balance; }
-  .sec-head p { font-size: 18px; color: var(--ink-2); margin: 16px auto 0; max-width: 48ch; text-wrap: pretty; }
+  .sec-head { text-align: center; }
+  .sec-head .eyebrow { margin-bottom: 14px; }
+  .sec-head h2 {
+    font-size: clamp(32px, 3.4vw, 44px); font-weight: 800;
+    letter-spacing: -1.6px; line-height: 1.04; text-wrap: balance;
+    max-width: 620px; margin: 0 auto;
+  }
+  .sec-head p {
+    font-size: 18px; line-height: 1.6; color: var(--ink-2); text-wrap: pretty;
+    max-width: 560px; margin: 16px auto 0;
+  }
 
-  /* ── statement band (phones flank the quote) ── */
-  .statement { padding: 80px 0 120px; }
-  .statement-row {
-    display: grid; grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: clamp(16px, 1.6vw, 36px);
-    max-width: 1800px; margin: 0 auto; padding: 0 8px;
+  /* ── AI Scan section ── */
+  .scan-section { background: var(--cream); padding: 88px 0 96px; }
+  .scan-panel {
+    position: relative; overflow: hidden; border-radius: 28px;
+    margin-top: 52px; padding: 46px 56px;
+    background: linear-gradient(150deg, #1B5345 0%, #0F3329 100%);
+    box-shadow: 0 34px 80px rgba(15,51,41,0.32);
   }
-  .statement-text {
-    grid-column: 2;
-    font-size: clamp(28px, 3.4vw, 46px); font-weight: 800;
-    letter-spacing: -1.2px; line-height: 1.12;
-    text-align: center; color: var(--ink);
-    text-wrap: balance; max-width: 20ch; margin: 0;
+  .scan-panel::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.05) 1px, transparent 1px);
+    background-size: 88px 88px;
   }
-  .statement-text .accent { color: var(--green); }
-  .statement-text .mut    { color: var(--ink-3); }
-  .statement-phone {
-    width: clamp(360px, 48vw, 720px); max-width: 100%; height: auto;
-    filter: drop-shadow(0 40px 70px rgba(22,70,58,0.24));
-  }
-  .statement-phone.left  { justify-self: end; }
-  .statement-phone.right { justify-self: start; }
+  .scan-panel .b1 { width: 240px; height: 240px; top: -80px; right: -60px; opacity: 0.25; }
+  .scan-panel .b2 { width: 130px; height: 130px; bottom: -40px; left: 8%; opacity: 0.2; }
 
-  /* ── spotlight sections (text + visual side-by-side) ── */
-  .spot { position: relative; padding: 96px 0; overflow: hidden; }
-  .spot-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 64px; align-items: center;
+  .scan-steps {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    margin-bottom: 34px;
   }
-  .spot-row.flip .copy   { order: 2; }
-  .spot-row.flip .visual { order: 1; }
-  .spot .copy h2 {
-    font-size: clamp(30px, 4vw, 46px); font-weight: 800;
-    letter-spacing: -1.4px; line-height: 1.05; margin: 14px 0 0;
-    text-wrap: balance;
+  .scan-steps .conn { width: 26px; height: 1px; background: rgba(244,242,236,0.18); }
+  .scan-steps .step {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: rgba(244,242,236,0.4); transition: color .3s ease;
   }
-  .spot .copy > p {
-    font-size: 18px; color: var(--ink-2); margin: 18px 0 0;
-    max-width: 42ch; line-height: 1.6; text-wrap: pretty;
-  }
-  .spot .visual {
-    position: relative; display: flex; align-items: center; justify-content: center;
-    min-height: 480px;
-  }
-  .spot .visual .np-card,
-  .spot .visual .rc-card { position: relative; z-index: 2; }
+  .scan-steps .step .n { font-size: 11.5px; font-weight: 700; font-feature-settings: "tnum"; }
+  .scan-steps .step .l { font-size: 13px; font-weight: 600; }
+  .scan-panel[data-phase="0"] .step[data-step="0"],
+  .scan-panel[data-phase="1"] .step[data-step="1"],
+  .scan-panel[data-phase="2"] .step[data-step="2"] { color: var(--check); }
 
-  /* np-card wrapper to anchor the floating "XinYi PAID" notif */
-  .np-stack { position: relative; width: 340px; max-width: 100%; z-index: 2; }
-  .ui-float {
-    position: absolute; bottom: -22px; right: -28px; z-index: 3;
-    background: #fff; border-radius: 14px; padding: 11px 14px;
-    box-shadow: var(--shadow-lg);
-    display: flex; align-items: center; gap: 10px;
+  .scan-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 300px 1fr 390px;
+    gap: 52px; align-items: start;
+  }
+
+  /* receipt */
+  .receipt-wrap { position: relative; width: 286px; margin: 0 auto; }
+  .receipt-wrap .corner {
+    position: absolute; width: 20px; height: 20px; z-index: 4;
+    border: 0 solid var(--check); border-radius: 3px; opacity: 0.9;
+  }
+  .corner.tl { top: -12px; left: -12px;  border-top-width: 2.5px; border-left-width: 2.5px; }
+  .corner.tr { top: -12px; right: -12px; border-top-width: 2.5px; border-right-width: 2.5px; }
+  .corner.bl { bottom: -12px; left: -12px;  border-bottom-width: 2.5px; border-left-width: 2.5px; }
+  .corner.br { bottom: -12px; right: -12px; border-bottom-width: 2.5px; border-right-width: 2.5px; }
+  .receipt {
+    position: relative; overflow: hidden;
+    background: #FDFDFA; border-radius: 4px; padding: 20px 18px;
+    transform: rotate(-1.2deg);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.30);
+    border: 1px solid var(--hair);
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.62; color: #3B3930;
+  }
+  .receipt .c { text-align: center; }
+  .receipt .hd { text-align: center; font-weight: 700; font-size: 12.5px; }
+  .receipt .dash { border-top: 1px dashed #C9C6B8; margin: 9px 0; }
+  .receipt .r { display: flex; justify-content: space-between; gap: 12px; }
+  .receipt .r.bold { font-weight: 700; font-size: 13px; }
+  .receipt .thanks { text-align: center; margin-top: 8px; color: #8B887A; }
+  .beam {
+    position: absolute; left: -8%; right: -8%; top: -12%; height: 54px;
+    pointer-events: none; z-index: 3; display: none;
+    background: linear-gradient(to bottom, rgba(18,164,99,0), rgba(18,164,99,0.20) 62%, rgba(18,164,99,0.5) 100%);
+    border-bottom: 2px solid var(--check);
+    box-shadow: 0 3px 22px rgba(18,164,99,0.5);
+    animation: lpBeam 2.5s cubic-bezier(.45,.05,.55,.95) infinite;
+  }
+  .scan-panel[data-phase="0"] .beam { display: block; }
+  @keyframes lpBeam { 0% { top: -12%; } 100% { top: 97%; } }
+
+  /* extracted chips */
+  .chips { display: flex; flex-direction: column; gap: 12px; }
+  .chip {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 11px 16px; border-radius: 14px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
+    opacity: 0; transform: translateY(12px) scale(0.97);
+    transition: opacity .5s cubic-bezier(.2,.7,.2,1), transform .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .scan-panel[data-phase="1"] .chip,
+  .scan-panel[data-phase="2"] .chip { opacity: 1; transform: none; }
+  .scan-panel[data-phase="1"] .chip:nth-child(1), .scan-panel[data-phase="2"] .chip:nth-child(1) { transition-delay: 0ms; }
+  .scan-panel[data-phase="1"] .chip:nth-child(2), .scan-panel[data-phase="2"] .chip:nth-child(2) { transition-delay: 130ms; }
+  .scan-panel[data-phase="1"] .chip:nth-child(3), .scan-panel[data-phase="2"] .chip:nth-child(3) { transition-delay: 260ms; }
+  .scan-panel[data-phase="1"] .chip:nth-child(4), .scan-panel[data-phase="2"] .chip:nth-child(4) { transition-delay: 390ms; }
+  .chip .k {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase;
+    color: rgba(244,242,236,0.5);
+  }
+  .chip .vrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .chip .v { font-size: 14.5px; font-weight: 600; color: var(--cream); font-feature-settings: "tnum"; }
+  .chip.cat { background: rgba(18,164,99,0.20); border-color: rgba(43,197,126,0.45); }
+  .chip.cat .k { color: #7FDDAE; }
+  .chip.cat .v { color: #DFF7EA; }
+  .chip .tag {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 999px;
+    background: rgba(43,197,126,0.22); color: #7FDDAE;
+  }
+  .chip-status {
+    display: flex; align-items: center; gap: 8px; margin-top: 4px;
+    font-size: 13px; font-weight: 500; color: rgba(244,242,236,0.6);
+  }
+  .pulse-dot {
+    width: 7px; height: 7px; border-radius: 4px; background: var(--check); flex: 0 0 auto;
+    animation: lpPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes lpPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .chip-status .s { display: none; }
+  .scan-panel[data-phase="0"] .chip-status .s0,
+  .scan-panel[data-phase="1"] .chip-status .s1,
+  .scan-panel[data-phase="2"] .chip-status .s2 { display: inline; }
+
+  /* mini ledger */
+  .ledger {
+    background: #fff; border-radius: 18px; border: 1px solid var(--line);
+    padding: 18px 18px 8px;
+    box-shadow: 0 26px 60px rgba(0,0,0,0.35); width: 100%;
+  }
+  .ledger-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; padding: 0 4px;
+  }
+  .ledger-head .t { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+  .ledger-head .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .ledger-head .live .pulse-dot { background: var(--green); }
+  .ledger-slot { height: 64px; }
+  .ledger-new {
+    display: flex; align-items: center; gap: 12px; padding: 10px;
+    border-radius: 12px; background: rgba(15,138,83,0.07);
+    opacity: 0; transform: translateY(14px);
+    transition: opacity .55s cubic-bezier(.2,.7,.2,1), transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .scan-panel[data-phase="2"] .ledger-new { opacity: 1; transform: none; }
+  .ledger-new .ic {
+    width: 36px; height: 36px; border-radius: 11px; flex: 0 0 auto;
+    background: var(--red-bg); color: var(--red);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .ledger-new .mid { flex: 1; min-width: 0; }
+  .ledger-new .n { display: block; font-size: 14.5px; font-weight: 600; }
+  .ledger-new .s { display: block; font-size: 12.5px; color: var(--ink-3); }
+  .ledger-new .right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .ledger-new .amt { font-size: 14.5px; font-weight: 600; color: var(--red); font-feature-settings: "tnum"; }
+  .auto-pill {
+    font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px;
+    background: var(--green-bg); color: var(--green);
+    opacity: 0;
+  }
+  .scan-panel[data-phase="2"] .auto-pill { animation: lpPop .45s cubic-bezier(.2,.7,.2,1) .35s both; }
+  @keyframes lpPop {
+    0% { transform: scale(0.4); opacity: 0; }
+    70% { transform: scale(1.18); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .ledger-rows { border-top: 1px solid var(--hair); margin-top: 8px; }
+  .ledger-row { display: flex; align-items: center; gap: 12px; padding: 11px 10px; }
+  .ledger-row .ic {
+    width: 30px; height: 30px; border-radius: 9px; flex: 0 0 auto;
+    background: var(--cream-2); color: var(--ink-3);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
+  }
+  .ledger-row .mid { flex: 1; min-width: 0; }
+  .ledger-row .n { display: block; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+  .ledger-row .s { display: block; font-size: 12px; color: var(--ink-3); }
+  .ledger-row .amt { font-size: 13.5px; font-weight: 600; color: var(--ink-2); font-feature-settings: "tnum"; }
+
+  /* ── LHDN proof section ── */
+  .lhdn-section {
+    background: #fff; border-top: 1px solid var(--hair);
+    padding: clamp(72px, 8vw, 110px) 0;
+  }
+  .lhdn-grid {
+    display: grid; grid-template-columns: 1fr 480px;
+    gap: 92px; align-items: center;
+  }
+  .lhdn-copy .eyebrow { margin-bottom: 14px; }
+  .lhdn-copy h2 {
+    font-size: clamp(32px, 3.4vw, 44px); font-weight: 800;
+    letter-spacing: -1.6px; line-height: 1.04; text-wrap: balance;
+  }
+  .lhdn-copy .sub {
+    font-size: 18px; line-height: 1.6; color: var(--ink-2);
+    max-width: 460px; margin-top: 16px; text-wrap: pretty;
+  }
+  .ticks { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+  .tick { display: flex; align-items: flex-start; gap: 12px; }
+  .tick .ic {
+    width: 22px; height: 22px; border-radius: 11px; flex: 0 0 auto; margin-top: 2px;
+    background: var(--green-bg); color: var(--green);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .tick .t { font-size: 16px; color: var(--ink-2); line-height: 1.45; }
+  .lhdn-micro { font-size: 13px; color: var(--ink-3); margin-top: 24px; }
+
+  .lhdn-card {
+    background: #fff; border-radius: 20px; border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg); overflow: hidden;
+  }
+  .lhdn-card-head {
+    background: var(--forest); color: var(--cream); padding: 16px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .lhdn-card-head .t {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 15px; font-weight: 700; letter-spacing: -0.2px;
+  }
+  .lhdn-card-head .t img { width: 18px; height: 18px; }
+  .lhdn-card-head .pill {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase;
+    padding: 4px 11px; border-radius: 999px; background: rgba(255,255,255,0.14);
     white-space: nowrap;
   }
-  .ui-float .ic {
-    width: 32px; height: 32px; border-radius: 9px;
-    background: var(--green-bg); color: var(--green);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  .lhdn-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px 22px; border-top: 1px solid var(--hair);
   }
-  .ui-float .t1 { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; }
-  .ui-float .t2 { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
-  .ui-float .amt { margin-left: 8px; font-size: 14px; font-weight: 800; color: var(--green); font-feature-settings: "tnum"; }
-
-  /* glow blob behind each spotlight card */
-  .glow {
-    position: absolute; border-radius: 50%;
-    filter: blur(46px); z-index: 0; pointer-events: none;
+  .lhdn-row:first-of-type { border-top: 0; }
+  .lhdn-row .n { display: block; font-size: 15px; font-weight: 600; }
+  .lhdn-row .e { display: block; font-size: 12.5px; color: var(--ink-3); }
+  .lhdn-row .tracked {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 600; color: var(--green); flex: 0 0 auto;
   }
-  .spot .visual .glow-s {
-    width: 500px; height: 500px;
-    left: 50%; top: 50%; transform: translate(-50%,-50%);
+  .lhdn-row .tracked .ic {
+    width: 18px; height: 18px; border-radius: 9px; background: var(--green-bg);
+    display: inline-flex; align-items: center; justify-content: center;
   }
-  .glow-green  { background: radial-gradient(circle, rgba(15,138,83,0.20) 0%, transparent 68%); }
-  .glow-forest { background: radial-gradient(circle, rgba(22,70,58,0.22) 0%, transparent 68%); }
-
-  /* ── receipt-scan card (AI Scan visual) ── */
-  .rc-card {
-    width: 340px; background: #fff; border-radius: 24px; padding: 22px;
-    box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 34px 70px rgba(22,70,58,0.22);
-  }
-  .rc-photo {
-    height: 150px; border-radius: 16px;
-    background: linear-gradient(135deg, #2A6052, #16463A);
-    position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .rc-photo .scanline {
-    position: absolute; left: 0; right: 0; height: 3px;
-    background: rgba(111,230,164,0.9);
-    box-shadow: 0 0 16px 3px rgba(48,210,122,0.7);
-    animation: scan 2.6s ease-in-out infinite;
-  }
-  @keyframes scan {
-    0%, 100% { top: 12%; }
-    50%      { top: 86%; }
-  }
-  .rc-photo .recv {
-    width: 92px; background: #fff; border-radius: 5px; padding: 10px 9px;
-    transform: rotate(-4deg);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-  }
-  .rc-photo .recv .ln { height: 4px; border-radius: 2px; background: var(--cream-3); margin-bottom: 5px; }
-  .rc-photo .recv .ln:last-child { margin-bottom: 0; }
-  .rc-photo .recv .ln.s { width: 60%; }
-  .rc-photo .recv .ln.m { width: 85%; }
-  .rc-tag {
-    position: absolute; top: 12px; right: 12px; z-index: 3;
-    background: rgba(255,255,255,0.92); color: var(--green);
-    font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
-    padding: 4px 9px; border-radius: 999px;
-    display: inline-flex; align-items: center; gap: 5px;
-  }
-  .rc-tag .pulse {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--green);
-    animation: rc-pulse 1.4s ease-in-out infinite;
-  }
-  @keyframes rc-pulse {
-    0%, 100% { opacity: 1;   transform: scale(1); }
-    50%      { opacity: 0.5; transform: scale(1.4); }
-  }
-  .rc-rows { margin-top: 16px; }
-  .rc-field {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 11px 0; border-bottom: 1px solid var(--hair);
-  }
-  .rc-field:last-child { border-bottom: 0; }
-  .rc-field .k { font-size: 13px; color: var(--ink-2); }
-  .rc-field .v { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; font-feature-settings: "tnum"; }
-  .rc-field .pill {
-    font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
-    background: var(--blue-bg); color: var(--blue);
-  }
-  .rc-confirm {
-    margin-top: 16px; width: 100%;
-    background: var(--forest); color: var(--cream);
-    border: 0; border-radius: 12px; padding: 13px;
-    font: inherit; font-weight: 700; font-size: 15px;
-    cursor: default;
+  .lhdn-foot {
+    padding: 13px 22px; background: var(--cream);
+    border-top: 1px solid var(--hair); font-size: 13px; color: var(--ink-2);
   }
 
-  /* ── how it works ── */
-  .how { background: var(--cream-2); }
-  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; }
-  .steps::before {
-    content: ""; position: absolute; top: 20px; left: 16%; right: 16%; height: 1.5px;
-    background: repeating-linear-gradient(90deg, var(--green) 0 7px, transparent 7px 15px);
-    opacity: 0.4;
+  /* ── waitlist CTA card ── */
+  .cta-section { background: var(--cream); padding: 56px 0; }
+  .cta-card {
+    position: relative; overflow: hidden; border-radius: 44px;
+    background: linear-gradient(150deg, #1C5546 0%, #16463A 38%, #0F3329 100%);
+    padding: 88px clamp(28px, 5vw, 60px) 96px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
   }
-  .step { text-align: left; position: relative; }
-  .step .n {
-    font-size: 15px; font-weight: 700; color: var(--green); background: var(--cream-2);
-    width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--green);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px; position: relative; z-index: 1;
+  .cta-card .b1 { width: 300px; height: 300px; top: -90px; left: -70px; opacity: 0.4; }
+  .cta-card .b2 { width: 170px; height: 170px; bottom: -40px; right: 12%; opacity: 0.3; }
+  .cta-card > * { position: relative; z-index: 2; }
+  .cta-card .mark { width: 54px; height: 54px; }
+  .cta-card h2 {
+    font-size: clamp(38px, 4.6vw, 60px); font-weight: 800;
+    letter-spacing: -2.2px; line-height: 1.06;
+    color: var(--cream); margin-top: 34px; text-wrap: balance;
   }
-  .step h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 8px; }
-  .step p  { font-size: 16px; color: var(--ink-2); margin: 0; line-height: 1.55; }
-
-  /* native Net Profit card (used by the Net Profit spotlight) */
-  .np-card { width: 340px; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 2px 4px rgba(20,19,15,0.05), 0 30px 60px rgba(22,70,58,0.22); }
-  .np-row { display: flex; align-items: center; gap: 10px; }
-  .np-ws { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #4FD899, #0A6B40); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.40); }
-  .np-ws-name { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
-  .np-dots { margin-left: auto; display: flex; gap: 5px; }
-  .np-dots span { width: 6px; height: 6px; border-radius: 3px; background: var(--line); }
-  .np-dots span:first-child { width: 14px; background: var(--ink); }
-  .np-label { color: var(--ink-2); font-size: 13px; margin-top: 18px; font-weight: 500; }
-  .np-amt { display: flex; align-items: baseline; margin-top: 4px; font-weight: 800; letter-spacing: -1.4px; font-feature-settings: "tnum"; }
-  .np-amt .cur { font-size: 21px; color: var(--ink-2); font-weight: 600; margin-right: 5px; }
-  .np-amt .int { font-size: 40px; }
-  .np-amt .dec { font-size: 22px; color: var(--ink-2); font-weight: 600; }
-  .np-delta {
-    display: inline-flex; align-items: center; gap: 4px; margin-top: 10px;
-    background: var(--green-bg); color: var(--green);
-    padding: 3px 10px 3px 7px; border-radius: 999px;
-    font-size: 12px; font-weight: 800; font-feature-settings: "tnum";
+  .cta-card .sub {
+    font-size: 19.5px; line-height: 1.6; color: rgba(244,242,236,0.66);
+    margin-top: 24px; max-width: 46ch; text-wrap: pretty;
   }
-  .np-delta + span { color: var(--ink-2); font-size: 12px; margin-left: 6px; }
-  .np-spark { display: block; width: 100%; height: 64px; margin-top: 14px; }
-  .np-seg {
-    margin-top: 14px; display: flex; background: rgba(20,19,15,0.05);
-    border-radius: 9px; padding: 2px; font-size: 13px; font-weight: 600;
+  .cta-form { display: flex; gap: 14px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+  .input-forest {
+    height: 60px; border-radius: 999px;
+    border: 1px solid rgba(244,242,236,0.28); background: rgba(255,255,255,0.06);
+    padding: 0 26px; font-family: inherit; font-size: 16.5px; color: var(--cream);
+    outline: none; width: 380px; max-width: 100%;
+    transition: border-color .15s, box-shadow .15s;
   }
-  .np-seg div { flex: 1; text-align: center; padding: 6px 0; border-radius: 7px; color: var(--ink-2); }
-  .np-seg div.on { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
-  .np-io { display: flex; gap: 10px; margin-top: 12px; }
-  .np-io .cell { flex: 1; background: var(--cream); border-radius: 14px; padding: 12px 14px; }
-  .np-io .cell .h { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); font-weight: 500; }
-  .np-io .badge { width: 18px; height: 18px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .np-io .cell .v { font-size: 18px; font-weight: 800; letter-spacing: -0.6px; margin-top: 6px; font-feature-settings: "tnum"; }
-  .np-io .cell .v .c { font-size: 12px; color: var(--ink-2); font-weight: 600; }
-  /* ── waitlist ── */
-  .cta-band {
-    position: relative; overflow: hidden;
-    background: var(--forest); color: var(--cream);
-    border-radius: 34px; padding: 76px 40px; text-align: center;
+  .input-forest::placeholder { color: rgba(244,242,236,0.45); }
+  .input-forest:focus { border-color: rgba(244,242,236,0.6); box-shadow: 0 0 0 3px rgba(244,242,236,0.12); }
+  .input-forest.error { border-color: #E2906F; box-shadow: 0 0 0 3px rgba(226,144,111,0.2); }
+  .btn-fince {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: inherit; font-size: 16.5px; font-weight: 700;
+    padding: 0 34px; height: 60px; border-radius: 999px;
+    cursor: pointer; border: none; white-space: nowrap;
+    background: var(--cream); color: #14463A;
+    transition: transform .14s ease, background .18s ease, box-shadow .18s ease;
   }
-  .cta-band::after {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(80% 120% at 50% -20%, rgba(48,210,122,0.22), transparent 60%);
-    pointer-events: none;
+  .btn-fince:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.22); }
+  .btn-fince:active { transform: translateY(1px); }
+  .btn-fince:disabled { opacity: 0.7; cursor: default; }
+  .cta-card .wl-pill { height: 60px; padding: 0 28px; font-size: 16.5px; margin-top: 44px; }
+  .cta-card .micro { font-size: 17px; color: rgba(244,242,236,0.6); margin-top: 30px; }
+  .cta-card .micro.err { color: rgba(255,180,160,0.95); }
+  .wl-add-another {
+    background: none; border: none; padding: 0; margin-left: 8px;
+    color: rgba(244,242,236,0.65); font-size: 14px; font-weight: 500;
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+    font-family: inherit; transition: color .15s ease;
   }
-  .cta-band > * { position: relative; z-index: 1; }
-  .cta-band img.mark { width: 52px; margin: 0 auto 24px; }
-  .cta-band h2 { font-size: clamp(32px, 4.6vw, 50px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.03; margin: 0 auto; max-width: 15ch; text-wrap: balance; }
-  .cta-band p { font-size: 18px; color: rgba(244,242,236,0.72); margin: 18px auto 0; max-width: 42ch; }
-  .wl-form { display: flex; gap: 10px; justify-content: center; margin: 34px auto 0; max-width: 480px; flex-wrap: wrap; }
-  .wl-form input {
-    flex: 1; min-width: 220px; font-family: var(--font); font-size: 16px;
-    padding: 15px 20px; border-radius: 999px; border: 1px solid rgba(244,242,236,0.22);
-    background: rgba(244,242,236,0.10); color: var(--cream); outline: none;
-    transition: border-color .15s ease, background .15s ease;
-  }
-  .wl-form input::placeholder { color: rgba(244,242,236,0.50); }
-  .wl-form input:focus { border-color: rgba(244,242,236,0.60); background: rgba(244,242,236,0.16); }
-  .wl-form input.error { border-color: rgba(255,180,160,0.90); }
-  .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; flex-shrink: 0; }
-  .wl-success { display: none; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: center; margin-top: 32px; font-size: 18px; font-weight: 600; }
-  .wl-success .tick { width: 30px; height: 30px; border-radius: 50%; background: rgba(48,210,122,0.22); color: #6BE6A4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .wl-add-another { background: none; border: none; padding: 0; margin-left: 6px; color: rgba(244,242,236,0.65); font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-family: inherit; transition: color .15s ease; }
-  .wl-add-another:hover { color: rgba(244,242,236,0.95); }
-  .wl-add-another:focus-visible { outline: 2px solid rgba(244,242,236,0.6); outline-offset: 3px; border-radius: 2px; }
-  .wl-fine { margin-top: 16px; font-size: 14px; color: rgba(244,242,236,0.55); }
+  .wl-add-another:hover { color: var(--cream); }
 
   /* ── footer ── */
-  footer.foot { padding: 64px 0 48px; border-top: 1px solid var(--hair); margin-top: 100px; }
-  .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
-  .foot-brand { max-width: 280px; }
-  .foot-brand .brand { color: var(--forest); margin-bottom: 14px; }
-  .foot-brand p { font-size: 15px; color: var(--ink-2); margin: 0; line-height: 1.55; }
-  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
-  .foot-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px; }
-  .foot-col a { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 12px; transition: color .15s ease; }
-  .foot-col a:hover { color: var(--ink); }
-  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; font-size: 14px; color: var(--ink-3); }
+  .foot {
+    background: #fff; border-top: 1px solid var(--hair);
+    padding: 32px 0;
+  }
+  .foot .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .foot-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 16px; letter-spacing: -0.3px; color: var(--forest);
+  }
+  .foot-brand img { width: 18px; height: 18px; }
+  .foot-right { display: flex; align-items: center; gap: 18px; font-size: 13px; color: var(--ink-3); flex-wrap: wrap; }
+  .foot-right a { transition: color .15s ease; }
+  .foot-right a:hover { color: var(--ink); }
 
   /* ── responsive ── */
-  @media (max-width: 900px) {
-    .steps { grid-template-columns: 1fr; gap: 32px; }
-    .steps::before { display: none; }
-    .section { padding: 72px 0; }
-    .statement { padding: 72px 0; }
-    .statement-row { grid-template-columns: 1fr; gap: 28px; text-align: center; }
-    .statement-text { grid-column: 1; max-width: 26ch; margin: 0 auto; }
-    .statement-phone { display: none; }
-    .spot { padding: 64px 0; }
-    .spot-row { grid-template-columns: 1fr; gap: 40px; }
-    .spot-row.flip .copy   { order: 0; }
-    .spot-row.flip .visual { order: 0; }
-    .spot .copy { text-align: center; }
-    .spot .copy > p { margin-left: auto; margin-right: auto; }
-    .spot .copy .hero-cta { justify-content: center !important; }
-    .spot .visual { min-height: 420px; }
+  @media (max-width: 1240px) {
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+    .hero-visual img { width: 100%; height: auto; max-width: 560px; }
+    .glass.g1 { right: 0; }
+    .glass.g2 { left: -10px; }
+    .scan-grid { grid-template-columns: 280px 1fr 340px; gap: 36px; }
+    .lhdn-grid { grid-template-columns: 1fr 440px; gap: 56px; }
+  }
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero h1 { letter-spacing: -1.8px; }
+    .hero-visual { min-height: 0; margin-top: 8px; }
+    .hero-visual img { max-width: 480px; }
+    .glass.g1 { top: 60px; }
+    .glass.g2 { top: auto; bottom: 200px; left: 0; }
+    .glass.g3 { bottom: 40px; }
+    .scan-panel { padding: 36px 32px; }
+    .scan-grid { grid-template-columns: 1fr; gap: 44px; }
+    .receipt-wrap { margin: 0 auto; }
+    .ledger { max-width: 480px; margin: 0 auto; }
+    .chips { max-width: 480px; margin: 0 auto; width: 100%; }
+    .lhdn-grid { grid-template-columns: 1fr; gap: 48px; }
+    .lhdn-card { max-width: 520px; }
   }
   @media (max-width: 860px) { .nav-links { display: none; } }
-  @media (max-width: 760px) {
-    .hero-stage { border-radius: 28px; }
-    .trust .stats { gap: 40px; }
-    .trust { padding: 64px 0 16px; }
-  }
-  @media (max-width: 520px) {
+  @media (max-width: 640px) {
     .wrap { padding: 0 20px; }
-    .cta-band { padding: 56px 22px; border-radius: 24px; }
-    .np-card, .rc-card { width: 100%; max-width: 320px; }
-    .np-stack { width: 100%; max-width: 320px; }
-    .ui-float { right: -8px; bottom: -14px; padding: 9px 12px; }
-    .ui-float .t1 { font-size: 12px; }
-    .ui-float .amt { font-size: 13px; }
+    .hero h1 { font-size: clamp(40px, 11vw, 52px); }
+    .hero .sub { font-size: 17.5px; }
+    .hero .input { width: 100%; }
+    .hero .wl-row .btn { width: 100%; }
+    .glass { font-size: 12px; padding: 8px 13px; }
+    .glass.g2 { bottom: 150px; }
+    .cta-card { border-radius: 32px; padding-top: 64px; padding-bottom: 72px; }
+    .cta-card .sub { font-size: 17.5px; }
+    .cta-form { width: 100%; }
+    .input-forest { width: 100%; }
+    .btn-fince { width: 100%; }
+    .cta-card .micro { font-size: 15px; }
+    .foot .wrap { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .glass, .beam, .pulse-dot { animation: none !important; }
+    .chip, .ledger-new { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .auto-pill { animation: none !important; opacity: 1 !important; }
+    .btn, .btn svg, .btn-fince { transition: none !important; }
   }
 </style>
 </head>
@@ -453,265 +583,253 @@
 
 <a class="skip-link" href="#top">Skip to content</a>
 
-<!-- ─────────────────────── NAV ─────────────────────── -->
-<header class="nav" id="nav" role="banner">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top" aria-label="Fince home">
-      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" width="26" height="26" />
-      Fince
-    </a>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#top">Home</a>
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#waitlist">Waitlist</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
-    </div>
-  </div>
-</header>
-
 <main id="top">
 
-<!-- ─────────────────────── HERO ─────────────────────── -->
+<!-- ─────────────────────── HERO (dark forest) ─────────────────────── -->
 <section class="hero" aria-label="Hero">
-  <div class="wrap">
-    <div class="hero-stage">
-      <span class="bubble b1" aria-hidden="true"></span>
-      <span class="bubble b2" aria-hidden="true"></span>
-      <span class="bubble b3" aria-hidden="true"></span>
-      <span class="bubble b4" aria-hidden="true"></span>
-      <span class="bubble b5" aria-hidden="true"></span>
+  <span class="bubble b1" aria-hidden="true"></span>
+  <span class="bubble b2" aria-hidden="true"></span>
 
-      <div class="inner">
-        <p class="eyebrow">For freelancers &amp; solo founders in Malaysia</p>
-        <h1>Bookkeeping that <span class="accent">does itself.</span></h1>
-        <p class="sub">Fince tracks your income, expenses and projects automatically — so you always know your real numbers.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#waitlist">
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Fince home">
+        <img src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="26" height="26" />
+        Fince
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#scan">AI Scan</a>
+        <a href="#lhdn">LHDN-ready</a>
+        <a href="#waitlist">Waitlist</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-cream btn-sm" href="#waitlist">Join the waitlist</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero-body">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">AI bookkeeping for freelancers</p>
+        <h1>Snap a receipt.<br /><span class="accent">Books done.</span></h1>
+        <p class="sub">Fince reads your receipts, posts every ringgit under the right LHDN-mapped category, and keeps your books tax-ready — automatically.</p>
+
+        <form class="wl-row" id="wlFormHero" novalidate aria-label="Waitlist signup">
+          <input class="input" id="wlEmailHero" type="email" name="email" placeholder="you@studio.my" autocomplete="email" required aria-label="Email address" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+          <button type="submit" class="btn btn-cream">
             Join the waitlist
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </a>
-          <a class="btn btn-ghost" href="#how">See how it works</a>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5h11M8.5 3l4.5 4.5L8.5 12" /></svg>
+          </button>
+        </form>
+        <div class="wl-pill" id="wlPillHero" role="status" aria-live="polite">
+          <span aria-hidden="true">✓</span><span id="wlPillHeroText">You’re on the list — see you at launch.</span>
         </div>
-        <p class="hero-note">iPhone · Free to start · Launching soon in Malaysia</p>
+        <p class="wl-fine" id="wlFineHero">Free during early access · iPhone-first · No spreadsheets required</p>
       </div>
 
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────────────── TRUST ─────────────────────── -->
-<section class="trust" aria-label="At a glance">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat">
-        <div class="num" aria-label="1400 plus">1,400+</div>
-        <div class="lbl">freelancers on the waitlist</div>
-      </div>
-      <div class="stat">
-        <div class="num">100%</div>
-        <div class="lbl">ringgit-native, built for Malaysia</div>
-      </div>
-      <div class="stat">
-        <div class="num">iOS</div>
-        <div class="lbl">designed for iPhone first</div>
+      <div class="hero-visual" aria-hidden="true">
+        <img src="landing/phone-dashboard.png" alt="" width="700" height="700" />
+        <span class="glass g1"><span class="dot" style="background:var(--mint);"></span>+RM 2,560.00 · XinYi</span>
+        <span class="glass g2"><span class="dot" style="background:var(--check);"></span>Receipt scanned — filed ✓</span>
+        <span class="glass g3"><span class="dot" style="background:#E2906F;"></span>−RM 28.70 · ZUS Coffee</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────────────── STATEMENT ─────────────────────── -->
-<section class="statement" aria-label="Why freelancers need Fince">
-  <div class="statement-row">
-    <img class="statement-phone left" src="landing/phone-dashboard.png" alt="" aria-hidden="true" width="400" />
-    <p class="statement-text">
-      Most freelancers lose <span class="accent">6 hours a month</span> to spreadsheets
-      <span class="mut">— and still don't know their real profit.</span>
-    </p>
-    <img class="statement-phone right" src="landing/phone-projects.png" alt="" aria-hidden="true" width="400" />
-  </div>
-</section>
-
-<!-- ─────────────────────── AI SCAN ─────────────────────── -->
-<section class="spot" id="features" aria-labelledby="scan-heading">
-  <div class="wrap">
-    <div class="spot-row">
-      <div class="copy">
-        <p class="eyebrow">AI Scan</p>
-        <h2 id="scan-heading">Snap it. Filed.</h2>
-        <p>Point your camera at any receipt. Fince reads the merchant, amount and category in seconds — then files it where it belongs.</p>
-        <div class="hero-cta" style="justify-content:flex-start;margin-top:28px;">
-          <a class="btn btn-primary" href="#waitlist">
-            Join the waitlist
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </a>
-        </div>
-      </div>
-      <div class="visual" aria-hidden="true">
-        <span class="glow glow-s glow-green"></span>
-        <div class="rc-card">
-          <div class="rc-photo">
-            <span class="rc-tag"><span class="pulse"></span>SCANNING</span>
-            <span class="scanline"></span>
-            <div class="recv">
-              <div class="ln m"></div><div class="ln s"></div><div class="ln m"></div><div class="ln s"></div><div class="ln m"></div>
-            </div>
-          </div>
-          <div class="rc-rows">
-            <div class="rc-field"><span class="k">Merchant</span><span class="v">Kedai Kopi Lai</span></div>
-            <div class="rc-field"><span class="k">Amount</span><span class="v">RM 48.60</span></div>
-            <div class="rc-field"><span class="k">Category</span><span class="pill">Meals &amp; Coffee</span></div>
-            <div class="rc-field"><span class="k">Project</span><span class="v">Filmpeak Studio</span></div>
-          </div>
-          <div class="rc-confirm">Confirm &amp; file</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────────────── NET PROFIT ─────────────────────── -->
-<section class="spot" id="profit" aria-labelledby="profit-heading">
-  <div class="wrap">
-    <div class="spot-row flip">
-      <div class="copy">
-        <p class="eyebrow">Net Profit</p>
-        <h2 id="profit-heading">Your month in one number.</h2>
-        <p>The dashboard leads with the one figure that matters — your real net profit — backed by a clear income vs. expenses split.</p>
-        <div class="hero-cta" style="justify-content:flex-start;margin-top:28px;">
-          <a class="btn btn-primary" href="#waitlist">
-            Join the waitlist
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </a>
-        </div>
-      </div>
-      <div class="visual" aria-hidden="true">
-        <span class="glow glow-s glow-forest"></span>
-        <div class="np-stack">
-        <div class="np-card">
-          <div class="np-row">
-            <span class="np-ws"></span>
-            <span class="np-ws-name">Filmpeak Studio</span>
-            <span class="np-dots"><span></span><span></span><span></span></span>
-          </div>
-          <div class="np-label">Net Profit · this month</div>
-          <div class="np-amt">
-            <span class="cur">RM</span><span class="int">11,402</span><span class="dec">.92</span>
-          </div>
-          <div>
-            <span class="np-delta">↑ 233.71%</span>
-            <span>vs last period</span>
-          </div>
-          <svg class="np-spark" viewBox="0 0 320 64" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="spk" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="#0F8A53" stop-opacity="0.20" />
-                <stop offset="100%" stop-color="#0F8A53" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5 L320 64 L0 64 Z" fill="url(#spk)" />
-            <path d="M0 50 L26 49 L46 46 L64 47 L82 41 L104 42 L128 30 L156 31 L182 29 L208 30 L236 25 L264 23 L292 14 L320 5" fill="none" stroke="#0F8A53" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-            <circle cx="320" cy="5" r="3.5" fill="#0F8A53" />
-          </svg>
-          <div class="np-seg">
-            <div class="on">1M</div><div>3M</div><div>YTD</div><div>1Y</div><div>Max</div>
-          </div>
-          <div class="np-io">
-            <div class="cell">
-              <div class="h">
-                <span class="badge" style="background:var(--green-bg);color:var(--green);">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-                </span>
-                Income
-              </div>
-              <div class="v">RM 15,260<span class="c">.00</span></div>
-            </div>
-            <div class="cell">
-              <div class="h">
-                <span class="badge" style="background:var(--red-bg);color:var(--red);">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 17V7h10" /></svg>
-                </span>
-                Expenses
-              </div>
-              <div class="v">RM 3,857<span class="c">.08</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="ui-float">
-          <span class="ic">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10H7" /></svg>
-          </span>
-          <div>
-            <div class="t1">XinYi · PAID</div>
-            <div class="t2">Client payment</div>
-          </div>
-          <span class="amt">+2,560</span>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────────────── HOW IT WORKS ─────────────────────── -->
-<section class="section how" id="how" aria-labelledby="how-heading">
+<!-- ─────────────────────── AI SCAN DEMO ─────────────────────── -->
+<section class="scan-section" id="scan" aria-labelledby="scan-heading">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">How it works</p>
-      <h2 id="how-heading">Clean books in three taps.</h2>
-      <p>Set it up once. From then on, Fince does the filing in the background.</p>
+      <p class="eyebrow">AI Scan</p>
+      <h2 id="scan-heading">Point. Scan. Posted.</h2>
+      <p>Snap any receipt. Fince reads the merchant, date and total, then files it under the right category — before you put your phone away.</p>
     </div>
-    <ol class="steps" aria-label="Steps">
-      <li class="step">
-        <div class="n" aria-hidden="true">1</div>
-        <h3>Capture</h3>
-        <p>Snap a receipt or log a payment — Fince grabs the details instantly.</p>
-      </li>
-      <li class="step">
-        <div class="n" aria-hidden="true">2</div>
-        <h3>Fince sorts it</h3>
-        <p>It categorises the entry, matches the project and updates your ledger.</p>
-      </li>
-      <li class="step">
-        <div class="n" aria-hidden="true">3</div>
-        <h3>See your profit</h3>
-        <p>See your real net profit any time — this month, this project, this year.</p>
-      </li>
-    </ol>
+
+    <div class="scan-panel" id="scanPanel" data-phase="0" aria-hidden="true">
+      <span class="bubble b1"></span>
+      <span class="bubble b2"></span>
+
+      <div class="scan-steps">
+        <span class="step" data-step="0"><span class="n">01</span><span class="l">Read</span></span>
+        <span class="conn"></span>
+        <span class="step" data-step="1"><span class="n">02</span><span class="l">Extract</span></span>
+        <span class="conn"></span>
+        <span class="step" data-step="2"><span class="n">03</span><span class="l">Post</span></span>
+      </div>
+
+      <div class="scan-grid">
+        <!-- receipt -->
+        <div class="receipt-wrap">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="receipt">
+            <div class="hd">FOTO RIA SDN BHD</div>
+            <div class="c">LOT 12, JALAN AMPANG</div>
+            <div class="c">KUALA LUMPUR 50450</div>
+            <div class="c">INV: FR-040092</div>
+            <div class="dash"></div>
+            <div class="r"><span>TRIPOD CARBON PRO</span><span>379.00</span></div>
+            <div class="r"><span>SD CARD 128GB</span><span>82.20</span></div>
+            <div class="dash"></div>
+            <div class="r bold"><span>TOTAL</span><span>RM 461.20</span></div>
+            <div class="r"><span>MASTERCARD ****0859</span><span></span></div>
+            <div class="r"><span>15/09/26&nbsp;&nbsp;12:33</span><span></span></div>
+            <div class="thanks">TERIMA KASIH</div>
+            <div class="beam"></div>
+          </div>
+        </div>
+
+        <!-- extracted chips -->
+        <div>
+          <div class="chips">
+            <div class="chip">
+              <span class="k">Merchant</span>
+              <span class="vrow"><span class="v">Foto Ria Sdn Bhd</span></span>
+            </div>
+            <div class="chip">
+              <span class="k">Date</span>
+              <span class="vrow"><span class="v">15 Sep 2026</span></span>
+            </div>
+            <div class="chip">
+              <span class="k">Total</span>
+              <span class="vrow"><span class="v">RM 461.20</span></span>
+            </div>
+            <div class="chip cat">
+              <span class="k">Category</span>
+              <span class="vrow">
+                <span class="v">Office &amp; Equipment</span>
+                <span class="tag">LHDN-mapped</span>
+              </span>
+            </div>
+          </div>
+          <div class="chip-status">
+            <span class="pulse-dot"></span>
+            <span class="s s0">Reading receipt…</span>
+            <span class="s s1">Extracting details…</span>
+            <span class="s s2">Posted to ledger</span>
+          </div>
+        </div>
+
+        <!-- mini ledger -->
+        <div class="ledger">
+          <div class="ledger-head">
+            <span class="t">September ledger</span>
+            <span class="live"><span class="pulse-dot"></span>Live</span>
+          </div>
+          <div class="ledger-slot">
+            <div class="ledger-new">
+              <span class="ic">↗</span>
+              <span class="mid">
+                <span class="n">Foto Ria Sdn Bhd</span>
+                <span class="s">15 Sep · Office &amp; Equipment</span>
+              </span>
+              <span class="right">
+                <span class="amt">−461.20</span>
+                <span class="auto-pill">✓ Auto</span>
+              </span>
+            </div>
+          </div>
+          <div class="ledger-rows">
+            <div class="ledger-row">
+              <span class="ic">↗</span>
+              <span class="mid">
+                <span class="n">ZUS Coffee</span>
+                <span class="s">14 Sep · Meals &amp; Entertainment</span>
+              </span>
+              <span class="amt">−28.70</span>
+            </div>
+            <div class="ledger-row">
+              <span class="ic">↗</span>
+              <span class="mid">
+                <span class="n">Grab</span>
+                <span class="s">14 Sep · Travel &amp; Transport</span>
+              </span>
+              <span class="amt">−14.50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─────────────────────── WAITLIST ─────────────────────── -->
-<section class="section" id="waitlist" style="padding-top:56px;" aria-labelledby="waitlist-heading">
+<!-- ─────────────────────── LHDN PROOF ─────────────────────── -->
+<section class="lhdn-section" id="lhdn" aria-labelledby="lhdn-heading">
+  <div class="wrap lhdn-grid">
+    <div class="lhdn-copy">
+      <p class="eyebrow">Tax-ready</p>
+      <h2 id="lhdn-heading">Filing season becomes an export.</h2>
+      <p class="sub">Every category in Fince mirrors how LHDN expects business expenses to be grouped — so April is an export, not a project.</p>
+      <div class="ticks">
+        <div class="tick">
+          <span class="ic" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>
+          <span class="t">Categories mapped to LHDN expense groups</span>
+        </div>
+        <div class="tick">
+          <span class="ic" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>
+          <span class="t">Entries land filing-ready, all year round</span>
+        </div>
+        <div class="tick">
+          <span class="ic" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>
+          <span class="t">One clean export — for you or your tax agent</span>
+        </div>
+      </div>
+      <p class="lhdn-micro">Fince keeps the books tidy. It isn’t tax advice.</p>
+    </div>
+
+    <div class="lhdn-card" aria-hidden="true">
+      <div class="lhdn-card-head">
+        <span class="t"><img src="landing/logo-mark-cream.png" alt="" width="18" height="18" />Expense categories</span>
+        <span class="pill">LHDN-mapped</span>
+      </div>
+      <div class="lhdn-row">
+        <span><span class="n">Meals &amp; Entertainment</span><span class="e">client lunches, ZUS runs</span></span>
+        <span class="tracked"><span class="ic"><svg width="9" height="9" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>Tracked</span>
+      </div>
+      <div class="lhdn-row">
+        <span><span class="n">Travel &amp; Transport</span><span class="e">Grab, parking, tolls</span></span>
+        <span class="tracked"><span class="ic"><svg width="9" height="9" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>Tracked</span>
+      </div>
+      <div class="lhdn-row">
+        <span><span class="n">Office &amp; Equipment</span><span class="e">gear, software, supplies</span></span>
+        <span class="tracked"><span class="ic"><svg width="9" height="9" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>Tracked</span>
+      </div>
+      <div class="lhdn-row">
+        <span><span class="n">Phone &amp; Internet</span><span class="e">Maxis, Unifi</span></span>
+        <span class="tracked"><span class="ic"><svg width="9" height="9" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>Tracked</span>
+      </div>
+      <div class="lhdn-row">
+        <span><span class="n">Marketing</span><span class="e">ads, portfolio site</span></span>
+        <span class="tracked"><span class="ic"><svg width="9" height="9" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6l2.8 2.8L9.5 2.5" /></svg></span>Tracked</span>
+      </div>
+      <div class="lhdn-foot">One clean export when filing season comes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────── WAITLIST CTA ─────────────────────── -->
+<section class="cta-section" id="waitlist" aria-labelledby="waitlist-heading">
   <div class="wrap">
-    <div class="cta-band">
-      <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
-      <h2 id="waitlist-heading">Be first when Fince lands on iPhone.</h2>
-      <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
-      <form class="wl-form" id="wlForm" novalidate aria-label="Waitlist signup">
-        <input
-          type="email"
-          id="wlEmail"
-          name="email"
-          placeholder="you@email.com"
-          autocomplete="email"
-          required
-          aria-label="Email address"
-          aria-describedby="wlFine"
-        />
+    <div class="cta-card">
+      <span class="bubble b1" aria-hidden="true"></span>
+      <span class="bubble b2" aria-hidden="true"></span>
+      <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="54" height="54" />
+      <h2 id="waitlist-heading">Be first when Fince<br />lands on iPhone.</h2>
+      <p class="sub">We're rolling out to Malaysian freelancers in waves.<br />Join the waitlist and we'll save you a spot.</p>
+
+      <form class="cta-form" id="wlFormCta" novalidate aria-label="Waitlist signup">
+        <input class="input-forest" id="wlEmailCta" type="email" name="email" placeholder="you@email.com" autocomplete="email" required aria-label="Email address" aria-describedby="wlMicroCta" />
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
-        <button type="submit" class="btn btn-cream">Join the waitlist</button>
+        <button type="submit" class="btn-fince">Join the waitlist</button>
       </form>
-      <p class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</p>
-      <div class="wl-success" id="wlSuccess" role="status" aria-live="polite">
-        <span class="tick" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-        </span>
-        <span id="wlSuccessText">You're on the list — we'll be in touch.</span>
+      <div class="wl-pill" id="wlPillCta" role="status" aria-live="polite">
+        <span aria-hidden="true">✓</span><span id="wlPillCtaText">You're on the list — see you at launch.</span>
         <button type="button" id="wlAddAnother" class="wl-add-another">Add another email</button>
       </div>
+
+      <p class="micro" id="wlMicroCta">No spam — one email when your invite is ready.</p>
     </div>
   </div>
 </section>
@@ -721,151 +839,157 @@
 <!-- ─────────────────────── FOOTER ─────────────────────── -->
 <footer class="foot" role="contentinfo">
   <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="brand" href="#top" aria-label="Fince home">
-          <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" style="width:24px;height:24px;" />
-          Fince
-        </a>
-        <p>Automated bookkeeping for freelancers &amp; solo founders in Malaysia.</p>
-      </div>
-      <div class="foot-cols">
-        <nav class="foot-col" aria-label="Product links">
-          <h4>Product</h4>
-          <a href="#features">Features</a>
-          <a href="#how">How it works</a>
-          <a href="#waitlist">Waitlist</a>
-        </nav>
-        <nav class="foot-col" aria-label="Company links">
-          <h4>Company</h4>
-          <a href="about.html">About</a>
-          <a href="blog.html">Blog</a>
-          <a href="contact.html">Contact</a>
-        </nav>
-        <nav class="foot-col" aria-label="Legal links">
-          <h4>Legal</h4>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms of Service</a>
-        </nav>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 Fince. Made in Malaysia.</span>
-      <span>RM-native bookkeeping</span>
+    <a class="foot-brand" href="#top">
+      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" width="18" height="18" />
+      Fince
+    </a>
+    <div class="foot-right">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+      <span>© 2026 Fince · Made in Malaysia</span>
     </div>
   </div>
 </footer>
 
 <script>
-  // Sticky nav shadow on scroll
+  // ── AI scan demo: 3-phase loop (Read 2.7s → Extract 1.9s → Post 3.6s) ──
   (function () {
-    var nav = document.getElementById('nav');
-    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    var panel = document.getElementById('scanPanel');
+    if (!panel) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var durs = [2700, 1900, 3600];
+    var idx = 0, timer = null;
+
+    function setPhase(p) { panel.setAttribute('data-phase', String(p)); }
+    function tick() {
+      idx = (idx + 1) % 3;
+      setPhase(idx);
+      timer = setTimeout(tick, durs[idx]);
+    }
+    function start() {
+      stop();
+      idx = 0; setPhase(0);
+      timer = setTimeout(tick, durs[0]);
+    }
+    function stop() { if (timer) { clearTimeout(timer); timer = null; } }
+
+    function apply() {
+      if (reduced.matches) { stop(); setPhase(2); }
+      else { start(); }
+    }
+    if (reduced.addEventListener) reduced.addEventListener('change', apply);
+    apply();
   })();
 
-  // Waitlist form — POSTs to Formsubmit AJAX (waitlist@fince.my), persists success
+  // ── Waitlist forms (hero + CTA card) → POST /api/waitlist ──
   (function () {
-    var form        = document.getElementById('wlForm');
-    var emailInput  = document.getElementById('wlEmail');
-    var fine        = document.getElementById('wlFine');
-    var success     = document.getElementById('wlSuccess');
-    var successText = document.getElementById('wlSuccessText');
-    var submitBtn   = form.querySelector('button[type="submit"]');
-    var origFine    = fine.textContent;
-    var KEY         = 'fince_waitlist';
-    var ENDPOINT    = '/api/waitlist';
+    var KEY = 'fince_waitlist';
+    var ENDPOINT = '/api/waitlist';
 
-    function showJoined(addr) {
-      form.style.display    = 'none';
-      fine.style.display    = 'none';
-      success.style.display = 'flex';
-      if (addr) {
-        var name = addr.split('@')[0];
-        successText.textContent = "You’re on the list, " + name + " — we’ll be in touch.";
+    function wire(opts) {
+      var form  = document.getElementById(opts.form);
+      var email = document.getElementById(opts.email);
+      var pill  = document.getElementById(opts.pill);
+      var pillText = document.getElementById(opts.pillText);
+      if (!form || !email || !pill) return null;
+      var btn   = form.querySelector('button[type="submit"]');
+      var micro = opts.micro ? document.getElementById(opts.micro) : null;
+      var origMicro = micro ? micro.textContent : '';
+      var origLabel = btn.textContent.trim();
+
+      function showJoined(addr) {
+        form.style.display = 'none';
+        pill.style.display = 'inline-flex';
+        if (addr && pillText) {
+          var name = addr.split('@')[0];
+          pillText.textContent = "You’re on the list, " + name + " — see you at launch.";
+        }
+        if (micro) { micro.classList.remove('err'); micro.textContent = origMicro; }
       }
+
+      function showForm() {
+        pill.style.display = 'none';
+        form.style.display = '';
+        email.value = '';
+        btn.disabled = false;
+        btn.textContent = origLabel;
+        resetError();
+        email.focus();
+      }
+
+      function showError(msg) {
+        email.classList.add('error');
+        if (micro) { micro.classList.add('err'); micro.textContent = msg; }
+      }
+
+      function resetError() {
+        email.classList.remove('error');
+        if (micro) { micro.classList.remove('err'); micro.textContent = origMicro; }
+      }
+
+      email.addEventListener('input', resetError);
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var val = (email.value || '').trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          showError('Please enter a valid email address.');
+          email.focus();
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Joining…';
+        var honey = form.querySelector('[name="_honey"]');
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: val, _honey: (honey && honey.value) || '' })
+        })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (data) {
+              return { ok: r.ok, status: r.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.ok) {
+              try { localStorage.setItem(KEY, val); } catch (err) {}
+              joinedAll(val);
+              return;
+            }
+            var msg = (result.data && result.data.error) || ('HTTP ' + result.status);
+            throw new Error(msg);
+          })
+          .catch(function (err) {
+            console.error('[waitlist] submit error:', err);
+            btn.disabled = false;
+            btn.textContent = origLabel;
+            showError("Couldn't submit — please try again, or email gchinsiong@fince.my.");
+          });
+      });
+
+      return { showJoined: showJoined, showForm: showForm };
     }
 
-    function showForm() {
-      try { localStorage.removeItem(KEY); } catch (e) {}
-      success.style.display = 'none';
-      form.style.display    = '';
-      fine.style.display    = '';
-      emailInput.value      = '';
-      submitBtn.disabled    = false;
-      submitBtn.textContent = 'Join the waitlist';
-      resetError();
-      emailInput.focus();
+    var hero = wire({ form: 'wlFormHero', email: 'wlEmailHero', pill: 'wlPillHero', pillText: 'wlPillHeroText' });
+    var cta  = wire({ form: 'wlFormCta',  email: 'wlEmailCta',  pill: 'wlPillCta',  pillText: 'wlPillCtaText', micro: 'wlMicroCta' });
+
+    function joinedAll(addr) {
+      if (hero) hero.showJoined(addr);
+      if (cta)  cta.showJoined(addr);
     }
 
-    function showError(msg) {
-      emailInput.classList.add('error');
-      fine.textContent = msg;
-      fine.style.color = 'rgba(255,180,160,0.95)';
-    }
-
-    function resetError() {
-      emailInput.classList.remove('error');
-      fine.style.color = '';
-      if (fine.textContent !== origFine) fine.textContent = origFine;
-    }
-
-    // Restore persisted state on load
     try {
       var saved = localStorage.getItem(KEY);
-      if (saved) showJoined(saved);
+      if (saved) joinedAll(saved);
     } catch (e) {}
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var val = (emailInput.value || '').trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-        showError('Please enter a valid email address.');
-        emailInput.focus();
-        return;
-      }
-
-      var origLabel = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Joining…';
-
-      var honeyField = form.querySelector('[name="_honey"]');
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          email: val,
-          _honey: (honeyField && honeyField.value) || ''
-        })
-      })
-        .then(function (r) {
-          return r.json().catch(function () { return {}; }).then(function (data) {
-            return { ok: r.ok, status: r.status, data: data };
-          });
-        })
-        .then(function (result) {
-          console.log('[waitlist] response:', result);
-          if (result.ok) {
-            try { localStorage.setItem(KEY, val); } catch (e) {}
-            showJoined(val);
-            return;
-          }
-          var msg = (result.data && result.data.error) || ('HTTP ' + result.status);
-          throw new Error(msg);
-        })
-        .catch(function (err) {
-          console.error('[waitlist] submit error:', err);
-          submitBtn.disabled = false;
-          submitBtn.textContent = origLabel;
-          showError("Couldn't submit — please try again, or email gchinsiong@fince.my.");
-        });
+    var addAnother = document.getElementById('wlAddAnother');
+    if (addAnother) addAnother.addEventListener('click', function () {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      if (hero) hero.showForm();
+      if (cta)  cta.showForm();
     });
-
-    emailInput.addEventListener('input', resetError);
-
-    var addAnotherBtn = document.getElementById('wlAddAnother');
-    if (addAnotherBtn) addAnotherBtn.addEventListener('click', showForm);
   })();
 </script>
 
