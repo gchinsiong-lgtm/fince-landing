@@ -146,6 +146,8 @@
   .hero {
     position: relative; overflow: hidden;
     margin-top: -76px; padding-top: 76px;
+    min-height: 100svh;
+    display: flex; flex-direction: column;
     background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
   }
   .hero::before {
@@ -166,9 +168,14 @@
   .hero .b1 { width: 340px; height: 340px; top: -110px; left: -90px; opacity: 0.22; }
   .hero .b2 { width: 150px; height: 150px; top: 30%; left: 38%; opacity: 0.14; }
 
-  .hero-body { position: relative; z-index: 2; padding: clamp(48px, 6.5vw, 92px) 0 clamp(56px, 7vw, 100px); }
+  .hero-body {
+    position: relative; z-index: 2; flex: 1;
+    display: flex; align-items: center;
+    padding: clamp(32px, 4vw, 56px) 0;
+  }
   .hero-grid {
-    display: grid; grid-template-columns: 580px 1fr;
+    width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr;
     gap: 48px; align-items: center;
   }
   .hero .eyebrow { color: var(--mint); margin-bottom: 18px; }
@@ -187,28 +194,12 @@
 
   .hero-visual {
     position: relative; display: flex; align-items: center; justify-content: center;
-    min-height: 540px;
   }
   .hero-visual img {
-    width: 700px; height: 700px; max-width: none; object-fit: contain;
-    filter: drop-shadow(0 46px 80px rgba(0,0,0,0.45));
+    width: 100%; max-width: 620px; height: auto;
+    max-height: min(78vh, 660px); object-fit: contain;
+    filter: drop-shadow(0 40px 70px rgba(0,0,0,0.42));
   }
-  .glass {
-    position: absolute; z-index: 3;
-    display: inline-flex; align-items: center; gap: 9px;
-    padding: 11px 17px; border-radius: 999px;
-    background: rgba(255,255,255,0.88);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(20,19,15,0.07);
-    box-shadow: 0 10px 28px rgba(20,19,15,0.13);
-    font-size: 13.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
-    animation: lpFloat 6s ease-in-out infinite;
-  }
-  .glass .dot { width: 8px; height: 8px; border-radius: 4px; flex: 0 0 auto; }
-  .glass.g1 { top: 110px; right: 6px; }
-  .glass.g2 { top: 318px; left: -36px; animation-delay: 1.2s; }
-  .glass.g3 { bottom: 96px; right: 30px; animation-delay: 2.2s; }
-  @keyframes lpFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 
   /* ── section heads ── */
   .sec-head { text-align: center; }
@@ -515,21 +506,16 @@
 
   /* ── responsive ── */
   @media (max-width: 1240px) {
-    .hero-grid { grid-template-columns: 1fr 1fr; }
-    .hero-visual img { width: 100%; height: auto; max-width: 560px; }
-    .glass.g1 { right: 0; }
-    .glass.g2 { left: -10px; }
+    .hero-visual img { max-width: 560px; }
     .scan-grid { grid-template-columns: 280px 1fr 340px; gap: 36px; }
     .lhdn-grid { grid-template-columns: 1fr 440px; gap: 56px; }
   }
   @media (max-width: 1024px) {
+    .hero { min-height: 0; }
     .hero-grid { grid-template-columns: 1fr; gap: 24px; }
     .hero h1 { letter-spacing: -1.8px; }
-    .hero-visual { min-height: 0; margin-top: 8px; }
-    .hero-visual img { max-width: 480px; }
-    .glass.g1 { top: 60px; }
-    .glass.g2 { top: auto; bottom: 200px; left: 0; }
-    .glass.g3 { bottom: 40px; }
+    .hero-visual { margin-top: 8px; }
+    .hero-visual img { max-width: 520px; max-height: none; }
     .scan-panel { padding: 36px 32px; }
     .scan-grid { grid-template-columns: 1fr; gap: 44px; }
     .receipt-wrap { margin: 0 auto; }
@@ -545,14 +531,13 @@
     .hero .sub { font-size: 17.5px; }
     .hero .input { width: 100%; }
     .hero .wl-row .btn { width: 100%; }
-    .glass { font-size: 12px; padding: 8px 13px; }
-    .glass.g2 { bottom: 150px; }
+    .hero-visual img { max-width: 420px; }
     .cta-band { padding: 56px 22px; border-radius: 24px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .glass, .beam, .pulse-dot { animation: none !important; }
+    .beam, .pulse-dot { animation: none !important; }
     .chip, .ledger-new { opacity: 1 !important; transform: none !important; transition: none !important; }
     .auto-pill { animation: none !important; opacity: 1 !important; }
     .btn, .btn svg, .btn-fince { transition: none !important; }
@@ -608,11 +593,8 @@
         <p class="hero-fine" id="wlFineHero">Free during early access · iPhone-first · No spreadsheets required</p>
       </div>
 
-      <div class="hero-visual" aria-hidden="true">
-        <img src="landing/phone-dashboard.png" alt="" width="700" height="700" />
-        <span class="glass g1"><span class="dot" style="background:var(--mint);"></span>+RM 2,560.00 · XinYi</span>
-        <span class="glass g2"><span class="dot" style="background:var(--check);"></span>Receipt scanned — filed ✓</span>
-        <span class="glass g3"><span class="dot" style="background:#E2906F;"></span>−RM 28.70 · ZUS Coffee</span>
+      <div class="hero-visual">
+        <img src="landing/phone-dashboard.png" alt="Fince app on iPhone — dashboard with net profit, and the projects list" />
       </div>
     </div>
   </div>
