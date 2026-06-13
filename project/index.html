@@ -59,7 +59,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
   body {
     margin: 0; background: var(--cream); color: var(--ink);
     font-family: var(--font); font-size: 16px; line-height: 1.5;
@@ -113,17 +113,24 @@
   .wl-row { display: flex; gap: 10px; flex-wrap: wrap; }
   .wl-pill {
     display: none; align-items: center; gap: 10px;
-    height: 54px; padding: 0 24px; border-radius: 999px;
+    width: fit-content; height: 54px; padding: 0 24px; border-radius: 999px;
     background: rgba(255,255,255,0.14); color: var(--cream);
     font-weight: 600; font-size: 15px;
   }
-  .wl-fine { font-size: 13.5px; font-weight: 500; color: rgba(244,242,236,0.55); margin-top: 20px; }
+  .hero .wl-pill { margin-top: 32px; }
+  .hero-fine { font-size: 13.5px; font-weight: 500; color: rgba(244,242,236,0.55); margin-top: 20px; }
+  .hero-fine.err { color: rgba(255,180,160,0.95); }
 
-  /* ── nav (dark, in-flow on hero) ── */
+  /* ── nav (dark blur, sticky) ── */
   .nav {
-    height: 76px; border-bottom: 1px solid rgba(244,242,236,0.12);
-    display: flex; align-items: center; position: relative; z-index: 5;
+    position: sticky; top: 0; z-index: 50;
+    height: 76px; display: flex; align-items: center;
+    background: rgba(15,51,41,0.70);
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-bottom: 1px solid rgba(244,242,236,0.10);
+    transition: background .25s ease, box-shadow .25s ease;
   }
+  .nav.scrolled { background: rgba(15,51,41,0.84); box-shadow: 0 6px 24px rgba(0,0,0,0.22); }
   .nav .wrap { display: flex; align-items: center; gap: 30px; }
   .brand {
     display: flex; align-items: center; gap: 10px;
@@ -138,6 +145,7 @@
   /* ── hero (dark forest band) ── */
   .hero {
     position: relative; overflow: hidden;
+    margin-top: -76px; padding-top: 76px;
     background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
   }
   .hero::before {
@@ -458,74 +466,52 @@
     border-top: 1px solid var(--hair); font-size: 13px; color: var(--ink-2);
   }
 
-  /* ── waitlist CTA card ── */
-  .cta-section { background: var(--cream); padding: 56px 0; }
-  .cta-card {
-    position: relative; overflow: hidden; border-radius: 44px;
-    background: linear-gradient(150deg, #1C5546 0%, #16463A 38%, #0F3329 100%);
-    padding: 88px clamp(28px, 5vw, 60px) 96px;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
+  /* ── waitlist (previous cta-band component) ── */
+  .cta-section { padding: 56px 0 100px; }
+  .cta-band {
+    position: relative; overflow: hidden;
+    background: var(--forest); color: var(--cream);
+    border-radius: 34px; padding: 76px 40px; text-align: center;
   }
-  .cta-card .b1 { width: 300px; height: 300px; top: -90px; left: -70px; opacity: 0.4; }
-  .cta-card .b2 { width: 170px; height: 170px; bottom: -40px; right: 12%; opacity: 0.3; }
-  .cta-card > * { position: relative; z-index: 2; }
-  .cta-card .mark { width: 54px; height: 54px; }
-  .cta-card h2 {
-    font-size: clamp(38px, 4.6vw, 60px); font-weight: 800;
-    letter-spacing: -2.2px; line-height: 1.06;
-    color: var(--cream); margin-top: 34px; text-wrap: balance;
+  .cta-band::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(80% 120% at 50% -20%, rgba(48,210,122,0.22), transparent 60%);
+    pointer-events: none;
   }
-  .cta-card .sub {
-    font-size: 19.5px; line-height: 1.6; color: rgba(244,242,236,0.66);
-    margin-top: 24px; max-width: 46ch; text-wrap: pretty;
+  .cta-band > * { position: relative; z-index: 1; }
+  .cta-band img.mark { width: 52px; margin: 0 auto 24px; }
+  .cta-band h2 { font-size: clamp(32px, 4.6vw, 50px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.03; margin: 0 auto; max-width: 15ch; text-wrap: balance; }
+  .cta-band p { font-size: 18px; color: rgba(244,242,236,0.72); margin: 18px auto 0; max-width: 42ch; }
+  .wl-form { display: flex; gap: 10px; justify-content: center; margin: 34px auto 0; max-width: 480px; flex-wrap: wrap; }
+  .wl-form input {
+    flex: 1; min-width: 220px; font-family: var(--font); font-size: 16px;
+    padding: 15px 20px; border-radius: 999px; border: 1px solid rgba(244,242,236,0.22);
+    background: rgba(244,242,236,0.10); color: var(--cream); outline: none;
+    transition: border-color .15s ease, background .15s ease;
   }
-  .cta-form { display: flex; gap: 14px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
-  .input-forest {
-    height: 60px; border-radius: 999px;
-    border: 1px solid rgba(244,242,236,0.28); background: rgba(255,255,255,0.06);
-    padding: 0 26px; font-family: inherit; font-size: 16.5px; color: var(--cream);
-    outline: none; width: 380px; max-width: 100%;
-    transition: border-color .15s, box-shadow .15s;
-  }
-  .input-forest::placeholder { color: rgba(244,242,236,0.45); }
-  .input-forest:focus { border-color: rgba(244,242,236,0.6); box-shadow: 0 0 0 3px rgba(244,242,236,0.12); }
-  .input-forest.error { border-color: #E2906F; box-shadow: 0 0 0 3px rgba(226,144,111,0.2); }
-  .btn-fince {
-    display: inline-flex; align-items: center; justify-content: center;
-    font-family: inherit; font-size: 16.5px; font-weight: 700;
-    padding: 0 34px; height: 60px; border-radius: 999px;
-    cursor: pointer; border: none; white-space: nowrap;
-    background: var(--cream); color: #14463A;
-    transition: transform .14s ease, background .18s ease, box-shadow .18s ease;
-  }
-  .btn-fince:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.22); }
-  .btn-fince:active { transform: translateY(1px); }
-  .btn-fince:disabled { opacity: 0.7; cursor: default; }
-  .cta-card .wl-pill { height: 60px; padding: 0 28px; font-size: 16.5px; margin-top: 44px; }
-  .cta-card .micro { font-size: 17px; color: rgba(244,242,236,0.6); margin-top: 30px; }
-  .cta-card .micro.err { color: rgba(255,180,160,0.95); }
-  .wl-add-another {
-    background: none; border: none; padding: 0; margin-left: 8px;
-    color: rgba(244,242,236,0.65); font-size: 14px; font-weight: 500;
-    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
-    font-family: inherit; transition: color .15s ease;
-  }
-  .wl-add-another:hover { color: var(--cream); }
+  .wl-form input::placeholder { color: rgba(244,242,236,0.50); }
+  .wl-form input:focus { border-color: rgba(244,242,236,0.60); background: rgba(244,242,236,0.16); }
+  .wl-form input.error { border-color: rgba(255,180,160,0.90); }
+  .wl-form .btn-cream { padding-left: 26px; padding-right: 26px; flex-shrink: 0; }
+  .wl-success { display: none; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: center; margin-top: 32px; font-size: 18px; font-weight: 600; }
+  .wl-success .tick { width: 30px; height: 30px; border-radius: 50%; background: rgba(48,210,122,0.22); color: #6BE6A4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .wl-add-another { background: none; border: none; padding: 0; margin-left: 6px; color: rgba(244,242,236,0.65); font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-family: inherit; transition: color .15s ease; }
+  .wl-add-another:hover { color: rgba(244,242,236,0.95); }
+  .wl-add-another:focus-visible { outline: 2px solid rgba(244,242,236,0.6); outline-offset: 3px; border-radius: 2px; }
+  .wl-fine { margin-top: 16px; font-size: 14px; color: rgba(244,242,236,0.55); }
+  .wl-fine.err { color: rgba(255,180,160,0.95); }
 
-  /* ── footer ── */
-  .foot {
-    background: #fff; border-top: 1px solid var(--hair);
-    padding: 32px 0;
-  }
-  .foot .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .foot-brand {
-    display: flex; align-items: center; gap: 8px;
-    font-weight: 700; font-size: 16px; letter-spacing: -0.3px; color: var(--forest);
-  }
-  .foot-brand img { width: 18px; height: 18px; }
-  .foot-right { display: flex; align-items: center; gap: 18px; font-size: 13px; color: var(--ink-3); flex-wrap: wrap; }
-  .foot-right a { transition: color .15s ease; }
-  .foot-right a:hover { color: var(--ink); }
+  /* ── footer (previous full footer) ── */
+  footer.foot { padding: 64px 0 48px; border-top: 1px solid var(--hair); }
+  .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+  .foot-brand { max-width: 280px; }
+  .foot-brand .brand { color: var(--forest); margin-bottom: 14px; }
+  .foot-brand p { font-size: 15px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px; }
+  .foot-col a { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 12px; transition: color .15s ease; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 48px; font-size: 14px; color: var(--ink-3); }
 
   /* ── responsive ── */
   @media (max-width: 1240px) {
@@ -561,13 +547,7 @@
     .hero .wl-row .btn { width: 100%; }
     .glass { font-size: 12px; padding: 8px 13px; }
     .glass.g2 { bottom: 150px; }
-    .cta-card { border-radius: 32px; padding-top: 64px; padding-bottom: 72px; }
-    .cta-card .sub { font-size: 17.5px; }
-    .cta-form { width: 100%; }
-    .input-forest { width: 100%; }
-    .btn-fince { width: 100%; }
-    .cta-card .micro { font-size: 15px; }
-    .foot .wrap { flex-direction: column; align-items: flex-start; }
+    .cta-band { padding: 56px 22px; border-radius: 24px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -583,29 +563,29 @@
 
 <a class="skip-link" href="#top">Skip to content</a>
 
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Fince home">
+      <img src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="26" height="26" />
+      Fince
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#scan">AI Scan</a>
+      <a href="#lhdn">LHDN-ready</a>
+      <a href="#waitlist">Waitlist</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-cream btn-sm" href="#waitlist">Join the waitlist</a>
+    </div>
+  </div>
+</header>
+
 <main id="top">
 
 <!-- ─────────────────────── HERO (dark forest) ─────────────────────── -->
 <section class="hero" aria-label="Hero">
   <span class="bubble b1" aria-hidden="true"></span>
   <span class="bubble b2" aria-hidden="true"></span>
-
-  <header class="nav">
-    <div class="wrap">
-      <a class="brand" href="#top" aria-label="Fince home">
-        <img src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="26" height="26" />
-        Fince
-      </a>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#scan">AI Scan</a>
-        <a href="#lhdn">LHDN-ready</a>
-        <a href="#waitlist">Waitlist</a>
-      </nav>
-      <div class="nav-cta">
-        <a class="btn btn-cream btn-sm" href="#waitlist">Join the waitlist</a>
-      </div>
-    </div>
-  </header>
 
   <div class="hero-body">
     <div class="wrap hero-grid">
@@ -625,7 +605,7 @@
         <div class="wl-pill" id="wlPillHero" role="status" aria-live="polite">
           <span aria-hidden="true">✓</span><span id="wlPillHeroText">You’re on the list — see you at launch.</span>
         </div>
-        <p class="wl-fine" id="wlFineHero">Free during early access · iPhone-first · No spreadsheets required</p>
+        <p class="hero-fine" id="wlFineHero">Free during early access · iPhone-first · No spreadsheets required</p>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
@@ -809,27 +789,35 @@
   </div>
 </section>
 
-<!-- ─────────────────────── WAITLIST CTA ─────────────────────── -->
+<!-- ─────────────────────── WAITLIST ─────────────────────── -->
 <section class="cta-section" id="waitlist" aria-labelledby="waitlist-heading">
   <div class="wrap">
-    <div class="cta-card">
-      <span class="bubble b1" aria-hidden="true"></span>
-      <span class="bubble b2" aria-hidden="true"></span>
-      <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="54" height="54" />
-      <h2 id="waitlist-heading">Be first when Fince<br />lands on iPhone.</h2>
-      <p class="sub">We're rolling out to Malaysian freelancers in waves.<br />Join the waitlist and we'll save you a spot.</p>
-
-      <form class="cta-form" id="wlFormCta" novalidate aria-label="Waitlist signup">
-        <input class="input-forest" id="wlEmailCta" type="email" name="email" placeholder="you@email.com" autocomplete="email" required aria-label="Email address" aria-describedby="wlMicroCta" />
+    <div class="cta-band">
+      <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
+      <h2 id="waitlist-heading">Be first when Fince lands on iPhone.</h2>
+      <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
+      <form class="wl-form" id="wlForm" novalidate aria-label="Waitlist signup">
+        <input
+          type="email"
+          id="wlEmail"
+          name="email"
+          placeholder="you@email.com"
+          autocomplete="email"
+          required
+          aria-label="Email address"
+          aria-describedby="wlFine"
+        />
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
-        <button type="submit" class="btn-fince">Join the waitlist</button>
+        <button type="submit" class="btn btn-cream">Join the waitlist</button>
       </form>
-      <div class="wl-pill" id="wlPillCta" role="status" aria-live="polite">
-        <span aria-hidden="true">✓</span><span id="wlPillCtaText">You're on the list — see you at launch.</span>
+      <p class="wl-fine" id="wlFine">No spam — one email when your invite is ready.</p>
+      <div class="wl-success" id="wlSuccess" role="status" aria-live="polite">
+        <span class="tick" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+        </span>
+        <span id="wlSuccessText">You're on the list — we'll be in touch.</span>
         <button type="button" id="wlAddAnother" class="wl-add-another">Add another email</button>
       </div>
-
-      <p class="micro" id="wlMicroCta">No spam — one email when your invite is ready.</p>
     </div>
   </div>
 </section>
@@ -839,20 +827,50 @@
 <!-- ─────────────────────── FOOTER ─────────────────────── -->
 <footer class="foot" role="contentinfo">
   <div class="wrap">
-    <a class="foot-brand" href="#top">
-      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" width="18" height="18" />
-      Fince
-    </a>
-    <div class="foot-right">
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="contact.html">Contact</a>
-      <span>© 2026 Fince · Made in Malaysia</span>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="Fince home">
+          <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" style="width:24px;height:24px;" />
+          Fince
+        </a>
+        <p>Automated bookkeeping for freelancers &amp; solo founders in Malaysia.</p>
+      </div>
+      <div class="foot-cols">
+        <nav class="foot-col" aria-label="Product links">
+          <h4>Product</h4>
+          <a href="#scan">AI Scan</a>
+          <a href="#lhdn">LHDN-ready</a>
+          <a href="#waitlist">Waitlist</a>
+        </nav>
+        <nav class="foot-col" aria-label="Company links">
+          <h4>Company</h4>
+          <a href="about.html">About</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <nav class="foot-col" aria-label="Legal links">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </nav>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Fince. Made in Malaysia.</span>
+      <span>RM-native bookkeeping</span>
     </div>
   </div>
 </footer>
 
 <script>
+  // ── Sticky nav shadow on scroll ──
+  (function () {
+    var nav = document.getElementById('nav');
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
   // ── AI scan demo: 3-phase loop (Read 2.7s → Extract 1.9s → Post 3.6s) ──
   (function () {
     var panel = document.getElementById('scanPanel');
@@ -882,35 +900,40 @@
     apply();
   })();
 
-  // ── Waitlist forms (hero + CTA card) → POST /api/waitlist ──
+  // ── Waitlist forms (hero + cta-band) → POST /api/waitlist ──
   (function () {
     var KEY = 'fince_waitlist';
     var ENDPOINT = '/api/waitlist';
 
+    // opts: { form, email, fine, fineHideOnJoin, success, successText }
     function wire(opts) {
       var form  = document.getElementById(opts.form);
       var email = document.getElementById(opts.email);
-      var pill  = document.getElementById(opts.pill);
-      var pillText = document.getElementById(opts.pillText);
-      if (!form || !email || !pill) return null;
+      var success = document.getElementById(opts.success);
+      var successText = document.getElementById(opts.successText);
+      if (!form || !email || !success) return null;
       var btn   = form.querySelector('button[type="submit"]');
-      var micro = opts.micro ? document.getElementById(opts.micro) : null;
-      var origMicro = micro ? micro.textContent : '';
+      var fine  = opts.fine ? document.getElementById(opts.fine) : null;
+      var origFine  = fine ? fine.textContent : '';
       var origLabel = btn.textContent.trim();
 
       function showJoined(addr) {
         form.style.display = 'none';
-        pill.style.display = 'inline-flex';
-        if (addr && pillText) {
-          var name = addr.split('@')[0];
-          pillText.textContent = "You’re on the list, " + name + " — see you at launch.";
+        success.style.display = 'flex';
+        if (fine) {
+          if (opts.fineHideOnJoin) fine.style.display = 'none';
+          else { fine.classList.remove('err'); fine.textContent = origFine; }
         }
-        if (micro) { micro.classList.remove('err'); micro.textContent = origMicro; }
+        if (addr && successText) {
+          var name = addr.split('@')[0];
+          successText.textContent = "You’re on the list, " + name + " — we’ll be in touch.";
+        }
       }
 
       function showForm() {
-        pill.style.display = 'none';
+        success.style.display = 'none';
         form.style.display = '';
+        if (fine) fine.style.display = '';
         email.value = '';
         btn.disabled = false;
         btn.textContent = origLabel;
@@ -920,12 +943,12 @@
 
       function showError(msg) {
         email.classList.add('error');
-        if (micro) { micro.classList.add('err'); micro.textContent = msg; }
+        if (fine) { fine.classList.add('err'); fine.textContent = msg; }
       }
 
       function resetError() {
         email.classList.remove('error');
-        if (micro) { micro.classList.remove('err'); micro.textContent = origMicro; }
+        if (fine) { fine.classList.remove('err'); if (fine.textContent !== origFine) fine.textContent = origFine; }
       }
 
       email.addEventListener('input', resetError);
@@ -952,6 +975,7 @@
             });
           })
           .then(function (result) {
+            console.log('[waitlist] response:', result);
             if (result.ok) {
               try { localStorage.setItem(KEY, val); } catch (err) {}
               joinedAll(val);
@@ -971,8 +995,16 @@
       return { showJoined: showJoined, showForm: showForm };
     }
 
-    var hero = wire({ form: 'wlFormHero', email: 'wlEmailHero', pill: 'wlPillHero', pillText: 'wlPillHeroText' });
-    var cta  = wire({ form: 'wlFormCta',  email: 'wlEmailCta',  pill: 'wlPillCta',  pillText: 'wlPillCtaText', micro: 'wlMicroCta' });
+    var hero = wire({
+      form: 'wlFormHero', email: 'wlEmailHero',
+      success: 'wlPillHero', successText: 'wlPillHeroText',
+      fine: 'wlFineHero', fineHideOnJoin: false
+    });
+    var cta = wire({
+      form: 'wlForm', email: 'wlEmail',
+      success: 'wlSuccess', successText: 'wlSuccessText',
+      fine: 'wlFine', fineHideOnJoin: true
+    });
 
     function joinedAll(addr) {
       if (hero) hero.showJoined(addr);
