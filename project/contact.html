@@ -56,16 +56,18 @@
 
   header.nav {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(244,242,236,0.82);
+    background: rgba(15,51,41,0.70);
     backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border-bottom: 1px solid var(--hair);
+    border-bottom: 1px solid rgba(244,242,236,0.10);
+    transition: background .25s ease, box-shadow .25s ease;
   }
+  header.nav.scrolled { background: rgba(15,51,41,0.84); box-shadow: 0 6px 24px rgba(0,0,0,0.22); }
   .nav-inner { display: flex; align-items: center; gap: 28px; height: 72px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--forest); }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--cream); }
   .brand img { width: 26px; height: 26px; }
   .nav-links { display: flex; gap: 30px; margin-left: 14px; }
-  .nav-links a { font-size: 15px; font-weight: 500; color: var(--ink-2); transition: color .15s ease; }
-  .nav-links a:hover { color: var(--ink); }
+  .nav-links a { font-size: 15px; font-weight: 500; color: rgba(244,242,236,0.7); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--cream); }
   .nav-cta { margin-left: auto; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -77,6 +79,8 @@
   .btn:active { transform: translateY(1px); }
   .btn-primary { background: var(--forest); color: var(--cream); box-shadow: 0 8px 22px rgba(22,70,58,0.28); }
   .btn-primary:hover { background: var(--forest-2); box-shadow: 0 12px 28px rgba(22,70,58,0.34); }
+  .btn-cream { background: var(--cream); color: var(--forest-2); }
+  .btn-cream:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.16); }
   .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { background: rgba(20,19,15,0.04); border-color: var(--ink-3); }
   @media (max-width: 860px) { .nav-links { display: none; } }
@@ -131,19 +135,19 @@
 </head>
 <body>
 
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="index.html" aria-label="Fince home">
-      <img src="landing/logo-mark-green.png" alt="" aria-hidden="true" />
+      <img src="landing/logo-mark-cream.png" alt="" aria-hidden="true" />
       Fince
     </a>
     <nav class="nav-links" aria-label="Main navigation">
-      <a href="index.html#features">Features</a>
-      <a href="index.html#how">How it works</a>
+      <a href="index.html#scan">AI Scan</a>
+      <a href="index.html#lhdn">LHDN-ready</a>
       <a href="index.html#waitlist">Waitlist</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="index.html#waitlist">Join the waitlist</a>
+      <a class="btn btn-cream" href="index.html#waitlist">Join the waitlist</a>
     </div>
   </div>
 </header>
@@ -185,8 +189,8 @@
       <div class="foot-cols">
         <nav class="foot-col" aria-label="Product links">
           <h4>Product</h4>
-          <a href="index.html#features">Features</a>
-          <a href="index.html#how">How it works</a>
+          <a href="index.html#scan">AI Scan</a>
+          <a href="index.html#lhdn">LHDN-ready</a>
           <a href="index.html#waitlist">Waitlist</a>
         </nav>
         <nav class="foot-col" aria-label="Company links">
@@ -209,5 +213,14 @@
   </div>
 </footer>
 
+<script>
+  (function () {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
 </body>
 </html>
