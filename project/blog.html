@@ -83,33 +83,54 @@
   .btn-cream:hover { background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,0.16); }
   .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { background: rgba(20,19,15,0.04); border-color: var(--ink-3); }
+  .coming .btn-ghost { color: var(--cream); border-color: rgba(244,242,236,0.30); }
+  .coming .btn-ghost:hover { background: rgba(244,242,236,0.10); border-color: rgba(244,242,236,0.55); }
   @media (max-width: 860px) { .nav-links { display: none; } }
 
   /* coming-soon */
   .coming {
-    padding: 88px 0 120px;
-    text-align: center;
-    min-height: calc(100vh - 72px - 270px);
+    position: relative; overflow: hidden;
+    margin-top: -72px; padding: calc(72px + 56px) 0 96px;
+    text-align: center; min-height: 100svh;
     display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
   }
-  .coming-inner { max-width: 620px; margin: 0 auto; }
+  .coming::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.045) 1px, transparent 1px);
+    background-size: 110px 110px;
+  }
+  .coming::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(760px 520px at 78% 92%, rgba(18,164,99,0.22), transparent 70%);
+  }
+  .coming .bubble {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0.04) 60%, transparent 72%);
+  }
+  .coming .bubble.b1 { width: 340px; height: 340px; top: -90px; left: -90px; opacity: 0.20; }
+  .coming .bubble.b2 { width: 150px; height: 150px; top: 26%; right: 14%; opacity: 0.13; }
+  .coming-inner { position: relative; z-index: 2; max-width: 620px; margin: 0 auto; }
   .coming .icon-wrap {
     width: 96px; height: 96px; margin: 0 auto 28px;
-    border-radius: 28px; background: var(--amber-bg); color: var(--amber);
+    border-radius: 28px; background: rgba(79,217,153,0.14); color: var(--mint);
+    border: 1px solid rgba(244,242,236,0.14);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 1px 2px rgba(20,19,15,0.04), 0 18px 40px rgba(181,116,0,0.18);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 18px 40px rgba(0,0,0,0.28);
   }
   .coming .eyebrow {
     font-size: 12px; font-weight: 700; letter-spacing: 1.6px;
-    text-transform: uppercase; color: var(--green); margin: 0;
+    text-transform: uppercase; color: var(--mint); margin: 0;
   }
   .coming h1 {
     font-size: clamp(38px, 5.6vw, 64px); font-weight: 900;
     letter-spacing: -2px; line-height: 1.02; margin: 14px 0 0;
-    color: var(--forest-2); text-wrap: balance;
+    color: var(--cream); text-wrap: balance;
   }
   .coming .lead {
-    font-size: clamp(17px, 2vw, 19px); color: var(--ink-2);
+    font-size: clamp(17px, 2vw, 19px); color: rgba(244,242,236,0.72);
     max-width: 44ch; margin: 22px auto 0; line-height: 1.55; text-wrap: pretty;
   }
   .coming .actions { display: inline-flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
@@ -128,7 +149,7 @@
 
   @media (max-width: 520px) {
     .wrap { padding: 0 20px; }
-    .coming { padding: 64px 0 80px; min-height: auto; }
+    .coming { padding: calc(72px + 32px) 0 64px; }
     .coming .icon-wrap { width: 80px; height: 80px; border-radius: 22px; margin-bottom: 22px; }
   }
 </style>
@@ -154,6 +175,8 @@
 
 <main>
   <section class="coming" aria-labelledby="coming-heading">
+    <span class="bubble b1" aria-hidden="true"></span>
+    <span class="bubble b2" aria-hidden="true"></span>
     <div class="wrap">
       <div class="coming-inner">
         <div class="icon-wrap" aria-hidden="true">
@@ -168,7 +191,7 @@
         <h1 id="coming-heading">Under construction.</h1>
         <p class="lead">No posts yet — we're focused on shipping Fince first. Once the app is live, expect launch notes, money tips for Malaysian freelancers, and product updates straight from the build. Join the waitlist to get the first ones.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="index.html#waitlist">Join the waitlist</a>
+          <a class="btn btn-cream" href="index.html#waitlist">Join the waitlist</a>
           <a class="btn btn-ghost" href="index.html">Back to home</a>
         </div>
       </div>

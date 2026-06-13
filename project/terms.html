@@ -31,6 +31,7 @@
     --forest: #16463A;
     --forest-2: #0F3329;
     --green: #0F8A53;
+    --mint: #4FD899;
     --font: 'Inter', -apple-system, system-ui, sans-serif;
     --maxw: 1160px;
     --legalw: 720px;
@@ -83,10 +84,33 @@
   @media (max-width: 860px) { .nav-links { display: none; } }
 
   /* legal page */
-  .legal-head { padding: 64px 0 24px; }
-  .legal-head .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); margin: 0 0 14px; }
-  .legal-head h1 { font-size: clamp(36px, 5vw, 54px); font-weight: 900; letter-spacing: -1.8px; line-height: 1.05; margin: 0; color: var(--forest-2); }
-  .legal-head .meta { color: var(--ink-3); font-size: 14px; margin: 14px 0 0; }
+  .legal-hero {
+    position: relative; overflow: hidden;
+    margin-top: -72px; padding-top: 72px;
+    background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
+  }
+  .legal-hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.045) 1px, transparent 1px);
+    background-size: 110px 110px;
+  }
+  .legal-hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(680px 460px at 82% 88%, rgba(18,164,99,0.20), transparent 70%);
+  }
+  .legal-hero .bubble {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.26), rgba(255,255,255,0.04) 60%, transparent 72%);
+  }
+  .legal-hero .bubble.b1 { width: 300px; height: 300px; top: -100px; left: -70px; opacity: 0.18; }
+  .legal-hero .bubble.b2 { width: 130px; height: 130px; bottom: -30px; right: 16%; opacity: 0.12; }
+  .legal-hero .wrap { position: relative; z-index: 2; }
+  .legal-head { padding: 56px 0 60px; }
+  .legal-head .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--mint); margin: 0 0 14px; }
+  .legal-head h1 { font-size: clamp(36px, 5vw, 54px); font-weight: 900; letter-spacing: -1.8px; line-height: 1.05; margin: 0; color: var(--cream); }
+  .legal-head .meta { color: rgba(244,242,236,0.6); font-size: 14px; margin: 14px 0 0; }
 
   .legal-body {
     max-width: var(--legalw);
@@ -171,6 +195,9 @@
 </header>
 
 <main>
+  <section class="legal-hero">
+    <span class="bubble b1" aria-hidden="true"></span>
+    <span class="bubble b2" aria-hidden="true"></span>
   <div class="wrap">
     <div class="legal-head" style="max-width:var(--legalw);margin:0 auto;">
       <p class="eyebrow">Legal</p>
@@ -178,6 +205,7 @@
       <p class="meta">Effective Date: 1 June 2026 · Last Updated: 4 June 2026</p>
     </div>
   </div>
+  </section>
 
   <div class="wrap">
     <div class="legal-body">
