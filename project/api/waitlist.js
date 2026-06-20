@@ -44,14 +44,17 @@ const escapeHtml = (s) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-function userConfirmationHtml() {
+// Shared email shell. paragraphs is an array of HTML-safe paragraph strings.
+function emailShell(eyebrow, heading, paragraphs) {
+  const body = paragraphs
+    .map((p, i) => '    <p style="font-size:16px;line-height:1.55;color:#3a3a36;margin:0 0 ' + (i === paragraphs.length - 1 ? '24' : '16') + 'px;">' + p + '</p>')
+    .join('\n');
   return [
     '<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;background:#F4F2EC;margin:0;padding:32px;color:#14130F;">',
     '  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 1px 2px rgba(20,19,15,0.04),0 10px 30px rgba(20,19,15,0.05);">',
-    '    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#0F8A53;">You\'re on the list</div>',
-    '    <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.8px;margin:8px 0 16px;color:#0F3329;">Thanks for joining the Fince waitlist.</h1>',
-    '    <p style="font-size:16px;line-height:1.55;color:#3a3a36;margin:0 0 16px;">We\'re building Fince &mdash; AI bookkeeping for freelancers and solo founders in Malaysia. Snap a receipt and your books are done: every ringgit lands under the right LHDN-mapped category, tax-ready all year round. You\'ll hear from us first when early access opens.</p>',
-    '    <p style="font-size:16px;line-height:1.55;color:#3a3a36;margin:0 0 24px;">What makes bookkeeping painful for you right now? Just hit reply &mdash; we read every note.</p>',
+    '    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#0F8A53;">' + eyebrow + '</div>',
+    '    <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.8px;margin:8px 0 16px;color:#0F3329;">' + heading + '</h1>',
+    body,
     '    <div style="color:#999;font-size:12px;border-top:1px solid #eee;padding-top:16px;">',
     '      &mdash; Gene, Fince',
     '    </div>',
@@ -60,19 +63,46 @@ function userConfirmationHtml() {
   ].join('\n');
 }
 
-function notificationHtml(email, nowStr) {
+function userConfirmationWaitlistHtml() {
+  return emailShell('You\'re on the list', 'You\'re on the Fince launch list.', [
+    'We\'re building Fince &mdash; AI bookkeeping for freelancers and solo founders in Malaysia. Snap a receipt and your books are done: every ringgit lands under the right LHDN-mapped category, tax-ready all year round.',
+    'We\'ll email you the moment Fince is live on the App Store. Want it sooner? Just reply and ask about the TestFlight beta &mdash; we\'re inviting 100 founding testers.',
+  ]);
+}
+
+function userConfirmationBetaHtml() {
+  return emailShell('Founding beta &middot; TestFlight', 'Thanks for applying to test Fince.', [
+    'You\'ve applied for one of <strong>100 founding beta seats</strong>. We\'re reviewing applications and sending TestFlight invites in batches &mdash; if it\'s a fit, you\'ll get an invite by email to install Fince on your iPhone.',
+    'While you wait: what\'s the most painful part of bookkeeping for you right now? Just hit reply &mdash; it shapes what we build.',
+  ]);
+}
+
+function notificationHtml(email, nowStr, meta) {
   const safeEmail = escapeHtml(email);
-  return [
-    '<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;background:#F4F2EC;margin:0;padding:32px;color:#14130F;">',
-    '  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 1px 2px rgba(20,19,15,0.04),0 10px 30px rgba(20,19,15,0.05);">',
-    '    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#0F8A53;">New waitlist signup</div>',
-    '    <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.8px;margin:8px 0 24px;color:#0F3329;">Someone joined the Fince waitlist.</h1>',
+  const isBeta = meta && meta.tier === 'beta';
+  const rows = [
     '    <div style="background:#F4F2EC;border-radius:12px;padding:16px 20px;margin-bottom:20px;">',
     '      <div style="font-size:12px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px;">Email</div>',
     '      <div style="font-size:18px;font-weight:600;"><a href="mailto:' + safeEmail + '" style="color:#16463A;text-decoration:none;">' + safeEmail + '</a></div>',
-    '    </div>',
+  ];
+  if (isBeta) {
+    rows.push('      <div style="font-size:12px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;margin:14px 0 4px;">Work</div>');
+    rows.push('      <div style="font-size:15px;color:#14130F;">' + escapeHtml(meta.work || '—') + '</div>');
+    rows.push('      <div style="font-size:12px;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;margin:14px 0 4px;">Has iPhone</div>');
+    rows.push('      <div style="font-size:15px;color:#14130F;">' + (meta.iphone ? 'Yes' : 'Not confirmed') + '</div>');
+  }
+  rows.push('    </div>');
+  const label = isBeta ? 'New beta application' : 'New waitlist signup';
+  const heading = isBeta ? 'Someone applied to beta-test Fince.' : 'Someone joined the Fince waitlist.';
+  const dupNote = meta && meta.alreadyOnList ? ' &middot; already in list' : '';
+  return [
+    '<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;background:#F4F2EC;margin:0;padding:32px;color:#14130F;">',
+    '  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 1px 2px rgba(20,19,15,0.04),0 10px 30px rgba(20,19,15,0.05);">',
+    '    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#0F8A53;">' + label + '</div>',
+    '    <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.8px;margin:8px 0 24px;color:#0F3329;">' + heading + '</h1>',
+    rows.join('\n'),
     '    <div style="color:#999;font-size:12px;border-top:1px solid #eee;padding-top:16px;">',
-    '      Submitted via fince.my &middot; ' + escapeHtml(nowStr),
+    '      Submitted via fince.my &middot; ' + escapeHtml(nowStr) + dupNote,
     '    </div>',
     '  </div>',
     '</body></html>'
@@ -89,6 +119,10 @@ module.exports = async function handler(req, res) {
     const body = req.body || {};
     const email = String(body.email || '').trim().toLowerCase();
     const honey = String(body._honey || '');
+    const tier = body.tier === 'beta' ? 'beta' : 'waitlist';
+    const work = String(body.work || '').trim().slice(0, 200);
+    const iphone = body.iphone === true || body.iphone === 'true';
+    const meta = { tier, work, iphone };
 
     // Honeypot: bots fill hidden fields. Pretend success and drop.
     if (honey) return res.status(200).json({ ok: true });
@@ -112,46 +146,60 @@ module.exports = async function handler(req, res) {
     }
 
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || null;
+    const transport = getTransport();
+    const nowStr = new Date().toISOString().replace('T', ' ').replace(/\..+/, ' UTC');
 
-    // Insert. Unique violation (already on list) is a no-op success — don't resend.
+    // The signup origin/tier rides on `source` ('beta' | 'waitlist') — no schema change needed.
     const supabase = getSupabase();
     const { error: insertError } = await supabase
       .from('waitlist')
-      .insert({ email, source: 'landing', ip });
+      .insert({ email, source: tier, ip });
+
+    // Notify the team. For beta we always want to see the application (with the
+    // qualifying answers), even if the email was already on the list — so we send
+    // the notification on a duplicate too. Confirmation to the user is skipped on dup.
+    function notifyTeam(extraMeta) {
+      return transport.sendMail({
+        from: 'Fince ' + (tier === 'beta' ? 'Beta' : 'Waitlist') + ' <' + FROM_ADDR + '>',
+        to: process.env.WAITLIST_NOTIFY_TO,
+        replyTo: email,
+        subject: (tier === 'beta' ? 'New beta application: ' : 'New waitlist signup: ') + email,
+        html: notificationHtml(email, nowStr, Object.assign({}, meta, extraMeta)),
+      });
+    }
 
     if (insertError) {
       if (insertError.code === '23505') {
+        // Already on the list. Beta: still surface the application to the team.
+        if (tier === 'beta') {
+          try { await notifyTeam({ alreadyOnList: true }); }
+          catch (e) { console.error('Beta dup notification failed:', e); }
+        }
         return res.status(200).json({ ok: true, alreadyOnList: true });
       }
       console.error('Supabase insert error:', insertError);
       return res.status(500).json({ error: 'Could not save signup' });
     }
 
-    // Send both emails in parallel. Failures are logged but don't fail the request —
-    // the signup is already saved; we'd rather lose an email than the signup.
-    const transport = getTransport();
-    const nowStr = new Date().toISOString().replace('T', ' ').replace(/\..+/, ' UTC');
+    // Send confirmation (tier-specific) + team notification in parallel. Failures are
+    // logged but don't fail the request — the signup is already saved.
+    const confirmation = tier === 'beta' ? userConfirmationBetaHtml() : userConfirmationWaitlistHtml();
+    const confirmSubject = tier === 'beta' ? 'Your Fince founding-beta application' : "You're on the Fince launch list";
 
     const sendResults = await Promise.allSettled([
       transport.sendMail({
         from: 'Fince <' + FROM_ADDR + '>',
         to: email,
         replyTo: REPLY_TO,
-        subject: "You're on the Fince waitlist",
-        html: userConfirmationHtml(),
+        subject: confirmSubject,
+        html: confirmation,
       }),
-      transport.sendMail({
-        from: 'Fince Waitlist <' + FROM_ADDR + '>',
-        to: process.env.WAITLIST_NOTIFY_TO,
-        replyTo: email,
-        subject: 'New Fince waitlist signup: ' + email,
-        html: notificationHtml(email, nowStr),
-      }),
+      notifyTeam(),
     ]);
 
     sendResults.forEach((r, i) => {
       if (r.status === 'rejected') {
-        console.error('Email send failed (' + (i === 0 ? 'user confirmation' : 'self notification') + '):', r.reason);
+        console.error('Email send failed (' + (i === 0 ? 'user confirmation' : 'team notification') + '):', r.reason);
       }
     });
 

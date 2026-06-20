@@ -120,6 +120,9 @@
   .hero .wl-pill { margin-top: 32px; }
   .hero-fine { font-size: 13.5px; font-weight: 500; color: rgba(244,242,236,0.55); margin-top: 20px; }
   .hero-fine.err { color: rgba(255,180,160,0.95); }
+  .hero-beta-link { margin-top: 16px; font-size: 14px; }
+  .hero-beta-link a { color: var(--mint); font-weight: 600; border-bottom: 1px solid rgba(79,217,153,0.4); padding-bottom: 1px; transition: border-color .15s ease; }
+  .hero-beta-link a:hover { border-color: var(--mint); }
 
   /* ── nav (dark blur, sticky) ── */
   .nav {
@@ -457,6 +460,81 @@
     border-top: 1px solid var(--hair); font-size: 13px; color: var(--ink-2);
   }
 
+  /* ── beta (founding testers) ── */
+  .beta {
+    position: relative; overflow: hidden;
+    padding: clamp(72px, 8vw, 108px) 0;
+    background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
+  }
+  .beta::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.045) 1px, transparent 1px);
+    background-size: 110px 110px;
+  }
+  .beta::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(720px 480px at 50% 110%, rgba(18,164,99,0.22), transparent 70%);
+  }
+  .beta .bubble {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.26), rgba(255,255,255,0.04) 60%, transparent 72%);
+  }
+  .beta .bubble.b1 { width: 300px; height: 300px; top: -90px; right: -60px; opacity: 0.16; }
+  .beta .bubble.b2 { width: 140px; height: 140px; bottom: -30px; left: 12%; opacity: 0.12; }
+  .beta-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; text-align: center; }
+  .beta-badge {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 7px 9px 7px 14px; border-radius: 999px;
+    background: linear-gradient(150deg, #5FE0A4 0%, #12A463 55%, #0A6B40 100%);
+    color: #fff; font-size: 12.5px; font-weight: 700; letter-spacing: 0.3px;
+    box-shadow: 0 8px 22px rgba(18,164,99,0.40), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .beta-badge .seats { background: rgba(255,255,255,0.22); border-radius: 999px; padding: 2px 9px; font-feature-settings: "tnum"; }
+  .beta h2 {
+    font-size: clamp(30px, 4vw, 46px); font-weight: 800; letter-spacing: -1.6px;
+    line-height: 1.05; color: var(--cream); margin: 18px auto 0; max-width: 18ch; text-wrap: balance;
+  }
+  .beta .lead {
+    font-size: 18px; line-height: 1.6; color: rgba(244,242,236,0.72);
+    margin: 16px auto 0; max-width: 52ch; text-wrap: pretty;
+  }
+  .beta-card {
+    background: #fff; border-radius: 22px; padding: 28px; max-width: 440px;
+    margin: 32px auto 0; text-align: left;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 30px 70px rgba(0,0,0,0.30);
+  }
+  .beta-field { margin-bottom: 14px; }
+  .beta-field label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 7px; }
+  .beta-card input[type="email"], .beta-card input[type="text"]:not([name="_honey"]) {
+    width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--line);
+    background: #fff; padding: 0 16px; font-family: inherit; font-size: 15px; color: var(--ink); outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .beta-card input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(15,138,83,0.14); }
+  .beta-card input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(194,70,40,0.16); }
+  .beta-check { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 18px; cursor: pointer; }
+  .beta-check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--green); flex: 0 0 auto; cursor: pointer; }
+  .beta-check span { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+  .btn-apply {
+    width: 100%; height: 52px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--forest); color: var(--cream); font-family: inherit; font-size: 16px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .18s, box-shadow .18s, transform .14s;
+  }
+  .btn-apply svg { transition: transform .18s ease; }
+  .btn-apply:hover { background: var(--forest-2); box-shadow: 0 12px 28px rgba(22,70,58,0.30); }
+  .btn-apply:hover svg { transform: translateX(3px); }
+  .btn-apply:active { transform: translateY(1px); }
+  .btn-apply:disabled { opacity: 0.7; cursor: default; }
+  .beta-card .micro { font-size: 12.5px; color: var(--ink-3); margin: 12px 0 0; text-align: center; }
+  .beta-card .micro.err { color: var(--red); }
+  .beta-success { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 8px 0; }
+  .beta-success .tick { width: 42px; height: 42px; border-radius: 50%; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; }
+  .beta-success .t { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; color: var(--ink); }
+  .beta-success .s { font-size: 14px; color: var(--ink-2); line-height: 1.5; max-width: 32ch; }
+
   /* ── waitlist (previous cta-band component) ── */
   .cta-section { padding: 56px 0 100px; }
   .cta-band {
@@ -557,6 +635,7 @@
     <nav class="nav-links" aria-label="Main navigation">
       <a href="#scan">AI Scan</a>
       <a href="#lhdn">LHDN-ready</a>
+      <a href="#beta">Beta</a>
       <a href="#waitlist">Waitlist</a>
     </nav>
     <div class="nav-cta">
@@ -591,6 +670,7 @@
           <span aria-hidden="true">✓</span><span id="wlPillHeroText">You’re on the list — see you at launch.</span>
         </div>
         <p class="hero-fine" id="wlFineHero">Free during early access · iPhone-first · No spreadsheets required</p>
+        <p class="hero-beta-link"><a href="#beta">Want it sooner? Apply for a TestFlight beta seat →</a></p>
       </div>
 
       <div class="hero-visual">
@@ -771,13 +851,52 @@
   </div>
 </section>
 
+<!-- ─────────────────────── FOUNDING BETA ─────────────────────── -->
+<section class="beta" id="beta" aria-labelledby="beta-heading">
+  <span class="bubble b1" aria-hidden="true"></span>
+  <span class="bubble b2" aria-hidden="true"></span>
+  <div class="wrap beta-inner">
+    <span class="beta-badge">Founding beta · TestFlight <span class="seats">100 seats</span></span>
+    <h2 id="beta-heading">Try Fince before launch.</h2>
+    <p class="lead">We're inviting 100 founding testers to use Fince on TestFlight while we build toward launch. Tell us a little about you and we'll send an invite.</p>
+
+    <div class="beta-card">
+      <form id="betaForm" novalidate aria-label="Beta tester application">
+        <div class="beta-field">
+          <label for="betaEmail">Email</label>
+          <input id="betaEmail" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+        </div>
+        <div class="beta-field">
+          <label for="betaWork">What kind of work do you do?</label>
+          <input id="betaWork" type="text" name="work" placeholder="e.g. photographer, designer, indie founder" required maxlength="120" />
+        </div>
+        <label class="beta-check">
+          <input id="betaIphone" type="checkbox" required />
+          <span>I have an iPhone and can install TestFlight.</span>
+        </label>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <button type="submit" class="btn-apply">
+          Apply for a beta seat
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5h11M8.5 3l4.5 4.5L8.5 12" /></svg>
+        </button>
+        <p class="micro" id="betaMicro">100 seats · iPhone only · We review every application.</p>
+      </form>
+      <div class="beta-success" id="betaSuccess" role="status" aria-live="polite">
+        <span class="tick" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
+        <span class="t">Application received.</span>
+        <span class="s">We'll review and send your TestFlight invite by email — keep an eye on your inbox.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ─────────────────────── WAITLIST ─────────────────────── -->
 <section class="cta-section" id="waitlist" aria-labelledby="waitlist-heading">
   <div class="wrap">
     <div class="cta-band">
       <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
-      <h2 id="waitlist-heading">Be first when Fince lands on iPhone.</h2>
-      <p>We're rolling out to Malaysian freelancers in waves. Join the waitlist and we'll save you a spot.</p>
+      <h2 id="waitlist-heading">Be first when Fince hits the App Store.</h2>
+      <p>Not ready to test? Join the waitlist and we'll email you the moment Fince launches on the App Store.</p>
       <form class="wl-form" id="wlForm" novalidate aria-label="Waitlist signup">
         <input
           type="email"
@@ -882,10 +1001,12 @@
     apply();
   })();
 
-  // ── Waitlist forms (hero + cta-band) → POST /api/waitlist ──
+  // ── Signups (waitlist + beta) → POST /api/waitlist ──
   (function () {
     var KEY = 'fince_waitlist';
+    var BETA_KEY = 'fince_beta';
     var ENDPOINT = '/api/waitlist';
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     // opts: { form, email, fine, fineHideOnJoin, success, successText }
     function wire(opts) {
@@ -949,7 +1070,7 @@
         fetch(ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ email: val, _honey: (honey && honey.value) || '' })
+          body: JSON.stringify({ email: val, tier: 'waitlist', _honey: (honey && honey.value) || '' })
         })
           .then(function (r) {
             return r.json().catch(function () { return {}; }).then(function (data) {
@@ -1004,6 +1125,61 @@
       if (hero) hero.showForm();
       if (cta)  cta.showForm();
     });
+
+    // ---- beta application (separate commitment, own state) ----
+    (function wireBeta() {
+      var form = document.getElementById('betaForm');
+      if (!form) return;
+      var email = document.getElementById('betaEmail');
+      var work = document.getElementById('betaWork');
+      var iphone = document.getElementById('betaIphone');
+      var micro = document.getElementById('betaMicro');
+      var success = document.getElementById('betaSuccess');
+      var btn = form.querySelector('button[type="submit"]');
+      var origMicro = micro.textContent;
+      var origLabel = btn.textContent.trim();
+
+      function showApplied() { form.style.display = 'none'; success.style.display = 'flex'; }
+      function showError(msg, el) { if (el) el.classList.add('error'); micro.classList.add('err'); micro.textContent = msg; }
+      function reset() {
+        email.classList.remove('error'); work.classList.remove('error');
+        micro.classList.remove('err'); if (micro.textContent !== origMicro) micro.textContent = origMicro;
+      }
+      email.addEventListener('input', reset);
+      work.addEventListener('input', reset);
+      iphone.addEventListener('change', reset);
+
+      try { if (localStorage.getItem(BETA_KEY)) showApplied(); } catch (e) {}
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        reset();
+        var ev = (email.value || '').trim();
+        var wv = (work.value || '').trim();
+        if (!EMAIL_RE.test(ev)) { showError('Please enter a valid email address.', email); email.focus(); return; }
+        if (!wv) { showError('Tell us what you do so we can pick good testers.', work); work.focus(); return; }
+        if (!iphone.checked) { showError('TestFlight needs an iPhone — please confirm.'); return; }
+
+        btn.disabled = true; btn.textContent = 'Submitting…';
+        var honey = form.querySelector('[name="_honey"]');
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: ev, tier: 'beta', work: wv, iphone: true, _honey: (honey && honey.value) || '' })
+        })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, data: d }; }); })
+          .then(function (res) {
+            console.log('[beta] response:', res);
+            if (res.ok) { try { localStorage.setItem(BETA_KEY, ev); } catch (e) {} showApplied(); return; }
+            throw new Error((res.data && res.data.error) || ('HTTP ' + res.status));
+          })
+          .catch(function (err) {
+            console.error('[beta] submit error:', err);
+            btn.disabled = false; btn.textContent = origLabel;
+            showError("Couldn't submit — please try again, or email gchinsiong@fince.my.");
+          });
+      });
+    })();
   })();
 </script>
 
