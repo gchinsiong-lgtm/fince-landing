@@ -147,17 +147,15 @@ module.exports = async function handler(req, res) {
 
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || null;
     const transport = getTransport();
-    const nowStr = new Date().toISOString().replace('T', ' ').replace(/\..+/, ' UTC');
-
-    // The signup origin/tier rides on `source` ('beta' | 'waitlist') — no schema change needed.
     const supabase = getSupabase();
-    const { error: insertError } = await supabase
-      .from('waitlist')
-      .insert({ email, source: tier, ip });
+    const nowStr = new Date().toISOString().replace('T', ' ').replace(/\..+/, ' UTC');
+    const nowIso = new Date().toISOString();
 
-    // Notify the team. For beta we always want to see the application (with the
-    // qualifying answers), even if the email was already on the list — so we send
-    // the notification on a duplicate too. Confirmation to the user is skipped on dup.
+    // One row per email. Beta info lives in extra columns on the same row, so a
+    // beta application from an existing waitlist email UPDATES that row (never a
+    // second row). See db/waitlist-beta-columns.sql for the schema.
+    const betaFields = { wants_beta: true, beta_work: work || null, beta_has_iphone: iphone, beta_applied_at: nowIso };
+
     function notifyTeam(extraMeta) {
       return transport.sendMail({
         from: 'Fince ' + (tier === 'beta' ? 'Beta' : 'Waitlist') + ' <' + FROM_ADDR + '>',
@@ -168,41 +166,49 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    if (insertError) {
-      if (insertError.code === '23505') {
-        // Already on the list. Beta: still surface the application to the team.
-        if (tier === 'beta') {
-          try { await notifyTeam({ alreadyOnList: true }); }
-          catch (e) { console.error('Beta dup notification failed:', e); }
+    async function sendBoth(confirmHtml, confirmSubject, extraMeta) {
+      const results = await Promise.allSettled([
+        transport.sendMail({ from: 'Fince <' + FROM_ADDR + '>', to: email, replyTo: REPLY_TO, subject: confirmSubject, html: confirmHtml }),
+        notifyTeam(extraMeta),
+      ]);
+      results.forEach((r, i) => {
+        if (r.status === 'rejected') console.error('Email send failed (' + (i === 0 ? 'user confirmation' : 'team notification') + '):', r.reason);
+      });
+    }
+
+    if (tier === 'beta') {
+      // New email → insert with beta info. Existing email → update beta columns on the same row.
+      const { error: insErr } = await supabase
+        .from('waitlist')
+        .insert(Object.assign({ email, source: 'beta', ip }, betaFields));
+
+      if (insErr) {
+        if (insErr.code === '23505') {
+          const { error: updErr } = await supabase.from('waitlist').update(betaFields).eq('email', email);
+          if (updErr) { console.error('Beta update error:', updErr); return res.status(500).json({ error: 'Could not save application' }); }
+          await sendBoth(userConfirmationBetaHtml(), 'Your Fince founding-beta application', { alreadyOnList: true });
+          return res.status(200).json({ ok: true, updated: true });
         }
-        return res.status(200).json({ ok: true, alreadyOnList: true });
+        console.error('Beta insert error:', insErr);
+        return res.status(500).json({ error: 'Could not save application' });
       }
-      console.error('Supabase insert error:', insertError);
+
+      await sendBoth(userConfirmationBetaHtml(), 'Your Fince founding-beta application', {});
+      return res.status(200).json({ ok: true });
+    }
+
+    // Waitlist: insert if new; if already present, no-op (preserve any beta info on the row).
+    const { error: insErr } = await supabase
+      .from('waitlist')
+      .insert({ email, source: 'waitlist', ip });
+
+    if (insErr) {
+      if (insErr.code === '23505') return res.status(200).json({ ok: true, alreadyOnList: true });
+      console.error('Waitlist insert error:', insErr);
       return res.status(500).json({ error: 'Could not save signup' });
     }
 
-    // Send confirmation (tier-specific) + team notification in parallel. Failures are
-    // logged but don't fail the request — the signup is already saved.
-    const confirmation = tier === 'beta' ? userConfirmationBetaHtml() : userConfirmationWaitlistHtml();
-    const confirmSubject = tier === 'beta' ? 'Your Fince founding-beta application' : "You're on the Fince launch list";
-
-    const sendResults = await Promise.allSettled([
-      transport.sendMail({
-        from: 'Fince <' + FROM_ADDR + '>',
-        to: email,
-        replyTo: REPLY_TO,
-        subject: confirmSubject,
-        html: confirmation,
-      }),
-      notifyTeam(),
-    ]);
-
-    sendResults.forEach((r, i) => {
-      if (r.status === 'rejected') {
-        console.error('Email send failed (' + (i === 0 ? 'user confirmation' : 'team notification') + '):', r.reason);
-      }
-    });
-
+    await sendBoth(userConfirmationWaitlistHtml(), "You're on the Fince launch list", {});
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Waitlist handler error:', err);
