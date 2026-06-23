@@ -465,18 +465,18 @@
   .flip {
     position: relative; overflow: hidden;
     background: var(--forest); color: var(--cream); border-radius: 34px;
-    transition: height .5s cubic-bezier(.2,.7,.2,1);
   }
   .flip::after {
     content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background: radial-gradient(80% 120% at 50% -20%, rgba(48,210,122,0.22), transparent 60%);
   }
-  .flip-track { display: flex; width: 200%; align-items: flex-start; position: relative; z-index: 1; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .flip-track { display: flex; width: 200%; align-items: stretch; position: relative; z-index: 1; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
   .flip.show-beta .flip-track { transform: translateX(-50%); }
-  .flip-panel { flex: 0 0 50%; padding: 72px 40px; text-align: center; }
+  .flip-panel { flex: 0 0 50%; padding: 64px 40px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
 
   .flip-panel .mark { width: 52px; margin: 0 auto 22px; }
   .flip-panel h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.04; margin: 0 auto; max-width: 16ch; text-wrap: balance; }
+  #panelBeta h2 { max-width: none; }
   .flip-panel .sub { font-size: 18px; color: rgba(244,242,236,0.72); margin: 18px auto 0; max-width: 46ch; line-height: 1.55; text-wrap: pretty; }
 
   /* shared dark form field */
@@ -944,12 +944,9 @@
     var panelBeta = document.getElementById('panelBeta');
     var current = 'waitlist';
 
-    function activePanel() { return current === 'beta' ? panelBeta : panelWl; }
-    function setHeight() { if (flip && activePanel()) flip.style.height = activePanel().offsetHeight + 'px'; }
     function setActive(which) {
       current = which === 'beta' ? 'beta' : 'waitlist';
       if (flip) flip.classList.toggle('show-beta', current === 'beta');
-      setHeight();
     }
 
     // toggle controls: in-card buttons + nav/hero anchors
@@ -996,7 +993,6 @@
         if (toggle) toggle.style.display = 'none';
         success.style.display = 'flex';
         if (addr && successText) successText.textContent = "You’re on the list, " + addr.split('@')[0] + " — we’ll be in touch.";
-        if (opts.afterChange) opts.afterChange();
       }
       function showForm() {
         success.style.display = 'none';
@@ -1005,7 +1001,6 @@
         if (toggle) toggle.style.display = '';
         email.value = ''; btn.disabled = false; btn.textContent = origLabel;
         clearErr(); email.focus();
-        if (opts.afterChange) opts.afterChange();
       }
       function showError(m) { email.classList.add('error'); if (fine) { fine.classList.add('err'); fine.textContent = m; } }
       function clearErr() { email.classList.remove('error'); if (fine) { fine.classList.remove('err'); if (fine.textContent !== origFine) fine.textContent = origFine; } }
@@ -1029,12 +1024,11 @@
     }
 
     var hero = wireWaitlist({ form: 'wlFormHero', email: 'wlEmailHero', success: 'wlPillHero', successText: 'wlPillHeroText', fine: 'wlFineHero', fineHideOnJoin: false });
-    var flipWl = wireWaitlist({ form: 'wlForm', email: 'wlEmail', success: 'wlSuccess', successText: 'wlSuccessText', fine: 'wlFine', fineHideOnJoin: true, toggle: 'wlToggle', afterChange: setHeight });
+    var flipWl = wireWaitlist({ form: 'wlForm', email: 'wlEmail', success: 'wlSuccess', successText: 'wlSuccessText', fine: 'wlFine', fineHideOnJoin: true, toggle: 'wlToggle' });
 
     function joinedAll(addr) {
       if (hero) hero.showJoined(addr);
       if (flipWl) flipWl.showJoined(addr);
-      setHeight();
     }
     try { var saved = localStorage.getItem(KEY); if (saved) joinedAll(saved); } catch (e) {}
 
@@ -1043,7 +1037,6 @@
       try { localStorage.removeItem(KEY); } catch (e) {}
       if (hero) hero.showForm();
       if (flipWl) flipWl.showForm();
-      setHeight();
     });
 
     // ---- beta application ----
@@ -1057,7 +1050,7 @@
       var btn = form.querySelector('button[type="submit"]');
       var origMicro = micro.textContent, origLabel = btn.textContent.trim();
 
-      function showApplied() { form.style.display = 'none'; micro.style.display = 'none'; if (toggle) toggle.style.display = 'none'; success.style.display = 'flex'; setHeight(); }
+      function showApplied() { form.style.display = 'none'; micro.style.display = 'none'; if (toggle) toggle.style.display = 'none'; success.style.display = 'flex'; }
       function showError(m, el) { if (el) el.classList.add('error'); micro.classList.add('err'); micro.textContent = m; }
       function clearErr() { email.classList.remove('error'); work.classList.remove('error'); micro.classList.remove('err'); if (micro.textContent !== origMicro) micro.textContent = origMicro; }
       email.addEventListener('input', clearErr); work.addEventListener('input', clearErr); iphone.addEventListener('change', clearErr);
@@ -1078,11 +1071,7 @@
       });
     })();
 
-    // initial height + responsive recompute
     setActive('waitlist');
-    window.addEventListener('load', function () { setActive(current); });
-    window.addEventListener('resize', setHeight);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHeight);
   })();
 </script>
 
