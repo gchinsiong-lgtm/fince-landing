@@ -460,6 +460,92 @@
     border-top: 1px solid var(--hair); font-size: 13px; color: var(--ink-2);
   }
 
+  /* ── tax inbox (swipe demo) ── */
+  .tax-section {
+    position: relative; overflow: hidden;
+    padding: clamp(72px, 8vw, 104px) 0;
+    background: linear-gradient(160deg, #16463A 0%, #0F3329 78%);
+  }
+  .tax-section::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(244,242,236,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244,242,236,0.045) 1px, transparent 1px);
+    background-size: 110px 110px;
+  }
+  .tax-section::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(760px 520px at 50% 0%, rgba(18,164,99,0.20), transparent 70%);
+  }
+  .tax-section .b1 { width: 340px; height: 340px; top: -90px; right: -80px; opacity: 0.16; }
+  .tax-section .b2 { width: 150px; height: 150px; top: 32%; left: 6%; opacity: 0.12; }
+  .tax-section .wrap { position: relative; z-index: 2; }
+  .tax-section .sec-head .eyebrow { color: var(--mint); }
+  .tax-section .sec-head h2 { color: var(--cream); }
+  .tax-section .sec-head p { color: rgba(244,242,236,0.72); }
+
+  .ti-stage { width: 330px; max-width: 100%; margin: 44px auto 0; }
+  .ti-deck { position: relative; height: 384px; touch-action: pan-y; }
+  .ti-cardwrap { position: absolute; inset: 0; will-change: transform; }
+  .ti-cardwrap.top { cursor: grab; }
+  .ti-cardwrap.top.grabbing { cursor: grabbing; }
+
+  .ti-card {
+    position: absolute; inset: 0; box-sizing: border-box; overflow: hidden;
+    background: #fff; border-radius: 24px; padding: 22px;
+    box-shadow: 0 2px 6px rgba(20,19,15,0.05), 0 24px 50px rgba(20,19,15,0.22);
+    display: flex; flex-direction: column;
+  }
+  .ti-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ti-ws { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px 5px 5px; border-radius: 999px; background: rgba(20,19,15,0.04); font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .ti-ws .mono { width: 20px; height: 20px; border-radius: 6px; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; flex: 0 0 auto; }
+  .ti-right { display: flex; align-items: center; gap: 10px; }
+  .ti-date { font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+  .ti-rcpt { width: 34px; height: 40px; border-radius: 7px; flex: 0 0 auto; background: rgba(20,19,15,0.04); border: 0.5px solid rgba(20,19,15,0.08); display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+  .ti-mid { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 10px 0; }
+  .ti-kind { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px 4px 6px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.2px; }
+  .ti-kind.biz { background: rgba(42,111,240,0.10); color: #2A6FF0; }
+  .ti-kind.relief { background: var(--green-bg); color: var(--green); }
+  .ti-vendor { font-size: 26px; font-weight: 700; letter-spacing: -0.7px; color: var(--ink); line-height: 1.1; text-wrap: balance; }
+  .ti-amt { display: inline-flex; align-items: baseline; font-weight: 700; letter-spacing: -1px; font-feature-settings: "tnum"; font-size: 40px; line-height: 1; }
+  .ti-amt.biz { color: var(--red); }
+  .ti-amt.relief { color: var(--ink); }
+  .ti-amt .cur { font-size: 22px; color: var(--ink-2); font-weight: 600; margin-right: 5px; }
+  .ti-amt .dec { font-size: 24px; color: var(--ink-2); font-weight: 600; }
+  .ti-cat { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+  .ti-strip { padding-top: 14px; border-top: 0.5px solid rgba(20,19,15,0.08); }
+  .ti-strip .lbl { font-size: 10.5px; color: var(--ink-3); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .ti-chip { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 12px; font-size: 14.5px; font-weight: 700; letter-spacing: -0.2px; max-width: 100%; }
+  .ti-chip .arr { opacity: 0.85; font-weight: 800; }
+  .ti-chip .txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ti-chip.green { background: var(--green-bg); color: var(--green); }
+  .ti-chip.blue { background: rgba(42,111,240,0.10); color: #2A6FF0; }
+
+  .ti-overlay {
+    position: absolute; inset: 0; border-radius: 24px; pointer-events: none;
+    display: flex; align-items: center; padding: 24px; opacity: 0;
+  }
+  .ti-overlay .word { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.4px; display: inline-flex; align-items: center; gap: 8px; text-shadow: 0 1px 8px rgba(0,0,0,0.2); }
+  .ti-overlay.right { justify-content: flex-start; background: linear-gradient(120deg, rgba(15,138,83,0), #0F8A53); }
+  .ti-overlay.left  { justify-content: flex-end;   background: linear-gradient(240deg, rgba(194,70,40,0), #C24628); }
+  .ti-checkpulse { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; }
+  .ti-checkpulse span { width: 76px; height: 76px; border-radius: 38px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 10px var(--green-bg); animation: tiCheck .4s ease both; }
+  @keyframes tiCheck { 0% { transform: scale(.4); opacity: 0; } 50% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+  .ti-done { position: absolute; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; }
+  .ti-done .medal { width: 76px; height: 76px; border-radius: 38px; background: var(--green-bg); color: var(--mint); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 12px rgba(48,210,122,0.06); }
+  .ti-done h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; color: var(--cream); }
+  .ti-done p { font-size: 14px; color: rgba(244,242,236,0.7); max-width: 26ch; }
+  .ti-done .btn-cream { margin-top: 6px; }
+
+  .ti-hints { display: flex; align-items: center; justify-content: space-between; max-width: 330px; margin: 22px auto 0; padding: 0 4px; }
+  .ti-hint { background: none; border: none; cursor: pointer; font-family: inherit; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 8px 6px; transition: color .15s ease, transform .15s ease; }
+  .ti-skip { color: rgba(244,242,236,0.55); }
+  .ti-skip.lit { color: #FF8B6E; transform: scale(1.06); }
+  .ti-accept { color: var(--mint); }
+  .ti-accept.lit { color: #8BF0BC; transform: scale(1.06); }
+  .ti-hint-mid { font-size: 12px; color: rgba(244,242,236,0.40); font-weight: 500; }
+
   /* ── waitlist / beta flip card ── */
   .cta-section { padding: 56px 0 100px; }
   .flip {
@@ -804,6 +890,35 @@
   </div>
 </section>
 
+<!-- ─────────────────────── TAX INBOX (swipe) ─────────────────────── -->
+<section class="tax-section" id="tax" aria-labelledby="tax-heading">
+  <span class="bubble b1" aria-hidden="true"></span>
+  <span class="bubble b2" aria-hidden="true"></span>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Tax Inbox</p>
+      <h2 id="tax-heading">Sort your tax with a swipe.</h2>
+      <p>Every uncategorised transaction arrives pre-tagged with a smart LHDN default. Swipe right to accept, left to skip — your deductions and reliefs sort themselves.</p>
+    </div>
+
+    <div class="ti-stage">
+      <div class="ti-deck" id="tiDeck">
+        <div class="ti-done" id="tiDone">
+          <span class="medal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></span>
+          <h3>All caught up ✨</h3>
+          <p>That's how fast a year of tax gets sorted.</p>
+          <button type="button" class="btn btn-cream" id="tiReplay">Sort again</button>
+        </div>
+      </div>
+      <div class="ti-hints" id="tiHints">
+        <button type="button" class="ti-hint ti-skip" id="tiSkip" aria-label="Skip this transaction">← Skip</button>
+        <span class="ti-hint-mid">drag, or tap a side</span>
+        <button type="button" class="ti-hint ti-accept" id="tiAccept" aria-label="Accept this transaction">Accept →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ─────────────────── WAITLIST / BETA (flip card) ─────────────────── -->
 <section class="cta-section" id="waitlist" aria-labelledby="cta-heading">
   <div class="wrap">
@@ -1073,6 +1188,193 @@
     })();
 
     setActive('waitlist');
+  })();
+
+  // ── Tax Inbox: interactive swipe deck ──
+  (function () {
+    var deck = document.getElementById('tiDeck');
+    if (!deck) return;
+    var doneEl = document.getElementById('tiDone');
+    var skipBtn = document.getElementById('tiSkip');
+    var acceptBtn = document.getElementById('tiAccept');
+    var hints = document.getElementById('tiHints');
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var WS = {
+      filmpeak: 'linear-gradient(135deg,#5B9BFF,#1B4FBF)',
+      saffron:  'linear-gradient(135deg,#FF7A57,#9B331C)',
+      personal: 'linear-gradient(135deg,#C9C0AB,#4A463F)'
+    };
+    var ICON = {
+      ledger:  '<path d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v13H7.5A2.5 2.5 0 0 1 5 17.5Z"/><path d="M9 9.5h6M9 13h6M9 16.5h3.5"/>',
+      shield:  '<path d="M12 3.5 5 6v6.5c0 4 3 7 7 8 4-1 7-4 7-8V6Z"/>',
+      receipt: '<path d="M6 3.5h12v17l-2-1.2-2 1.2-2-1.2-2 1.2-2-1.2-2 1.2Z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
+      check:   '<path d="m5 12.5 4.5 4.5L19 7.5"/>'
+    };
+    function svg(name, size, stroke) {
+      return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (stroke || 1.75) + '" stroke-linecap="round" stroke-linejoin="round">' + ICON[name] + '</svg>';
+    }
+
+    var CARDS = [
+      { kind: 'business', vendor: 'Adobe Creative Cloud', amount: '273.00', date: '12 Jun', ws: 'filmpeak', wsName: 'Filmpeak', receipt: true, category: 'Software', dec: { cls: 'green', label: '100% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Starbucks', amount: '32.50', date: '11 Jun', ws: 'saffron', wsName: 'Saffron', receipt: true, category: 'Client meeting', dec: { cls: 'blue', label: '50% deductible', arrow: true } },
+      { kind: 'relief', vendor: 'Guardian Pharmacy', amount: '128.40', date: '9 Jun', ws: 'personal', wsName: 'Personal', receipt: true, category: 'Health', dec: { cls: 'blue', label: 'Serious disease treatment', arrow: true } },
+      { kind: 'relief', vendor: 'BookXcess', amount: '145.00', date: '8 Jun', ws: 'personal', wsName: 'Personal', receipt: false, category: 'Books', dec: { cls: 'blue', label: 'Lifestyle — books, devices, net', arrow: true } }
+    ];
+
+    function money(amount, kind) {
+      var parts = amount.split('.');
+      return '<span class="ti-amt ' + (kind === 'business' ? 'biz' : 'relief') + '">' +
+        '<span class="cur">RM</span>' + parts[0] +
+        (parts[1] ? '<span class="dec">.' + parts[1] + '</span>' : '') + '</span>';
+    }
+    function cardFace(card) {
+      var biz = card.kind === 'business';
+      return '<div class="ti-card">' +
+        '<div class="ti-top">' +
+          '<span class="ti-ws"><span class="mono" style="background:' + WS[card.ws] + '">' + card.wsName.charAt(0) + '</span>' + card.wsName + '</span>' +
+          '<span class="ti-right"><span class="ti-date">' + card.date + '</span>' +
+            (card.receipt ? '<span class="ti-rcpt">' + svg('receipt', 17, 1.8) + '</span>' : '') +
+          '</span>' +
+        '</div>' +
+        '<div class="ti-mid">' +
+          '<span class="ti-kind ' + (biz ? 'biz' : 'relief') + '">' + svg(biz ? 'ledger' : 'shield', 13, 2.2) + (biz ? 'Business' : 'Relief') + '</span>' +
+          '<div class="ti-vendor">' + card.vendor + '</div>' +
+          money(card.amount, card.kind) +
+          '<div class="ti-cat">' + card.category + '</div>' +
+        '</div>' +
+        '<div class="ti-strip">' +
+          '<div class="lbl">Smart default</div>' +
+          '<div class="ti-chip ' + card.dec.cls + '">' + (card.dec.arrow ? '<span class="arr">→</span>' : '') + '<span class="txt">' + card.dec.label + '</span></div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // build card wrappers
+    var wraps = CARDS.map(function (card) {
+      var w = document.createElement('div');
+      w.className = 'ti-cardwrap';
+      w.innerHTML = cardFace(card) +
+        '<div class="ti-overlay"><span class="word"></span></div>' +
+        '<div class="ti-checkpulse"><span>' + svg('check', 40, 3) + '</span></div>';
+      deck.insertBefore(w, doneEl);
+      return w;
+    });
+
+    var topIndex = 0, animating = false;
+    var EASE_SPRING = 'transform .34s cubic-bezier(.2,.8,.2,1)';
+
+    function overlayOf(w) { return w.querySelector('.ti-overlay'); }
+    function pulseOf(w) { return w.querySelector('.ti-checkpulse'); }
+
+    function clearTop(w) {
+      var ov = overlayOf(w); ov.style.opacity = '0'; ov.className = 'ti-overlay';
+      pulseOf(w).style.display = 'none';
+    }
+    function setLit(dnorm) {
+      acceptBtn.classList.toggle('lit', dnorm > 0.15);
+      skipBtn.classList.toggle('lit', dnorm < -0.15);
+    }
+
+    function layout() {
+      wraps.forEach(function (w, i) {
+        var rel = i - topIndex;
+        if (rel < 0 || rel > 2) { w.style.display = 'none'; w.classList.remove('top'); return; }
+        w.style.display = '';
+        w.style.zIndex = String(10 - rel);
+        if (rel === 0) {
+          w.classList.add('top');
+          w.style.transition = EASE_SPRING;
+          w.style.transform = 'translate(0,0) rotate(0deg)';
+          w.style.opacity = '1';
+          clearTop(w);
+        } else {
+          w.classList.remove('top');
+          var sc = rel === 1 ? 0.94 : 0.90, ty = rel === 1 ? 14 : 26;
+          w.style.transition = 'transform .34s cubic-bezier(.2,.8,.2,1), opacity .34s';
+          w.style.transform = 'translateY(' + ty + 'px) scale(' + sc + ')';
+          w.style.opacity = rel === 1 ? '0.6' : '0.3';
+        }
+      });
+      var empty = topIndex >= wraps.length;
+      doneEl.style.display = empty ? 'flex' : 'none';
+      hints.style.visibility = empty ? 'hidden' : '';
+      setLit(0);
+    }
+
+    function fly(dir) {
+      if (animating || topIndex >= wraps.length) return;
+      animating = true;
+      var w = wraps[topIndex];
+      var ov = overlayOf(w);
+      ov.className = 'ti-overlay ' + dir;
+      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : 'Skip → 0%';
+      ov.style.opacity = '0.92';
+      if (dir === 'right' && !reduced) pulseOf(w).style.display = 'flex';
+      if (navigator.vibrate) navigator.vibrate(12);
+      if (reduced) {
+        w.style.transition = 'opacity .2s ease';
+        w.style.opacity = '0';
+      } else {
+        w.style.transition = 'transform .27s cubic-bezier(.4,0,.7,1), opacity .27s';
+        w.style.transform = 'translate(' + (dir === 'right' ? 740 : -740) + 'px,-20px) rotate(' + (dir === 'right' ? 16 : -16) + 'deg)';
+      }
+      setLit(0);
+      setTimeout(function () { topIndex++; animating = false; layout(); }, reduced ? 210 : 285);
+    }
+
+    // pointer drag on the top card
+    var drag = null;
+    deck.addEventListener('pointerdown', function (e) {
+      if (animating || topIndex >= wraps.length) return;
+      var w = wraps[topIndex];
+      if (!w.contains(e.target)) return;
+      drag = { sx: e.clientX, sy: e.clientY, lx: e.clientX, lt: performance.now(), vx: 0, crossed: false, w: deck.offsetWidth || 320, el: w };
+      w.classList.add('grabbing');
+      w.style.transition = 'none';
+      if (deck.setPointerCapture) deck.setPointerCapture(e.pointerId);
+    });
+    deck.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy, now = performance.now();
+      drag.vx = (e.clientX - drag.lx) / Math.max(1, now - drag.lt);
+      drag.lx = e.clientX; drag.lt = now; drag.dx = dx; drag.dy = dy;
+      var rot = reduced ? 0 : Math.max(-8, Math.min(8, (dx / drag.w) * 14));
+      drag.el.style.transform = 'translate(' + dx + 'px,' + (Math.min(0, dy) * 0.4) + 'px) rotate(' + rot + 'deg)';
+      var prog = Math.abs(dx) / drag.w;
+      var ovv = Math.max(0, Math.min(1, (prog - 0.08) / (0.30 - 0.08)));
+      var dir = dx >= 0 ? 'right' : 'left';
+      var ov = overlayOf(drag.el);
+      ov.className = 'ti-overlay ' + dir;
+      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : 'Skip → 0%';
+      ov.style.opacity = String(ovv * 0.92);
+      setLit(Math.max(-1, Math.min(1, (dx / drag.w) / 0.30)));
+      var over = Math.abs(dx) > 0.30 * drag.w;
+      if (over && !drag.crossed) { drag.crossed = true; if (navigator.vibrate) navigator.vibrate(9); }
+      if (!over) drag.crossed = false;
+    });
+    function endDrag() {
+      if (!drag) return;
+      var d = drag; drag = null;
+      d.el.classList.remove('grabbing');
+      var dx = d.dx || 0, dy = d.dy || 0;
+      var flick = Math.abs(d.vx) > 0.6;
+      var commit = (Math.abs(dx) > 0.30 * d.w || flick) && Math.abs(dx) >= Math.abs(dy) && Math.max(Math.abs(dx), Math.abs(dy)) >= 8;
+      if (commit) { fly(dx > 0 ? 'right' : 'left'); return; }
+      // spring back
+      d.el.style.transition = 'transform .32s cubic-bezier(.2,.85,.25,1)';
+      d.el.style.transform = 'translate(0,0) rotate(0deg)';
+      clearTop(d.el); setLit(0);
+    }
+    deck.addEventListener('pointerup', endDrag);
+    deck.addEventListener('pointercancel', endDrag);
+
+    if (skipBtn) skipBtn.addEventListener('click', function () { fly('left'); });
+    if (acceptBtn) acceptBtn.addEventListener('click', function () { fly('right'); });
+    var replay = document.getElementById('tiReplay');
+    if (replay) replay.addEventListener('click', function () { topIndex = 0; wraps.forEach(clearTop); layout(); });
+
+    layout();
   })();
 </script>
 
