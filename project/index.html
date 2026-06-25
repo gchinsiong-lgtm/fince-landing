@@ -477,6 +477,7 @@
   .flip-panel .mark { width: 52px; margin: 0 auto 22px; }
   .flip-panel h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; letter-spacing: -1.6px; line-height: 1.04; margin: 0 auto; max-width: 16ch; text-wrap: balance; }
   #panelBeta h2 { max-width: none; }
+  #panelBeta .sub { max-width: 54ch; }
   .flip-panel .sub { font-size: 18px; color: rgba(244,242,236,0.72); margin: 18px auto 0; max-width: 46ch; line-height: 1.55; text-wrap: pretty; }
 
   /* shared dark form field */
@@ -832,7 +833,7 @@
         <div class="flip-panel" id="panelBeta">
           <img class="mark" src="landing/logo-mark-cream.png" alt="" aria-hidden="true" width="52" height="52" />
           <h2>Try Fince before launch.</h2>
-          <p class="sub">We're inviting 100 founding testers on TestFlight. Tell us a little about you and we'll send an invite.</p>
+          <p class="sub">We're inviting 100 founding testers on TestFlight.<br />Tell us a little about you and we'll send an invite.</p>
           <form class="beta-form" id="betaForm" novalidate aria-label="Beta tester application">
             <input class="f-input" type="email" id="betaEmail" name="email" placeholder="you@email.com" autocomplete="email" required aria-label="Email address" />
             <input class="f-input" type="text" id="betaWork" name="work" placeholder="What kind of work do you do?" required maxlength="120" aria-label="What kind of work do you do?" />
