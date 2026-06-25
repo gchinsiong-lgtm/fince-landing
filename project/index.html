@@ -899,7 +899,7 @@
     <div class="sec-head">
       <p class="eyebrow">Tax Inbox</p>
       <h2 id="tax-heading">Sort your tax with a swipe.</h2>
-      <p>Every uncategorised transaction arrives pre-tagged with a smart LHDN default. Swipe right to accept, left to skip — your deductions and reliefs sort themselves.</p>
+      <p>Every uncategorised transaction arrives pre-tagged with a smart LHDN default.<br />Swipe right to accept, left to skip — your deductions and reliefs sort themselves.</p>
     </div>
 
     <div class="ti-stage">
@@ -963,6 +963,7 @@
             <span class="tick" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7" /></svg></span>
             <span class="t">Application received.</span>
             <span class="s">We'll review and send your TestFlight invite by email — keep an eye on your inbox.</span>
+            <button type="button" id="betaAddAnother" class="wl-add-another" style="margin-left:0;margin-top:4px;">Apply with another email</button>
           </div>
         </div>
 
@@ -1168,9 +1169,17 @@
       var origMicro = micro.textContent, origLabel = btn.textContent.trim();
 
       function showApplied() { form.style.display = 'none'; micro.style.display = 'none'; if (toggle) toggle.style.display = 'none'; success.style.display = 'flex'; }
+      function showBetaForm() {
+        success.style.display = 'none'; form.style.display = ''; micro.style.display = ''; if (toggle) toggle.style.display = '';
+        email.value = ''; work.value = ''; iphone.checked = false;
+        btn.disabled = false; btn.textContent = origLabel; clearErr(); email.focus();
+      }
       function showError(m, el) { if (el) el.classList.add('error'); micro.classList.add('err'); micro.textContent = m; }
       function clearErr() { email.classList.remove('error'); work.classList.remove('error'); micro.classList.remove('err'); if (micro.textContent !== origMicro) micro.textContent = origMicro; }
       email.addEventListener('input', clearErr); work.addEventListener('input', clearErr); iphone.addEventListener('change', clearErr);
+
+      var betaAdd = document.getElementById('betaAddAnother');
+      if (betaAdd) betaAdd.addEventListener('click', function () { try { localStorage.removeItem(BETA_KEY); } catch (e) {} showBetaForm(); });
 
       try { if (localStorage.getItem(BETA_KEY)) showApplied(); } catch (e) {}
 
@@ -1325,12 +1334,13 @@
         w.style.transition = 'opacity .2s ease';
         w.style.opacity = '0';
       } else {
-        w.style.transition = 'transform .27s cubic-bezier(.4,0,.7,1), opacity .27s';
+        // fly out fully opaque, then fade once it's reaching the edge (delayed opacity)
+        w.style.transition = 'transform .32s cubic-bezier(.4,0,.7,1), opacity .16s ease .18s';
         w.style.transform = 'translate(' + (dir === 'right' ? 740 : -740) + 'px,-20px) rotate(' + (dir === 'right' ? 16 : -16) + 'deg)';
         w.style.opacity = '0';
       }
       setLit(0);
-      setTimeout(function () { topIndex++; animating = false; layout(); }, reduced ? 210 : 285);
+      setTimeout(function () { topIndex++; animating = false; layout(); }, reduced ? 210 : 350);
     }
 
     // pointer drag on the top card
