@@ -526,8 +526,8 @@
     display: flex; align-items: center; padding: 24px; opacity: 0;
   }
   .ti-overlay .word { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.4px; display: inline-flex; align-items: center; gap: 8px; text-shadow: 0 1px 8px rgba(0,0,0,0.2); }
-  .ti-overlay.right { justify-content: flex-start; background: linear-gradient(120deg, rgba(15,138,83,0), #0F8A53); }
-  .ti-overlay.left  { justify-content: flex-end;   background: linear-gradient(240deg, rgba(194,70,40,0), #C24628); }
+  .ti-overlay.right { justify-content: flex-start; background: linear-gradient(to right, #0F8A53, rgba(15,138,83,0)); }
+  .ti-overlay.left  { justify-content: flex-end;   background: linear-gradient(to right, rgba(194,70,40,0), #C24628); }
   .ti-checkpulse { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; }
   .ti-checkpulse span { width: 76px; height: 76px; border-radius: 38px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 10px var(--green-bg); animation: tiCheck .4s ease both; }
   @keyframes tiCheck { 0% { transform: scale(.4); opacity: 0; } 50% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
@@ -1209,7 +1209,8 @@
       ledger:  '<path d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v13H7.5A2.5 2.5 0 0 1 5 17.5Z"/><path d="M9 9.5h6M9 13h6M9 16.5h3.5"/>',
       shield:  '<path d="M12 3.5 5 6v6.5c0 4 3 7 7 8 4-1 7-4 7-8V6Z"/>',
       receipt: '<path d="M6 3.5h12v17l-2-1.2-2 1.2-2-1.2-2 1.2-2-1.2-2 1.2Z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
-      check:   '<path d="m5 12.5 4.5 4.5L19 7.5"/>'
+      check:   '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+      close:   '<path d="M6 6l12 12M6 18 18 6"/>'
     };
     function svg(name, size, stroke) {
       return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (stroke || 1.75) + '" stroke-linecap="round" stroke-linejoin="round">' + ICON[name] + '</svg>';
@@ -1316,7 +1317,7 @@
       var w = wraps[topIndex];
       var ov = overlayOf(w);
       ov.className = 'ti-overlay ' + dir;
-      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : 'Skip → 0%';
+      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : svg('close', 22, 3) + 'Skip';
       ov.style.opacity = '0.92';
       if (dir === 'right' && !reduced) pulseOf(w).style.display = 'flex';
       if (navigator.vibrate) navigator.vibrate(12);
@@ -1355,7 +1356,7 @@
       var dir = dx >= 0 ? 'right' : 'left';
       var ov = overlayOf(drag.el);
       ov.className = 'ti-overlay ' + dir;
-      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : 'Skip → 0%';
+      ov.querySelector('.word').innerHTML = dir === 'right' ? svg('check', 22, 3) + 'Accept' : svg('close', 22, 3) + 'Skip';
       ov.style.opacity = String(ovv * 0.92);
       setLit(Math.max(-1, Math.min(1, (dx / drag.w) / 0.30)));
       var over = Math.abs(dx) > 0.30 * drag.w;
