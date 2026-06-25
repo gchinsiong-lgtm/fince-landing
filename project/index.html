@@ -534,7 +534,8 @@
 
   .ti-done { position: absolute; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; }
   .ti-done .medal { width: 76px; height: 76px; border-radius: 38px; background: var(--green-bg); color: var(--mint); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 12px rgba(48,210,122,0.06); }
-  .ti-done h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; color: var(--cream); }
+  .ti-done h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; color: var(--cream); display: inline-flex; align-items: center; gap: 8px; }
+  .ti-done .ti-spark { color: var(--mint); flex: 0 0 auto; }
   .ti-done p { font-size: 14px; color: rgba(244,242,236,0.7); max-width: 26ch; }
   .ti-done .btn-cream { margin-top: 6px; }
 
@@ -905,7 +906,7 @@
       <div class="ti-deck" id="tiDeck">
         <div class="ti-done" id="tiDone">
           <span class="medal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></span>
-          <h3>All caught up ✨</h3>
+          <h3>All caught up <svg class="ti-spark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2" /></svg></h3>
           <p>That's how fast a year of tax gets sorted.</p>
           <button type="button" class="btn btn-cream" id="tiReplay">Sort again</button>
         </div>
@@ -1201,8 +1202,7 @@
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var WS = {
-      filmpeak: 'linear-gradient(135deg,#5B9BFF,#1B4FBF)',
-      saffron:  'linear-gradient(135deg,#FF7A57,#9B331C)',
+      fince:    'linear-gradient(135deg,#4FD899,#0A6B40)',
       personal: 'linear-gradient(135deg,#C9C0AB,#4A463F)'
     };
     var ICON = {
@@ -1216,10 +1216,15 @@
     }
 
     var CARDS = [
-      { kind: 'business', vendor: 'Adobe Creative Cloud', amount: '273.00', date: '12 Jun', ws: 'filmpeak', wsName: 'Filmpeak', receipt: true, category: 'Software', dec: { cls: 'green', label: '100% deductible', arrow: true } },
-      { kind: 'business', vendor: 'Starbucks', amount: '32.50', date: '11 Jun', ws: 'saffron', wsName: 'Saffron', receipt: true, category: 'Client meeting', dec: { cls: 'blue', label: '50% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Adobe Creative Cloud', amount: '273.00', date: '12 Jun', ws: 'fince', wsName: 'Fince', receipt: true, category: 'Software', dec: { cls: 'green', label: '100% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Apple Store · Magic Keyboard', amount: '579.00', date: '11 Jun', ws: 'fince', wsName: 'Fince', receipt: true, category: 'Equipment', dec: { cls: 'green', label: '100% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Canva Pro', amount: '49.00', date: '11 Jun', ws: 'fince', wsName: 'Fince', receipt: false, category: 'Software', dec: { cls: 'green', label: '100% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Grab', amount: '18.40', date: '10 Jun', ws: 'fince', wsName: 'Fince', receipt: true, category: 'Travel', dec: { cls: 'green', label: '100% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Starbucks', amount: '32.50', date: '10 Jun', ws: 'fince', wsName: 'Fince', receipt: true, category: 'Client meeting', dec: { cls: 'blue', label: '50% deductible', arrow: true } },
+      { kind: 'business', vendor: 'Maxis Fibre', amount: '159.00', date: '9 Jun', ws: 'fince', wsName: 'Fince', receipt: true, category: 'Phone & Internet', dec: { cls: 'blue', label: '50% deductible', arrow: true } },
       { kind: 'relief', vendor: 'Guardian Pharmacy', amount: '128.40', date: '9 Jun', ws: 'personal', wsName: 'Personal', receipt: true, category: 'Health', dec: { cls: 'blue', label: 'Serious disease treatment', arrow: true } },
-      { kind: 'relief', vendor: 'BookXcess', amount: '145.00', date: '8 Jun', ws: 'personal', wsName: 'Personal', receipt: false, category: 'Books', dec: { cls: 'blue', label: 'Lifestyle — books, devices, net', arrow: true } }
+      { kind: 'relief', vendor: 'BookXcess', amount: '145.00', date: '8 Jun', ws: 'personal', wsName: 'Personal', receipt: false, category: 'Books', dec: { cls: 'blue', label: 'Lifestyle — books, devices, net', arrow: true } },
+      { kind: 'relief', vendor: 'Decathlon', amount: '220.00', date: '7 Jun', ws: 'personal', wsName: 'Personal', receipt: true, category: 'Sports gear', dec: { cls: 'blue', label: 'Sports equipment & activities', arrow: true } }
     ];
 
     function money(amount, kind) {
@@ -1230,9 +1235,12 @@
     }
     function cardFace(card) {
       var biz = card.kind === 'business';
+      var mono = card.ws === 'fince'
+        ? '<img src="landing/logo-mark-cream.png" alt="" style="width:13px;height:13px;display:block;" />'
+        : card.wsName.charAt(0);
       return '<div class="ti-card">' +
         '<div class="ti-top">' +
-          '<span class="ti-ws"><span class="mono" style="background:' + WS[card.ws] + '">' + card.wsName.charAt(0) + '</span>' + card.wsName + '</span>' +
+          '<span class="ti-ws"><span class="mono" style="background:' + WS[card.ws] + '">' + mono + '</span>' + card.wsName + '</span>' +
           '<span class="ti-right"><span class="ti-date">' + card.date + '</span>' +
             (card.receipt ? '<span class="ti-rcpt">' + svg('receipt', 17, 1.8) + '</span>' : '') +
           '</span>' +
@@ -1293,7 +1301,7 @@
           var sc = rel === 1 ? 0.94 : 0.90, ty = rel === 1 ? 14 : 26;
           w.style.transition = 'transform .34s cubic-bezier(.2,.8,.2,1), opacity .34s';
           w.style.transform = 'translateY(' + ty + 'px) scale(' + sc + ')';
-          w.style.opacity = rel === 1 ? '0.6' : '0.3';
+          w.style.opacity = rel === 1 ? '1' : '0.5';
         }
       });
       var empty = topIndex >= wraps.length;
@@ -1318,6 +1326,7 @@
       } else {
         w.style.transition = 'transform .27s cubic-bezier(.4,0,.7,1), opacity .27s';
         w.style.transform = 'translate(' + (dir === 'right' ? 740 : -740) + 'px,-20px) rotate(' + (dir === 'right' ? 16 : -16) + 'deg)';
+        w.style.opacity = '0';
       }
       setLit(0);
       setTimeout(function () { topIndex++; animating = false; layout(); }, reduced ? 210 : 285);
